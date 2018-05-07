@@ -1,3 +1,15 @@
+const config = {
+    width: 100,
+    height: 100,
+    max_edge: 10,
+    min_edge: 2,
+    source_freq: 0.1,
+    spawn_cooldown: 4,
+    node_base_radius: 0.5,
+    bubble_radius: 1
+};
+config.bubble_move_speed = 4 * bubble_radius;
+
 class Node {
     constructor(x, y, isSource = false){
         // unchanging
@@ -5,9 +17,12 @@ class Node {
         this.x = x;
         this.y = y;
         this.isSource = isSource;
+        if(this.isSource)
+            this.spawn_cooldown = 0;
 
         // dynamic
         this.bubbles = 0;
+        this.radius = config.node_base_radius;
         this.owner = "server";
         this.edges = [];
     }
@@ -18,16 +33,17 @@ class Node {
 }
 
 class Edge {
-    constructor(to){
+    constructor(from, to){
+        this.from = from;
         this.to = to;
         this.bubbles = [];
     }
 }
 
 class Bubble {
-    constructor(owner){
+    constructor(owner, pos = 0){
         this.owner = owner;
-        this.pos = 0;
+        this.pos = pos;
         this.dead = false;
     }
 }
@@ -35,12 +51,7 @@ class Bubble {
 class Game {
     constructor(){
         this.nodes = [];
-        this.config = {
-            width: 100,
-            height: 100,
-            max_edge: 10,
-            min_edge: 2,
-        };
+        this.config = config;
         this.players = {
             "server": {
                 color: "black"
@@ -67,6 +78,7 @@ class Game {
                 }
             }
             newNode.id = this.nodes.length;
+            newNode.isSource = chance.bool({likelihood: this.config.source_freq * 100});
             this.nodes.push(newNode);
             console.log("added a node");
             added++;
@@ -74,12 +86,75 @@ class Game {
         }
     }
 
+    update(){
+        this.nodes.forEach(updateNode);
+    }
+
+    updateNode(node){
+        node.edges.forEach(updateEdge);
+
+        if(node.isSource){
+            if(node.spawn_cooldown <= 0){
+                node.edges.forEach(edge => edge.bubbles.push(new Bubble(owner, node.radius)));
+                node.spawn_cooldown = config.spawn_cooldown;
+            }
+            node.spawn_cooldown--;
+        }
+    }
+
+    updateEdge(edge){
+        let opposingEdge = this.getOpposingEdge(edge),
+            toNode = this.nodes[edge.to],
+            fromNode = this.nodes[edge.from],
+            edgeLength = fromNode.distance(toNode) - toNode.radius;
+
+        edge.bubbles.forEach(bubble => {
+            if(bubble.dead) return;
+
+            // Move
+            bubble.pos += this.config.bubble_radius;
+
+            // Check collision with node
+            if(bubble.pos >= edgeLength){
+                console.log("Bubble hit node");
+                if(bubble.owner === toNode.owner)
+                    toNode.bubbles++;
+                else
+                    toNode.bubbles--;
+                bubble.dead = true;
+            }
+
+            // Check collision with enemy bubble
+            if(bubble.owner === toNode.owner) return;
+            if(opposingEdge == undefined) return;
+            for(var i = 0; i < opposingEdge.bubbles.length; i++){
+                let enemyBubble = opposingEdge.bubbles[i];
+                if(Math.abs(enemyBubble.pos - bubble.pos) <= 2 * this.config.bubble_radius){
+                    bubble.dead = true;
+                    enemyBubble.dead = true;
+                    break;
+                }
+            }
+        });
+    }
+
+    updateBubble(bubble){
+        bubble.pos += this.config.bubble_radius;
+    }
+
+    getOpposingEdge(edge){
+        let node = this.nodes[edge.to];
+        if(node == undefined) return null;
+        return node.edges.find(otherEdge => otherEdge.to = edge.from);
+    }
+
     printmap(){
         let output = "";
         for(var x = 0; x < this.config.width; x++){
             for(var y = 0; y < this.config.height; y++){
-                if(this.nodes.find(node => node.x === x && node.y === y))
-                    output += "x";
+                let node;
+                if(node = this.nodes.find(node => node.x === x && node.y === y))
+                    output += node.isSource ? "s" : "x";
                 else
                     output += " ";
             }
