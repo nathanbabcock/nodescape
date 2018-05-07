@@ -1,0 +1,162 @@
+5/3:
+abstract-owtd
+1hr planning
+
+players = {
+	"excalo": {
+		color: "red"
+	}
+}
+
+nodes = [
+	// static
+	id: id,
+	x: x,
+	y: y,
+
+	// dynamic
+	owner: "excalo",
+	bubbles: 100,
+	edges: [
+		{
+            to: id,
+            bubbles: [
+                owner: "asdf",
+                pos: x,
+                dead: false
+            ]
+        }
+	]
+]
+
+//bubbles = [
+//	//dynamic
+//	owner: "excalo",
+//	edge: {from: id, to: id}
+//	dist: 135
+//]
+
+forEachBubble = players.forEach(player=>player.bases.forEach(base=>))
+
+get edges from node: O(1)
+get edges to node: O(V)
+get nodes in a given area: O(V) -- or better quadtree
+get all nodes of a player: O(V)
+get all players in an area (by nodes): see above
+get bubbles on a given edge: get specific edge O(1) + get bubbles on edge O(bubbles)
+
+bubble update loop: O(B)
+1. check for on-edge collisions
+	is there an opposing edge? O(1)
+	is there a bubble on that edge? O(1)
+	what will this bubble's new position be?
+	for each bubble
+		what will their new position be?
+		did this delta t overlap the original delta t?
+			kill both
+2. check for node collisions (kill bubble, either add or subtract from node)
+3. move bubbles
+	use the values computed from step 1 above, now that colliding bubbles have been removed
+4. spawn new bubbles? (when?)
+
+1000 players
+1000 players * 100 nodes each
+1000 players * 100 nodes each * 3 edges per node
+1000 players * 100 nodes each * 3 edges per node * 5 bubbles per edge
+1000 * 100 * 3 * 5 = 1.5M
+O(1.5M^2) bubble update
+
+how many 'live' bubbles (on edges) does a player have?
+nodes.map(node=>node.edges).map(edge=>edge.bubbles).length (or something like that, maybe with a mapreduce instead)
+
+algorithmic complexity ✓
+object pooling ✓
+delta compression ✓
+ease-of-use ✓
+
+main algorith challenges to define:
+- server side bubble update loop
+	- collision detection
+	- how node radius effects node-bubble collision
+- client side bubble update loop (with collision detection)
+
+
+optimizations to postpone:
+- delta compression
+- spatial data structures
+- cacheing/memoization
+
+5/4: more specific planning for abstract-owtd
+
+bubble update loop: O(B)
+1. pre-move, and on-edge collision checking
+	calculate and cache this bubbles future position
+	is there an opposing edge? O(1)
+		is there a bubble on that edge? O(1)
+			for each bubble
+				calculate and cache this bubbles future position
+				did this delta overlap the original delta?
+					kill both
+2. check for node collisions (kill bubble, either add or subtract from node)
+3. move bubbles
+	use the values computed from step 1 above, now that colliding bubbles have been removed
+4. spawn new bubbles? (when?)
+	move to outside of spawning node radius
+	check for collision on spawn?
+
+client side bubble render:
+- get delta time since last real update
+- interpolate bubble position
+- check collisions of all kinds
+
+collisions always happen between furthest nodes on opposing edges
+
+enforce a grid by:
+all edge distances are in increments according to the move speed of bubbles
+- if a bubble moves 10px/sec, edges are always divisible by 10
+- radii increase/decrease in increments of 10 only
+
+ALL collisions now only happen exactly during game loop ticks...woah sick
+just interpolate the position and you're good to go
+wait no
+
+given bubble radius r
+every tick, bubble move by r
+every 4 ticks (or more, must be even), bubbles spawn
+4 ticks per second
+bubble move speed = 4r/sec
+
+
+edge length always clamped to multiple of 2R (!!)
+radius always increase by 2R
+
+networking strategy:
+server updates
+- send only dynamic fields (and all dynamic fields)
+- send only nodes within viewport
+- at certain zoom levels, stop showing bubbles (?)
+- merge incoming gamestate
+client updates
+- all client changes create intermediate EVENTS which are processed at the beginning of the game update loop
+- just serialize and send those to a server instance
+
+optimizations like object pooling, delta compression, renderer clipping, etc postponed until deemed actually necessary
+
+classes w/ constructors vs dumb duck-typed objects?
+
+smart object pooling, where the actual bubble object is transferred to a holding pool inside nodes??
+-and the pool size is clamped to the out-degree of the node
+-wait until you actually see the GC graph looking like the rocky mountains before you implement this, its cool tho
+-probably shouldnt be a problem on client side, since they will only render their local area
+-if server memory performance becomes a problem implement this dope-ass smart object pooling
+-that idea sounds cute but are you sure traditional object pooling isn't 100% better in every way? probably...
+	-only advantage is not having to re-assign object fields every time... what is the savings here? minimal?
+-maybe do both?
+
+2hr planning
+
+how to generate nodes...all distances must be multiple of some r
+task: generate a set of points where all points are a whole number distance from their neighbors (any other points within set radius)
+
+5/7/18
+30min procgen
