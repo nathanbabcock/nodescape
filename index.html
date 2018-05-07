@@ -9,7 +9,15 @@
     <script src="game.js"></script>
     <script>
         let game = new Game();
-        game.procgen();
+
+        let src = new Node(5, 5, true);
+        src.id = game.nodes.length;
+        game.nodes.push(src);
+        
+        let dest = new Node(5, 9, false);
+        dest.id = game.nodes.length;
+        game.nodes.push(dest);
+        
         game.printmap();
     </script>
     <!-- <script src="main.js"></script> -->

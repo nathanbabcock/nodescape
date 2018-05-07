@@ -160,3 +160,4 @@ task: generate a set of points where all points are a whole number distance from
 
 5/7/18
 2hr procgen
+1hr game logic

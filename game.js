@@ -1,6 +1,6 @@
 const config = {
-    width: 100,
-    height: 100,
+    width: 10,
+    height: 10,
     max_edge: 10,
     min_edge: 2,
     source_freq: 0.1,
@@ -8,7 +8,7 @@ const config = {
     node_base_radius: 0.5,
     bubble_radius: 1
 };
-config.bubble_move_speed = 4 * bubble_radius;
+config.bubble_move_speed = 4 * config.bubble_radius;
 
 class Node {
     constructor(x, y, isSource = false){
@@ -60,6 +60,7 @@ class Game {
                 color: "red"
             }
         };
+        this.spawn_cooldown = 0;
     }
 
     procgen(){
@@ -87,18 +88,23 @@ class Game {
     }
 
     update(){
-        this.nodes.forEach(updateNode);
+        this.nodes.forEach(this.updateNode, this);
+
+        // Spawn cooldown
+        this.spawn_cooldown--;
+        if(this.spawn_cooldown < 0) this.spawn_cooldown = this.config.spawn_cooldown;
     }
 
     updateNode(node){
-        node.edges.forEach(updateEdge);
+        node.edges.forEach(this.updateEdge, this);
 
-        if(node.isSource){
-            if(node.spawn_cooldown <= 0){
-                node.edges.forEach(edge => edge.bubbles.push(new Bubble(owner, node.radius)));
-                node.spawn_cooldown = config.spawn_cooldown;
-            }
-            node.spawn_cooldown--;
+        if(this.spawn_cooldown <= 0){
+            node.edges.forEach(edge => {
+                if(node.isSource || node.bubbles > 0){
+                    edge.bubbles.push(new Bubble(node.owner, node.radius));
+                    console.log("Bubble spawned");
+                }
+            });
         }
     }
 
@@ -136,10 +142,6 @@ class Game {
                 }
             }
         });
-    }
-
-    updateBubble(bubble){
-        bubble.pos += this.config.bubble_radius;
     }
 
     getOpposingEdge(edge){
