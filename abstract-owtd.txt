@@ -159,4 +159,4 @@ how to generate nodes...all distances must be multiple of some r
 task: generate a set of points where all points are a whole number distance from their neighbors (any other points within set radius)
 
 5/7/18
-30min procgen
+2hr procgen
