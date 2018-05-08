@@ -67,43 +67,56 @@ class Render {
         this.viewport.addChild(this.edge_layer = new PIXI.Container());
         this.viewport.addChild(this.bubble_layer = new PIXI.Container());
         this.viewport.addChild(this.node_layer = new PIXI.Container());
+
+        // Render Loop
+        // TODO clean this up
+        this.app.ticker.add(() => {
+            this.game.nodes.forEach(node => {
+                this.drawNode(node);
+                node.edges.forEach(edge => {
+                    this.drawEdge(edge);
+                    edge.bubbles.forEach(bubble => this.drawBubble(bubble, edge));
+                })
+            });
+            this.app.renderer.render(this.app.stage);
+        });
     }
 
     // Nodes
     createNodeGraphics(node){
         let gfx = new PIXI.Graphics();
         gfx.interactive = true;
-        gfx.hitArea = new PIXI.Circle(base.x * renderConfig.grid_size, base.y * renderConfig.grid_size, renderConfig.base_radius);
+        gfx.hitArea = new PIXI.Circle(node.x, node.y, node.radius);
         gfx.on('click', () => console.log("Clicked node ", node));
-        node_layer.addChild(gfx);
+        this.node_layer.addChild(gfx);
         return gfx;
     }
 
     drawNode(node){
-        if(!node.graphics) node.graphics = createNodeGraphics(node);
+        if(!node.graphics) node.graphics = this.createNodeGraphics(node);
         let gfx = node.graphics;
         gfx.clear();
-        gfx.beginFill(getnodeColor(node));
-        gfx.drawCircle(node.x * renderConfig.grid_size, node.y * renderConfig.grid_size, renderConfig.node_radius);
+        gfx.beginFill(this.game.players[node.owner]);
+        gfx.drawCircle(node.x, node.y, node.radius);
         gfx.endFill();
     }
 
     // Edges
     createEdgeGraphics(edge){
         let gfx = new PIXI.Graphics();
-        edge_layer.addChild(gfx);
+        this.edge_layer.addChild(gfx);
         return gfx;
     }
     
     drawEdge(edge){
-        if(!edge.graphics) edge.graphics = createEdgeGraphics(edge);
+        if(!edge.graphics) edge.graphics = this.createEdgeGraphics(edge);
         let gfx = edge.graphics,
             from = this.game.nodes[edge.from],
             to = this.game.nodes[edge.to];
         gfx.clear();
         gfx.lineStyle(2, (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101);
-        gfx.moveTo(from.x * renderConfig.grid_size, from.y * renderConfig.grid_size);
-        gfx.lineTo(to.x * renderConfig.grid_size, to.y * renderConfig.grid_size);
+        gfx.moveTo(from.x, from.y);
+        gfx.lineTo(to.x, to.y);
     }
 
     // Bubbles
@@ -112,7 +125,7 @@ class Render {
         gfx.interactive = true;
         gfx.hitArea = new PIXI.Circle(); // need params?
         gfx.on('click', () => console.log("Clicked bubble ", bubble));
-        bubble_layer.addChild(gfx);
+        this.bubble_layer.addChild(gfx);
         return gfx;
     }
 
@@ -128,10 +141,10 @@ class Render {
         if(bubble.dead) return;
 
         // Spawn graphics for the first time
-        if(!bubble.graphics) bubble.graphics = createBubbleGraphics(bubble);
+        if(!bubble.graphics) bubble.graphics = this.createBubbleGraphics(bubble);
 
         // Interpolate movement between grid squares
-        let delta_time = Date.now() - map.last_update,
+        let delta_time = Date.now() - this.game.last_update,
              tick_ratio = delta_time / this.game.config.tick_rate,
              interp_pos = bubble.pos + tick_ratio * this.game.config.bubble_radius;
 
@@ -143,16 +156,16 @@ class Render {
             delta_x = to.x - from.x,
             delta_y = to.y - from.y,
             x = edge.from.x + delta_x * pos_ratio,
-            y = edge.from.y + delta_y * pos-ratio,
+            y = edge.from.y + delta_y * pos_ratio,
             gfx = bubble.graphics,
-            radius = renderConfig.bubble_radius;
+            radius = this.game.config.bubble_radius;
         
         // Draw
         gfx.hitArea.x = x;
         gfx.hitArea.y = y; 
         gfx.hitArea.radius = radius; // TODO one line with destructuring?
         gfx.clear();
-        gfx.beginFill(map.players[bubble.owner].color);
+        gfx.beginFill(this.game.players[bubble.owner].color);
         gfx.drawCircle(x, y, radius);
         gfx.endFill();
     }
