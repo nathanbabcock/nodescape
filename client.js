@@ -14,7 +14,11 @@ class Client {
         let ws = this.ws = new WebSocket(url);
         ws.onopen = () => {
             console.log("Succesfully connected to websocket server")
-            ws.send(this.username);
+            ws.send(this.serialize({
+                msgtype: "playerconnect",
+                username: this.username,
+                color:0x01F45D,
+            }));
         }
         ws.onmessage = this.handleServerMessage;
     }
@@ -24,6 +28,17 @@ class Client {
         console.log(msg);
         _.merge(game, msg);
         //deepExtend(game, msg);
+    }
+
+    deserialize(data){
+        // TODO: msgpack
+        // TODO: move this to a common Network class
+        return JSON.parse(data);
+    }
+
+    serialize(data){
+        // TODO: msgpack
+        return JSON.stringify(data);
     }
 }
 

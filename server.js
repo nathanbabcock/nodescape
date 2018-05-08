@@ -64,17 +64,47 @@ class Server{
 
     sendFullGamestate(ws){
         console.log("Sending full gamestate...");
-        ws.send(JSON.stringify(this.game));
+        ws.send(this.serialize(this.game));
     }
 
     sendLightGamestate(ws){
         console.log("Sending light gamestate...");
         console.error("Not yet implemented");
-        //ws.send(JSON.stringify(game));
+        // ws.send(this.serialize(this.game));
     }
 
     handleClientMsg(data, ws){
-        console.log("Received ", data);
+        //console.log("Received", data);
+        let msg = this.deserialize(data);
+        console.log(msg);
+
+        let handlers = {};
+
+        handlers.playerconnect = msg => {
+            this.game.players[msg.username] = { color: msg.color };
+            ws.username = msg.username;
+        };
+
+        handlers.colorchange = msg => this.game.players[ws.username].color = msg.color;
+
+        handlers.addedge = msg => this.game.addEdge(ws.username, msg.from, msg.to);
+        handlers.removeedge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);
+
+        if(handlers[msg.msgtype] == undefined){
+            console.error(`Unrecognized client msgtype ${msg.msgtype}`);
+            return;
+        }
+        handlers[msg.msgtype](msg);
+    }
+
+    deserialize(data){
+        // TODO: msgpack
+        return JSON.parse(data);
+    }
+
+    serialize(data){
+        // TODO: msgpack
+        return JSON.stringify(data);
     }
 }
 

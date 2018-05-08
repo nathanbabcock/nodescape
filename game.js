@@ -50,10 +50,10 @@ class Game {
         this.config = config;
         this.players = {
             "server": {
-                color: "black"
+                color: 0x707070
             },
             "excalo": {
-                color: "red"
+                color: 0x4286f4
             }
         };
         this.spawn_cooldown = 0;
@@ -166,6 +166,33 @@ class Game {
             output += "\n";
         }
         console.log(output);
+    }
+
+    createEdge(player, fromId, toId){
+        let from = this.nodes[fromId],
+            to = this.nodes[toId];
+        if(from.owner !== player){
+            console.error(`Possible hack attempt identified: user ${player} trying to build an edge on someone else's node`);
+            return false;
+        }
+        if(this.distance(from, to) > this.config.max_edge){
+            console.error(`Possible hack attempt: user ${player} trying to build an edge to a node that is too far away`);
+            return false;
+        }
+        from.edges.push(new Edge(fromId, toId));
+        return true;
+    }
+
+    removeEdge(player, fromId, toId){
+        let from = this.nodes[fromId],
+            to = this.nodes[toId];
+        if(from.owner !== player){
+            console.error(`Possible hack attempt identified: user ${player} trying to remove an edge on someone else's node`);
+            return false;
+        }
+        let index = from.edges.findIndex(edge => edge.from === fromId && edge.to === toId);
+        from.edges.splice(index, 1);
+        return true;
     }
 
     // Client commands
