@@ -164,10 +164,8 @@ task: generate a set of points where all points are a whole number distance from
 
 5/8
 TODO
-- some basic testing
-- node capture
-- client command: build edge
-- client command: delete edge
+X some basic testing
+/ node capture
 - graphics: render nodes, edges, bubbles
 - ui: stats panel?
 - util: cycle through all players' bases?
@@ -178,3 +176,8 @@ TODO
 - network: receive client updates
 - network: client receive server updates
 - network: client send updates
+- client command: build edge
+- client command: delete edge
+- client command: connect
+
+1hr testing, bugfix, minor game logic feature

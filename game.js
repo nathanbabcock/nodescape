@@ -47,7 +47,8 @@ class Bubble {
 }
 
 class Game {
-    constructor(){
+    constructor(isServer=false){
+        this.isServer = isServer;
         this.nodes = [];
         this.config = config;
         this.players = {
@@ -162,5 +163,22 @@ class Game {
             output += "\n";
         }
         console.log(output);
+    }
+
+    // Client commands
+    clientCreateEdge(fromNode, toNode){
+        return {
+            "CLIENT_COMMAND": "CREATE_EDGE",
+            "from": fromNode,
+            "to": toNode
+        }
+    }
+
+    clientDeleteEdge(fromNode, toNode){
+        return {
+            "CLIENT_COMMAND": "DELETE_EDGE",
+            "from": fromNode,
+            "to": toNode
+        }
     }
 }
