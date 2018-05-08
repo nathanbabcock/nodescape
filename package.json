@@ -9,7 +9,8 @@
   "dependencies": {
     "chance": "1.0.16",
     "pixi.js": "4.7.3",
-    "pixi-viewport": "1.5.0"
+    "pixi-viewport": "1.5.0",
+    "ws": "5.1.1"
   },
   "author": "",
   "license": "ISC"

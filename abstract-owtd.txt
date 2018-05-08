@@ -166,7 +166,7 @@ task: generate a set of points where all points are a whole number distance from
 TODO
 X some basic testing
 / node capture
-- graphics: render nodes, edges, bubbles
+X graphics: render nodes, edges, bubbles
 - ui: stats panel?
 - util: cycle through all players' bases?
 - grow bases radius with bubblessss
@@ -179,5 +179,7 @@ X some basic testing
 - client command: build edge
 - client command: delete edge
 - client command: connect
+- UI challenges with creating and deleting nodes.
 
-1hr testing, bugfix, minor game logic feature
+45min testing, bugfix, minor game logic feature
+45min graphics (untested)

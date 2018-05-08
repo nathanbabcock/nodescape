@@ -185,3 +185,11 @@ class Game {
         }
     }
 }
+
+// Node
+if(typeof module !== "undefined")
+    module.exports = {Game, Node, Edge, Bubble};
+
+// Browser
+if (typeof window === "object")
+    window.Game = Game;
