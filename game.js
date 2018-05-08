@@ -17,8 +17,6 @@ class Node {
         this.x = x;
         this.y = y;
         this.isSource = isSource;
-        if(this.isSource)
-            this.spawn_cooldown = 0;
 
         // dynamic
         this.bubbles = 0;
@@ -88,11 +86,11 @@ class Game {
     }
 
     update(){
+        this.spawn_cooldown--;
+
         this.nodes.forEach(this.updateNode, this);
 
-        // Spawn cooldown
-        this.spawn_cooldown--;
-        if(this.spawn_cooldown < 0) this.spawn_cooldown = this.config.spawn_cooldown;
+        if(this.spawn_cooldown <= 0) this.spawn_cooldown = this.config.spawn_cooldown;
     }
 
     updateNode(node){
@@ -103,6 +101,7 @@ class Game {
                 if(node.isSource || node.bubbles > 0){
                     edge.bubbles.push(new Bubble(node.owner, node.radius));
                     console.log("Bubble spawned");
+                    if(!node.isSource) node.bubbles--;
                 }
             });
         }
@@ -147,7 +146,7 @@ class Game {
     getOpposingEdge(edge){
         let node = this.nodes[edge.to];
         if(node == undefined) return null;
-        return node.edges.find(otherEdge => otherEdge.to = edge.from);
+        return node.edges.find(otherEdge => otherEdge.to === edge.from);
     }
 
     printmap(){

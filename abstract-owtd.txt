@@ -161,3 +161,20 @@ task: generate a set of points where all points are a whole number distance from
 5/7/18
 2hr procgen
 1hr game logic
+
+5/8
+TODO
+- some basic testing
+- node capture
+- client command: build edge
+- client command: delete edge
+- graphics: render nodes, edges, bubbles
+- ui: stats panel?
+- util: cycle through all players' bases?
+- grow bases radius with bubblessss
+	- tweak procgen
+- network: send updates to clients
+- network: handle new player connect
+- network: receive client updates
+- network: client receive server updates
+- network: client send updates
