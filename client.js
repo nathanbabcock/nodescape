@@ -22,6 +22,8 @@ class Client {
     handleServerMessage(event){
         let msg = JSON.parse(event.data);
         console.log(msg);
+        _.merge(game, msg);
+        //deepExtend(game, msg);
     }
 }
 

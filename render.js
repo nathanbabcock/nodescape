@@ -151,7 +151,7 @@ class Render {
         // Now convert distance on the node to (x, y)
         let from = this.game.nodes[edge.from],
             to = this.game.nodes[edge.to],
-            edge_length = from.distance(to),
+            edge_length = this.game.distance(from, to),
             pos_ratio = interp_pos / edge_length,
             delta_x = to.x - from.x,
             delta_y = to.y - from.y,

@@ -25,10 +25,6 @@ class Node {
         this.owner = "server";
         this.edges = [];
     }
-
-    distance(other){
-        return Math.hypot(other.x - this.x, other.y - this.y);
-    }
 }
 
 class Edge {
@@ -64,13 +60,17 @@ class Game {
         this.last_update = Date.now();
     }
 
+    distance(a, b){
+        return Math.hypot(b.x - a.x, b.y - a.y);
+    }
+
     procgen(){
         let added = 0,
         failStreak = 0;
         outer: while(failStreak < 100){
             let newNode = new Node(chance.integer({ min: 0, max: this.config.width}), chance.integer({min: 0, max: this.config.height}));
             for(var i = 0; i < this.nodes.length; i++){
-                let dist = newNode.distance(this.nodes[i]);
+                let dist = this.distance(newNode, this.nodes[i]);
                 if(dist > this.config.max_edge) continue;
                 
                 if(dist % 1 > 0 || dist < this.config.min_edge){
@@ -115,7 +115,7 @@ class Game {
         let opposingEdge = this.getOpposingEdge(edge),
             toNode = this.nodes[edge.to],
             fromNode = this.nodes[edge.from],
-            edgeLength = fromNode.distance(toNode) - toNode.radius;
+            edgeLength = this.distance(fromNode, toNode) - toNode.radius;
 
         edge.bubbles.forEach(bubble => {
             if(bubble.dead) return;

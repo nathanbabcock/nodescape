@@ -7,9 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "browserify": "^16.2.0",
     "chance": "1.0.16",
-    "pixi.js": "4.7.3",
     "pixi-viewport": "1.5.0",
+    "pixi.js": "4.7.3",
     "ws": "5.1.1"
   },
   "author": "",
