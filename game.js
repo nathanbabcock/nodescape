@@ -6,7 +6,8 @@ const config = {
     source_freq: 0.1,
     spawn_cooldown: 4,
     node_base_radius: 0.5,
-    bubble_radius: 1
+    bubble_radius: 1,
+    tick_rate: 250,
 };
 config.bubble_move_speed = 4 * config.bubble_radius;
 
@@ -60,6 +61,7 @@ class Game {
             }
         };
         this.spawn_cooldown = 0;
+        this.last_update = Date.now();
     }
 
     procgen(){
@@ -92,6 +94,7 @@ class Game {
         this.nodes.forEach(this.updateNode, this);
 
         if(this.spawn_cooldown <= 0) this.spawn_cooldown = this.config.spawn_cooldown;
+        this.last_update = Date.now();
     }
 
     updateNode(node){
