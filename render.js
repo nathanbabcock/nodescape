@@ -15,7 +15,7 @@ class Render {
     setGame(game){
         if(this.gameloop) clearInterval(this.gameloop);
         this.game = game;
-        this.gameloop = setInterval(this.game.update.bind(this.game), this.game.config.tick_rate);
+        //this.gameloop = setInterval(this.game.update.bind(this.game), this.game.config.tick_rate);
         return game;
     }
 

@@ -172,15 +172,15 @@ X graphics: render nodes, edges, bubbles
 - grow bases radius with bubblessss
 	- tweak procgen
 X network: send updates to clients
-- network: handle new player connect
-- network: receive client updates
+X network: handle new player connect
+X network: receive client updates
 X network: client receive server updates
 - network: client send updates
-- client command: build edge
-- client command: delete edge
-- client command: connect
+X client command: build edge
+X client command: delete edge
+X client command: connect
 - UI challenges with creating and deleting nodes.
 
-45min testing, bugfix, minor game logic feature
-45min graphics (untested)
+0.75hr testing, bugfix, minor game logic feature
+0.75hr graphics (untested)
 2hr network base server and client
