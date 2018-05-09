@@ -184,3 +184,22 @@ X client command: connect
 0.75hr testing, bugfix, minor game logic feature
 0.75hr graphics (untested)
 2hr network base server and client
+
+5/9
+
+TODO
+- Graphics: Test all rendering
+- Graphics: Node capacity render
+- Graphics: Color scheme
+- UI: Create edge
+- UI: Delete edge (????)
+- UI: Node selected state (show radius, possible connections, owner name)
+- UI: Color picker/name selector
+- Game logic: Node radius growth
+- Persistent login/database/auth
+- Network optimization + testing
+- Tutorial mode
+- Hosting, site, deployment
+- Automated backups, logging
+
+2hrs brainstorming future ideas, because I didn't do any work at home
