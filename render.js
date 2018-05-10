@@ -197,10 +197,19 @@ class Render {
         if(this.game.distance({x: mouse.x / renderConfig.scale, y: mouse.y / renderConfig.scale}, this.dragFrom) > this.game.config.max_edge)
             color = 0xFF0000;
 
+        // Snap to eligible nodes
+        let x = mouse.x,
+            y = mouse.y;
+        if(this.dragTo && !this.dragFrom.edges.find(a => a.to === this.dragTo.id) && color !== 0xFF0000){
+            x = this.dragTo.x * renderConfig.scale;
+            y = this.dragTo.y * renderConfig.scale;
+            color = (this.dragFrom.owner === this.dragTo.owner) ? this.game.players[this.dragFrom.owner].color : 0x010101;
+        }
+
         gfx.clear();
         gfx.lineStyle(2, color);
         gfx.moveTo(this.dragFrom.x * renderConfig.scale, this.dragFrom.y * renderConfig.scale);
-        gfx.lineTo(mouse.x, mouse.y);
+        gfx.lineTo(x, y);
     }
 
     // Draw
