@@ -1,7 +1,7 @@
 const config = {
     width: 100,
     height: 100,
-    max_edge: 10,
+    max_edge: 20,
     min_edge: 2,
     source_freq: 0.1,
     spawn_cooldown: 4,

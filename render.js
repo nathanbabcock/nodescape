@@ -192,8 +192,13 @@ class Render {
             return;
         }
         let mouse = this.app.renderer.plugins.interaction.mouse.getLocalPosition(render.viewport);
+
+        let color = 0x010101;
+        if(this.game.distance({x: mouse.x / renderConfig.scale, y: mouse.y / renderConfig.scale}, this.dragFrom) > this.game.config.max_edge)
+            color = 0xFF0000;
+
         gfx.clear();
-        gfx.lineStyle(2, 0x010101);
+        gfx.lineStyle(2, color);
         gfx.moveTo(this.dragFrom.x * renderConfig.scale, this.dragFrom.y * renderConfig.scale);
         gfx.lineTo(mouse.x, mouse.y);
     }
@@ -221,6 +226,13 @@ class Render {
 
     stopDrag(){
         console.log("Stop edge drag");
+
+        if(this.dragFrom !== null && this.dragTo !== null){
+            if(!this.dragFrom.edges.find(a => a.to === this.dragTo.id)){
+                this.dragFrom.edges.push(new Edge(this.dragFrom.id, this.dragTo.id));
+            }
+        }
+
         this.viewport.pause = false;
         this.dragFrom = null;
         this.dragTo = null;
