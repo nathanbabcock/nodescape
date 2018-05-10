@@ -198,6 +198,10 @@ class Game {
         return true;
     }
 
+    getNeighbors(node, radius=this.config.max_edge){
+        return this.nodes.filter(other => this.distance(node, other) <= radius && node !== other);
+    }
+
     // Client commands
     clientCreateEdge(fromNode, toNode){
         return {

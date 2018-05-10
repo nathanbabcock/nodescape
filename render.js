@@ -10,6 +10,8 @@ class Render {
         this.dragFrom = null;
         this.dragTo = null;
         this.dragGfx = null;
+        this.selectedNode = null;
+        this.selectedNodeGfx = null;
         this.player = "excalo";
         this.initPixi();
         // initGame();
@@ -85,8 +87,8 @@ class Render {
         gfx.on('mousedown', () => this.startDrag(node));
         gfx.on('mouseup', this.stopDrag.bind(this));
         gfx.on('mouseupoutside', this.stopDrag.bind(this));
-        gfx.on('mouseover', () => this.dragTo = node===this.dragFrom ? null : node);
-        gfx.on('mouseout', () => this.dragTo = null);
+        gfx.on('mouseover', () => { this.dragTo = node===this.dragFrom ? null : node; this.selectedNode = node; });
+        gfx.on('mouseout', () => { this.dragTo = null; this.selectedNode = null; });
         this.node_layer.addChild(gfx);
         return gfx;
     }
@@ -271,6 +273,28 @@ class Render {
         // gfx.lineTo(x, y);
     }
 
+    //
+    createSelectedNodeGraphics(node){
+        let gfx = new PIXI.Graphics();
+        this.edge_layer.addChild(gfx);
+        return gfx;
+    }
+
+    drawSelectedNode(){
+        if(!this.selectedNodeGfx) this.selectedNodeGfx = this.createSelectedNodeGraphics();
+        let gfx = this.selectedNodeGfx;
+        gfx.clear();
+        if(this.dragFrom) return;
+        if(!this.selectedNode) return;
+        this.game.getNeighbors(this.selectedNode).forEach(node => {
+            if(this.selectedNode.edges.find(edge => edge.to === node.id)) return; // Edge already exists!
+            if(node.edges.find(edge => edge.to === this.selectedNode.id)) return; // Edge already exists!
+            gfx.lineStyle(1, 0xd6d6d6);
+            gfx.moveTo(this.selectedNode.x * renderConfig.scale, this.selectedNode.y * renderConfig.scale);
+            gfx.lineTo(node.x * renderConfig.scale, node.y * renderConfig.scale);
+        });
+    }
+
     // Draw
     draw(){
         this.game.nodes.forEach(node => {
@@ -281,6 +305,7 @@ class Render {
             })
         });
         this.drawDrag();
+        this.drawSelectedNode();
 
         this.app.renderer.render(this.app.stage);
     }

@@ -232,7 +232,7 @@ X remove edge (drag)
 	X state where drag is initiated from an arrowhead
 		X mousedown (edge starts following mouse, stop drawing old edge)
 		X mouseup (remove old edge, maybe create new one)
-- tweak drag edge preview
+X tweak drag edge preview
 - convert edge creation and deletion to server-friendly commands
 ...
 - color scheme
@@ -242,3 +242,12 @@ X remove edge (drag)
 
 0.5hr implement edge drag to remove arrow
 0.5hr improve edge drag preview
+
+1
+10
+100
+1000
+10000
+100000
+1000000
+10000000
