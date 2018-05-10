@@ -216,3 +216,8 @@ Graphics TODO:
 - node radius growth
 
 5/10
+
+0.5hr easy edge drag fixes
+1hr implement arrow drawing algorithm from scratch
+
+pause and think

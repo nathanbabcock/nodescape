@@ -67,9 +67,10 @@ class Render {
         this.app.stage.addChild(this.viewport);
 
         // Graphics layers
-        this.viewport.addChild(this.edge_layer = new PIXI.Container());
+        
         this.viewport.addChild(this.bubble_layer = new PIXI.Container());
         this.viewport.addChild(this.node_layer = new PIXI.Container());
+        this.viewport.addChild(this.edge_layer = new PIXI.Container());
 
         // Render Loop
         // TODO clean this up
@@ -127,9 +128,32 @@ class Render {
             from = this.game.nodes[edge.from],
             to = this.game.nodes[edge.to];
         gfx.clear();
-        gfx.lineStyle(2, (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101);
+        this.drawArrow(gfx, from, to, (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101);
+        // gfx.clear();
+        // gfx.lineStyle(2, (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101);
+        // gfx.moveTo(from.x * renderConfig.scale, from.y * renderConfig.scale);
+        // gfx.lineTo(to.x * renderConfig.scale, to.y * renderConfig.scale);
+    }
+
+    drawArrow(gfx, from, to, color){
+        gfx.lineStyle(2, color);
         gfx.moveTo(from.x * renderConfig.scale, from.y * renderConfig.scale);
         gfx.lineTo(to.x * renderConfig.scale, to.y * renderConfig.scale);
+
+        let fromx = from.x * renderConfig.scale,
+            fromy = from.y * renderConfig.scale,
+            tox = to.x * renderConfig.scale,
+            toy = to.y * renderConfig.scale;
+        var headlen = 10;   // length of head in pixels
+        var angle = Math.atan2(toy-fromy,tox-fromx);
+        gfx.moveTo(fromx, fromy);
+        gfx.lineTo(tox, toy);
+        gfx.beginFill(color);
+        gfx.moveTo(tox, toy);
+        gfx.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
+        gfx.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));
+        gfx.lineTo(tox,toy);
+        gfx.endFill();
     }
 
     // Bubbles
