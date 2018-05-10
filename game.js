@@ -1,12 +1,12 @@
 const config = {
-    width: 10,
-    height: 10,
+    width: 100,
+    height: 100,
     max_edge: 10,
     min_edge: 2,
     source_freq: 0.1,
     spawn_cooldown: 4,
-    node_base_radius: 0.5,
-    bubble_radius: 1,
+    node_base_radius: 1,
+    bubble_radius: 0.5,
     tick_rate: 250,
 };
 config.bubble_move_speed = 4 * config.bubble_radius;
@@ -128,7 +128,10 @@ class Game {
                 console.log("Bubble hit node");
                 if(bubble.owner === toNode.owner)
                     toNode.bubbles++;
-                else
+                else if(toNode.bubbles <= 0){
+                    toNode.owner = bubble.owner;
+                    toNode.bubbles++;
+                } else
                     toNode.bubbles--;
                 bubble.dead = true;
             }

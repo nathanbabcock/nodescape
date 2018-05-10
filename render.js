@@ -1,7 +1,6 @@
 // Render Config
 const renderConfig = {
-    grid_size: 25,
-    bubble_radius: 10,
+    scale:25
 };
 
 class Render {
@@ -49,7 +48,7 @@ class Render {
         });
         window.addEventListener('resize', () => this.app.renderer.resize(window.innerWidth - 25, window.innerHeight - 25));
         document.body.appendChild(this.app.view);
-        this.app.view.style.opacity = 0;
+        // this.app.view.style.opacity = 0;
 
         // Viewport
         this.viewport = new Viewport({
@@ -86,7 +85,7 @@ class Render {
     createNodeGraphics(node){
         let gfx = new PIXI.Graphics();
         gfx.interactive = true;
-        gfx.hitArea = new PIXI.Circle(node.x, node.y, node.radius);
+        gfx.hitArea = new PIXI.Circle(node.x * renderConfig.scale, node.y * renderConfig.scale, node.radius * renderConfig.scale);
         gfx.on('click', () => console.log("Clicked node ", node));
         this.node_layer.addChild(gfx);
         return gfx;
@@ -97,7 +96,7 @@ class Render {
         let gfx = node.graphics;
         gfx.clear();
         gfx.beginFill(this.game.players[node.owner]);
-        gfx.drawCircle(node.x, node.y, node.radius);
+        gfx.drawCircle(node.x * renderConfig.scale, node.y * renderConfig.scale, node.radius * renderConfig.scale);
         gfx.endFill();
     }
 
@@ -115,8 +114,8 @@ class Render {
             to = this.game.nodes[edge.to];
         gfx.clear();
         gfx.lineStyle(2, (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101);
-        gfx.moveTo(from.x, from.y);
-        gfx.lineTo(to.x, to.y);
+        gfx.moveTo(from.x * renderConfig.scale, from.y * renderConfig.scale);
+        gfx.lineTo(to.x * renderConfig.scale, to.y * renderConfig.scale);
     }
 
     // Bubbles
@@ -155,18 +154,18 @@ class Render {
             pos_ratio = interp_pos / edge_length,
             delta_x = to.x - from.x,
             delta_y = to.y - from.y,
-            x = edge.from.x + delta_x * pos_ratio,
-            y = edge.from.y + delta_y * pos_ratio,
+            x = from.x + delta_x * pos_ratio,
+            y = from.y + delta_y * pos_ratio,
             gfx = bubble.graphics,
             radius = this.game.config.bubble_radius;
         
         // Draw
-        gfx.hitArea.x = x;
-        gfx.hitArea.y = y; 
-        gfx.hitArea.radius = radius; // TODO one line with destructuring?
+        gfx.hitArea.x = x * renderConfig.scale;
+        gfx.hitArea.y = y * renderConfig.scale; 
+        gfx.hitArea.radius = radius * renderConfig.scale; // TODO one line with destructuring?
         gfx.clear();
         gfx.beginFill(this.game.players[bubble.owner].color);
-        gfx.drawCircle(x, y, radius);
+        gfx.drawCircle(x * renderConfig.scale, y * renderConfig.scale, radius * renderConfig.scale);
         gfx.endFill();
     }
 
