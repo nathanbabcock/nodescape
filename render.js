@@ -91,13 +91,28 @@ class Render {
         return gfx;
     }
 
+    createNodeText(node){
+        let style = new PIXI.TextStyle({
+            fontFamily: 'Arial',
+            fontSize: renderConfig.scale,
+            fill: '#ffffff'
+        });
+        let txt = new PIXI.Text("-1", style);
+        txt.x = node.x * renderConfig.scale - renderConfig.scale / 2;
+        txt.y = node.y * renderConfig.scale - renderConfig.scale / 2;
+        this.node_layer.addChild(txt);
+        return txt;
+    }
+
     drawNode(node){
         if(!node.graphics) node.graphics = this.createNodeGraphics(node);
+        if(!node.text) node.text = this.createNodeText(node);
         let gfx = node.graphics;
         gfx.clear();
-        gfx.beginFill(this.game.players[node.owner]);
+        gfx.beginFill(this.game.players[node.owner].color);
         gfx.drawCircle(node.x * renderConfig.scale, node.y * renderConfig.scale, node.radius * renderConfig.scale);
         gfx.endFill();
+        node.text.text = node.isSource ? '∞' : node.bubbles;
     }
 
     // Edges
