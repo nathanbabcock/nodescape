@@ -203,3 +203,13 @@ TODO
 - Automated backups, logging
 
 2hrs brainstorming future ideas, because I didn't do any work at home
+
+1.5hr @ home graphics rendering & edge drag
+
+Graphics TODO:
+- create edge
+- delete edge
+- indicate edge direction
+- node text alignment
+- source node highlight
+- node radius growth

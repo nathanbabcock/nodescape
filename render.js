@@ -7,6 +7,9 @@ class Render {
     constructor(){
         this.game = null;
         this.gameloop = null;
+        this.dragFrom = null;
+        this.dragTo = null;
+        this.dragGfx = null;
         this.initPixi();
         // initGame();
     }
@@ -48,6 +51,7 @@ class Render {
         });
         window.addEventListener('resize', () => this.app.renderer.resize(window.innerWidth - 25, window.innerHeight - 25));
         document.body.appendChild(this.app.view);
+        this.app.stage.on("mouseup", this.stopDrag);
         // this.app.view.style.opacity = 0;
 
         // Viewport
@@ -69,16 +73,7 @@ class Render {
 
         // Render Loop
         // TODO clean this up
-        this.app.ticker.add(() => {
-            this.game.nodes.forEach(node => {
-                this.drawNode(node);
-                node.edges.forEach(edge => {
-                    this.drawEdge(edge);
-                    edge.bubbles.forEach(bubble => this.drawBubble(bubble, edge));
-                })
-            });
-            this.app.renderer.render(this.app.stage);
-        });
+        this.app.ticker.add(this.draw.bind(this));
     }
 
     // Nodes
@@ -86,7 +81,11 @@ class Render {
         let gfx = new PIXI.Graphics();
         gfx.interactive = true;
         gfx.hitArea = new PIXI.Circle(node.x * renderConfig.scale, node.y * renderConfig.scale, node.radius * renderConfig.scale);
-        gfx.on('click', () => console.log("Clicked node ", node));
+        gfx.on('mousedown', () => this.startDrag(node));
+        gfx.on('mouseup', this.stopDrag.bind(this));
+        gfx.on('mouseupoutside', this.stopDrag.bind(this));
+        gfx.on('mouseover', () => this.dragTo = node===this.dragFrom ? null : node);
+        gfx.on('mouseout', () => this.dragTo = null);
         this.node_layer.addChild(gfx);
         return gfx;
     }
@@ -182,6 +181,48 @@ class Render {
         gfx.beginFill(this.game.players[bubble.owner].color);
         gfx.drawCircle(x * renderConfig.scale, y * renderConfig.scale, radius * renderConfig.scale);
         gfx.endFill();
+    }
+
+    // Drag
+    drawDrag(){
+        if(this.dragGfx) this.dragGfx = this.createEdgeGraphics();
+        let gfx = this.dragGfx;
+        if(this.dragFrom){
+            gfx.clear();
+            return;
+        }
+        let mouse = this.app.renderer.plugins.interaction.mouse.getLocalPosition(render.viewport);
+        gfx.clear();
+        gfx.lineStyle(2, 0x010101);
+        gfx.moveTo(this.dragFrom.x * renderConfig.scale, this.dragFrom.y * renderConfig.scale);
+        gfx.lineTo(mouse.x, mouse.y);
+    }
+
+    // Draw
+    draw(){
+        this.game.nodes.forEach(node => {
+            this.drawNode(node);
+            node.edges.forEach(edge => {
+                this.drawEdge(edge);
+                edge.bubbles.forEach(bubble => this.drawBubble(bubble, edge));
+            })
+        });
+
+        this.app.renderer.render(this.app.stage);
+    }
+
+    // Edge dragging
+    startDrag(node){
+        console.log("Start edge drag");
+        this.viewport.pause = true;
+        this.dragFrom = node;
+    }
+
+    stopDrag(){
+        console.log("Stop edge drag");
+        this.viewport.pause = false;
+        this.dragFrom = null;
+        this.dragTo = null;
     }
 
 }
