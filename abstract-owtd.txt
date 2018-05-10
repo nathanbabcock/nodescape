@@ -316,3 +316,12 @@ game.on("event", ...)
 
 big problem: edge deletions are just not registered (_.merge doesn't handle anything like this)
 - do i need to write a custom merge thing? are there options I can set on _.merge?
+
+1hr adding client commands -> server
+
+remove edge problem notes:
+-maybe (probably) Render should maintain its own list of sprites
+-will need a Game.on("removeEdge") hook to clean up old ones
+	-That's not enough, because "removeEdge" doesn't get called on a server gamestate merge
+-so instead it needs to check everytime and do some manual garbage collection?
+	-parallel data structure of node->edge->bubble to hold graphics objs
