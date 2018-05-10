@@ -221,3 +221,5 @@ Graphics TODO:
 1hr implement arrow drawing algorithm from scratch
 
 pause and think
+
+0.5hr implement arrow algorithm from stackoverflow

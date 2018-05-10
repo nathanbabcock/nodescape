@@ -136,16 +136,25 @@ class Render {
     }
 
     drawArrow(gfx, from, to, color){
-        gfx.lineStyle(2, color);
-        gfx.moveTo(from.x * renderConfig.scale, from.y * renderConfig.scale);
-        gfx.lineTo(to.x * renderConfig.scale, to.y * renderConfig.scale);
+        // Now stop arrow just before they get to a node
+        let dist = this.game.distance(from, to),
+            delta_x = to.x - from.x,
+            delta_y = to.y - from.y,
+            to_ratio = to.radius / dist,
+            from_ratio = from.radius / dist,
+            fromx = (from.x + delta_x * from_ratio) * renderConfig.scale,
+            fromy = (from.y + delta_y * from_ratio) * renderConfig.scale,
+            tox = (to.x - delta_x * to_ratio) * renderConfig.scale,
+            toy = (to.y - delta_y * to_ratio) * renderConfig.scale,
+            headlen = 10,
+            angle = Math.atan2(toy-fromy,tox-fromx);
 
-        let fromx = from.x * renderConfig.scale,
-            fromy = from.y * renderConfig.scale,
-            tox = to.x * renderConfig.scale,
-            toy = to.y * renderConfig.scale;
-        var headlen = 10;   // length of head in pixels
-        var angle = Math.atan2(toy-fromy,tox-fromx);
+        // Line
+        gfx.lineStyle(2, color);
+        gfx.moveTo(fromx, fromy);
+        gfx.lineTo(tox, toy);
+
+        // Arrowhead
         gfx.moveTo(fromx, fromy);
         gfx.lineTo(tox, toy);
         gfx.beginFill(color);
