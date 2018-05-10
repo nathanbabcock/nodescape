@@ -241,3 +241,4 @@ X remove edge (drag)
 - text render
 
 0.5hr implement edge drag to remove arrow
+0.5hr improve edge drag preview

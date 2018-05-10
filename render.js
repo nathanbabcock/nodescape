@@ -67,11 +67,10 @@ class Render {
             .decelerate();
         this.app.stage.addChild(this.viewport);
 
-        // Graphics layers
-        
-        this.viewport.addChild(this.bubble_layer = new PIXI.Container());
-        this.viewport.addChild(this.node_layer = new PIXI.Container());
+        // Layers
         this.viewport.addChild(this.edge_layer = new PIXI.Container());
+        this.viewport.addChild(this.node_layer = new PIXI.Container());
+        this.viewport.addChild(this.bubble_layer = new PIXI.Container());
 
         // Render Loop
         // TODO clean this up
@@ -223,7 +222,7 @@ class Render {
     }
 
     // Drag
-    drawDrag(){
+    drawDrag(){ // TODO this has some redudancy with drawEdge (ideally we should have a ghots Edge object that gets updated and rendered directly)
         if(!this.dragGfx) this.dragGfx = this.createEdgeGraphics();
         let gfx = this.dragGfx;
         if(!this.dragFrom){
@@ -236,19 +235,40 @@ class Render {
         if(this.game.distance({x: mouse.x / renderConfig.scale, y: mouse.y / renderConfig.scale}, this.dragFrom) > this.game.config.max_edge)
             color = 0xFF0000;
 
+        // Stop arrow just before they get to a node
+        let from = this.dragFrom,
+            to = mouse,
+            dist = this.game.distance(from, to),
+            delta_x = to.x - from.x,
+            delta_y = to.y - from.y,
+            to_ratio = to.radius / dist,
+            from_ratio = from.radius / dist,
+            // fromx = (from.x + delta_x * from_ratio) * renderConfig.scale,
+            // fromy = (from.y + delta_y * from_ratio) * renderConfig.scale,
+            fromx = from.x * renderConfig.scale,
+            fromy = from.y * renderConfig.scale,
+            tox = mouse.x,
+            toy = mouse.y;
+
         // Snap to eligible nodes
-        let x = mouse.x,
-            y = mouse.y;
         if(this.dragTo && !this.dragFrom.edges.find(a => a.to === this.dragTo.id) && color !== 0xFF0000){
-            x = this.dragTo.x * renderConfig.scale;
-            y = this.dragTo.y * renderConfig.scale;
+            // Redo calculations whee
+            to = this.dragTo;
+            dist = this.game.distance(from, to);
+            delta_x = to.x - from.x;
+            delta_y = to.y - from.y;
+            to_ratio = to.radius / dist;
+            tox = (to.x - delta_x * to_ratio) * renderConfig.scale;
+            toy = (to.y - delta_y * to_ratio) * renderConfig.scale;
             color = (this.dragFrom.owner === this.dragTo.owner) ? this.game.players[this.dragFrom.owner].color : 0x010101;
         }
 
         gfx.clear();
-        gfx.lineStyle(2, color);
-        gfx.moveTo(this.dragFrom.x * renderConfig.scale, this.dragFrom.y * renderConfig.scale);
-        gfx.lineTo(x, y);
+        this.drawArrow(gfx, fromx, fromy, tox, toy, color);
+        // gfx.clear();
+        // gfx.lineStyle(2, color);
+        // gfx.moveTo(this.dragFrom.x * renderConfig.scale, this.dragFrom.y * renderConfig.scale);
+        // gfx.lineTo(x, y);
     }
 
     // Draw
