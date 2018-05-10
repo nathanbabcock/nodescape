@@ -10,6 +10,7 @@ class Render {
         this.dragFrom = null;
         this.dragTo = null;
         this.dragGfx = null;
+        this.player = "excalo";
         this.initPixi();
         // initGame();
     }
@@ -118,16 +119,23 @@ class Render {
     // Edges
     createEdgeGraphics(edge){
         let gfx = new PIXI.Graphics();
+        gfx.interactive = gfx.buttonmode = true;
+        gfx.on('mousedown', () => this.startDrag(this.game.nodes[edge.from], this.game.nodes[edge.to]));
+        gfx.on('mouseup', this.stopDrag.bind(this));
+        gfx.on('mouseupoutside', this.stopDrag.bind(this));
+        //gfx.hitArea = arrowhead;
         this.edge_layer.addChild(gfx);
         return gfx;
     }
     
     drawEdge(edge){
         if(!edge.graphics) edge.graphics = this.createEdgeGraphics(edge);
+
         let gfx = edge.graphics,
             from = this.game.nodes[edge.from],
             to = this.game.nodes[edge.to];
         gfx.clear();
+        if(this.dragFrom === from && this.dragToOld === to) return;
         this.drawArrow(gfx, from, to, (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101);
         // gfx.clear();
         // gfx.lineStyle(2, (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101);
@@ -260,14 +268,18 @@ class Render {
     }
 
     // Edge dragging
-    startDrag(node){
+    startDrag(node, dragToOld=null){
         console.log("Start edge drag");
         this.viewport.pause = true;
         this.dragFrom = node;
+        this.dragToOld = dragToOld;
     }
 
     stopDrag(){
         console.log("Stop edge drag");
+
+        if(this.dragToOld)
+            this.game.removeEdge(this.player, this.dragFrom.id, this.dragToOld.id);
 
         if(this.dragFrom !== null && this.dragTo !== null){
             if(!this.dragFrom.edges.find(a => a.to === this.dragTo.id)){
@@ -278,6 +290,7 @@ class Render {
         this.viewport.pause = false;
         this.dragFrom = null;
         this.dragTo = null;
+        this.dragToOld = null;
     }
 
 }
