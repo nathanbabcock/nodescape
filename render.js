@@ -185,9 +185,9 @@ class Render {
 
     // Drag
     drawDrag(){
-        if(this.dragGfx) this.dragGfx = this.createEdgeGraphics();
+        if(!this.dragGfx) this.dragGfx = this.createEdgeGraphics();
         let gfx = this.dragGfx;
-        if(this.dragFrom){
+        if(!this.dragFrom){
             gfx.clear();
             return;
         }
@@ -207,6 +207,7 @@ class Render {
                 edge.bubbles.forEach(bubble => this.drawBubble(bubble, edge));
             })
         });
+        this.drawDrag();
 
         this.app.renderer.render(this.app.stage);
     }

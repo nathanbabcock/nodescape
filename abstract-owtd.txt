@@ -210,6 +210,9 @@ Graphics TODO:
 - create edge
 - delete edge
 - indicate edge direction
+- node select mode
 - node text alignment
 - source node highlight
 - node radius growth
+
+5/10
