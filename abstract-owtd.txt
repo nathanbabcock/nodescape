@@ -300,3 +300,19 @@ Features with potential for expansion:
 	- Global profile with "wins"
 - Show who is logged in
 - mobile version, obviously
+
+game.clientCommands = []
+-vs-
+game.on("deleteEdge", client.sendDeleteEdgeMessage)
+
+game.clientCommands = []
+- renderer places the client command in there (or else game does it itself)
+- client reaches in to grab these and sends them to server
+- works as a message buffer which might be needed anyways?
+
+game.on("event", ...)
+- game.on (array of keys) will be sent from server?
+	- but server will never use game.on...
+
+big problem: edge deletions are just not registered (_.merge doesn't handle anything like this)
+- do i need to write a custom merge thing? are there options I can set on _.merge?

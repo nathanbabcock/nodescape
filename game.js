@@ -1,8 +1,8 @@
 const config = {
     width: 100,
     height: 100,
-    max_edge: 20,
-    min_edge: 2,
+    max_edge: 42,
+    min_edge: 22,
     source_freq: 0.1,
     spawn_cooldown: 4,
     node_base_radius: 1,
@@ -58,12 +58,58 @@ class Game {
         };
         this.spawn_cooldown = 0;
         this.last_update = Date.now();
+        this.callbacks = [];
     }
 
+    // Observability
+    on(event, callback){
+        if(!this.callbacks[event]) this.callbacks[event] = [];
+        this.callbacks[event].push(callback);
+    }
+
+    notify(event, ...params){
+        if(!this.callbacks[event]) return;
+        this.callbacks[event].forEach(callback => callback(...params));
+    }
+
+    // Utility
     distance(a, b){
         return Math.hypot(b.x - a.x, b.y - a.y);
     }
+        
+    getOpposingEdge(edge){
+        let node = this.nodes[edge.to];
+        if(node == undefined) return null;
+        return node.edges.find(otherEdge => otherEdge.to === edge.from);
+    }
 
+    printmap(){
+        let output = "";
+        for(var x = 0; x < this.config.width; x++){
+            for(var y = 0; y < this.config.height; y++){
+                let node;
+                if(node = this.nodes.find(node => node.x === x && node.y === y))
+                    output += node.isSource ? "s" : "x";
+                else
+                    output += " ";
+            }
+            output += "\n";
+        }
+        console.log(output);
+    }
+
+    getNeighbors(node, radius=this.config.max_edge){
+        return this.nodes.filter(other => this.distance(node, other) <= radius && node !== other);
+    }
+
+    getNodeRadius(node){ // Get node radius by capacity
+        let radius = Math.log10(node.bubbles) + 1;
+        if(radius < 1) radius = 1;
+        if(radius > 10) radius = 10;
+        return radius;
+    }
+
+    // Procgen
     procgen(){
         let added = 0,
         failStreak = 0;
@@ -88,6 +134,7 @@ class Game {
         }
     }
 
+    // Update
     update(){
         this.spawn_cooldown--;
 
@@ -104,7 +151,7 @@ class Game {
             node.edges.forEach(edge => {
                 if(node.isSource || node.bubbles > 0){
                     edge.bubbles.push(new Bubble(node.owner, node.radius));
-                    console.log("Bubble spawned");
+                    // console.log("Bubble spawned");
                     if(!node.isSource) node.bubbles--;
                 }
             });
@@ -127,7 +174,7 @@ class Game {
 
             // Check collision with node
             if(bubble.pos >= edgeLength){
-                console.log("Bubble hit node");
+                // console.log("Bubble hit node");
                 if(bubble.owner === toNode.owner)
                     toNode.bubbles++;
                 else if(toNode.bubbles <= 0){
@@ -152,27 +199,7 @@ class Game {
         });
     }
 
-    getOpposingEdge(edge){
-        let node = this.nodes[edge.to];
-        if(node == undefined) return null;
-        return node.edges.find(otherEdge => otherEdge.to === edge.from);
-    }
-
-    printmap(){
-        let output = "";
-        for(var x = 0; x < this.config.width; x++){
-            for(var y = 0; y < this.config.height; y++){
-                let node;
-                if(node = this.nodes.find(node => node.x === x && node.y === y))
-                    output += node.isSource ? "s" : "x";
-                else
-                    output += " ";
-            }
-            output += "\n";
-        }
-        console.log(output);
-    }
-
+    // Player input
     createEdge(player, fromId, toId){
         let from = this.nodes[fromId],
             to = this.nodes[toId];
@@ -185,6 +212,7 @@ class Game {
             return false;
         }
         from.edges.push(new Edge(fromId, toId));
+        this.notify("createEdge", player, fromId, toId);
         return true;
     }
 
@@ -197,35 +225,8 @@ class Game {
         }
         let index = from.edges.findIndex(edge => edge.from === fromId && edge.to === toId);
         from.edges.splice(index, 1);
+        this.notify("removeEdge", player, fromId, toId);
         return true;
-    }
-
-    getNeighbors(node, radius=this.config.max_edge){
-        return this.nodes.filter(other => this.distance(node, other) <= radius && node !== other);
-    }
-
-    // Client commands
-    clientCreateEdge(fromNode, toNode){
-        return {
-            "CLIENT_COMMAND": "CREATE_EDGE",
-            "from": fromNode,
-            "to": toNode
-        }
-    }
-
-    clientDeleteEdge(fromNode, toNode){
-        return {
-            "CLIENT_COMMAND": "DELETE_EDGE",
-            "from": fromNode,
-            "to": toNode
-        }
-    }
-
-    getNodeRadius(node){ // Get node radius by capacity
-        let radius = Math.log10(node.bubbles) + 1;
-        if(radius < 1) radius = 1;
-        if(radius > 10) radius = 10;
-        return radius;
     }
 }
 

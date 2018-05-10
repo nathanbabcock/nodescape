@@ -24,22 +24,20 @@ class Server{
         let game = this.game = new Game();
         //this.game.procgen();
 
-        let src = new Node(5, 5, true);
+        let src = new Node(5, 5, false);
             src.id = game.nodes.length;
+            src.owner = "excalo";
             game.nodes.push(src);
     
-            let dest = new Node(5, 9, false);
+            let dest = new Node(5, 25, false);
             dest.id = game.nodes.length;
+            dest.owner = "excalo";
             game.nodes.push(dest);
     
-            let dest2 = new Node(9, 9, false);
+            let dest2 = new Node(30, 25, false);
             dest2.id = game.nodes.length;
+            dest2.owner = "excalo";
             game.nodes.push(dest2);
-    
-            src.edges.push(new Edge(0,1));
-            dest.edges.push(new Edge(1, 2));
-    
-            game.printmap();
     }
 
     initWebsockets(){
@@ -63,12 +61,12 @@ class Server{
     }
 
     sendFullGamestate(ws){
-        console.log("Sending full gamestate...");
+        // console.log("Sending full gamestate...");
         ws.send(this.serialize(this.game));
     }
 
     sendLightGamestate(ws){
-        console.log("Sending light gamestate...");
+        // console.log("Sending light gamestate...");
         console.error("Not yet implemented");
         // ws.send(this.serialize(this.game));
     }
@@ -86,9 +84,8 @@ class Server{
         };
 
         handlers.colorchange = msg => this.game.players[ws.username].color = msg.color;
-
-        handlers.addedge = msg => this.game.addEdge(ws.username, msg.from, msg.to);
-        handlers.removeedge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);
+        handlers.createEdge = msg => this.game.createEdge(ws.username, msg.from, msg.to);
+        handlers.removeEdge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);
 
         if(handlers[msg.msgtype] == undefined){
             console.error(`Unrecognized client msgtype ${msg.msgtype}`);

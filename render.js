@@ -313,25 +313,21 @@ class Render {
 
     // Edge dragging
     startDrag(node, dragToOld=null){
+        // console.log("Start edge drag");
         if(node.owner !== this.player) return false;
 
-        console.log("Start edge drag");
         this.viewport.pause = true;
         this.dragFrom = node;
         this.dragToOld = dragToOld;
     }
 
     stopDrag(){
-        console.log("Stop edge drag");
-
+        // console.log("Stop edge drag");
         if(this.dragToOld)
             this.game.removeEdge(this.player, this.dragFrom.id, this.dragToOld.id);
 
-        if(this.dragFrom !== null && this.dragTo !== null){
-            if(!this.dragFrom.edges.find(a => a.to === this.dragTo.id)){
-                this.dragFrom.edges.push(new Edge(this.dragFrom.id, this.dragTo.id));
-            }
-        }
+        if(this.dragFrom !== null && this.dragTo !== null && !this.dragFrom.edges.find(a => a.to === this.dragTo.id))
+            this.game.createEdge(this.player, this.dragFrom.id, this.dragTo.id);
 
         this.viewport.pause = false;
         this.dragFrom = null;

@@ -21,33 +21,35 @@
                 client = new Client("excalo");
             render.setGame(game);
             client.setGame(game);
+            // game.on("createEdge", (...args)=>console.log("createEdge", ...args));
+            // game.on("removeEdge", (...args)=>console.log("removeEdge", ...args));
             // client.connect("ws://localhost:9999")
     
-            // let src = new Node(5, 5, false);
-            // src.id = game.nodes.length;
-            // src.owner = "excalo";
-            // game.nodes.push(src);
+            let src = new Node(5, 5, false);
+            src.id = game.nodes.length;
+            src.owner = "excalo";
+            game.nodes.push(src);
     
-            // let dest = new Node(5, 25, false);
-            // dest.id = game.nodes.length;
-            // dest.owner = "excalo";
-            // game.nodes.push(dest);
+            let dest = new Node(5, 25, false);
+            dest.id = game.nodes.length;
+            dest.owner = "excalo";
+            game.nodes.push(dest);
     
-            // let dest2 = new Node(30, 25, false);
-            // dest2.id = game.nodes.length;
-            // dest2.owner = "excalo";
-            // game.nodes.push(dest2);
+            let dest2 = new Node(30, 25, false);
+            dest2.id = game.nodes.length;
+            dest2.owner = "excalo";
+            game.nodes.push(dest2);
     
             // src.edges.push(new Edge(0,1));
             // dest.edges.push(new Edge(1, 2));
     
-            for(let i = 0; i < 10; i++){
-                let node = new Node(i * 22, 10);
-                node.id = game.nodes.length;
-                node.owner = "excalo";
-                node.bubbles = Math.pow(10, i);
-                game.nodes.push(node);
-            }
+            // for(let i = 0; i < 10; i++){
+            //     let node = new Node(i * 22, 10);
+            //     node.id = game.nodes.length;
+            //     node.owner = "excalo";
+            //     node.bubbles = Math.pow(10, i);
+            //     game.nodes.push(node);
+            // }
         </script>
 </body>
 </html>
