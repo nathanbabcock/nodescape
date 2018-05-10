@@ -33,7 +33,7 @@ class Client {
                 color: this.game.players[this.username].color//0x01F45D,
             }));
         }
-        ws.onmessage = this.handleServerMessage;
+        ws.onmessage = this.handleServerMessage.bind(this);
     }
 
     send(obj){
@@ -45,10 +45,17 @@ class Client {
     }
 
     handleServerMessage(event){
-        let msg = JSON.parse(event.data);
-        // console.log(msg);
-        _.merge(game, msg);
-        //deepExtend(game, msg);
+        let gamestate = JSON.parse(event.data);
+        _.merge(game, gamestate);
+        // console.log(gamestate);
+
+        // Handle deletions
+        this.game.nodes.splice(gamestate.nodes.length);
+        for(var node = 0; node < this.game.nodes.length; node++){
+            this.game.nodes[node].edges.splice(gamestate.nodes[node].edges.length);
+            // TODO also splice bubbles?
+        }
+        //TODO also need to clean these up from the renderer
     }
 
     deserialize(data){
