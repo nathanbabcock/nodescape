@@ -30,10 +30,12 @@
     
             let dest = new Node(5, 18, false);
             dest.id = game.nodes.length;
+            dest.owner = "excalo";
             game.nodes.push(dest);
     
             let dest2 = new Node(18, 18, false);
             dest2.id = game.nodes.length;
+            dest2.owner = "excalo";
             game.nodes.push(dest2);
     
             src.edges.push(new Edge(0,1));

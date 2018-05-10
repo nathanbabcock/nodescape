@@ -136,15 +136,8 @@ class Render {
             to = this.game.nodes[edge.to];
         gfx.clear();
         if(this.dragFrom === from && this.dragToOld === to) return;
-        this.drawArrow(gfx, from, to, (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101);
-        // gfx.clear();
-        // gfx.lineStyle(2, (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101);
-        // gfx.moveTo(from.x * renderConfig.scale, from.y * renderConfig.scale);
-        // gfx.lineTo(to.x * renderConfig.scale, to.y * renderConfig.scale);
-    }
 
-    drawArrow(gfx, from, to, color){
-        // Now stop arrow just before they get to a node
+        // Stop arrow just before they get to a node
         let dist = this.game.distance(from, to),
             delta_x = to.x - from.x,
             delta_y = to.y - from.y,
@@ -153,8 +146,13 @@ class Render {
             fromx = (from.x + delta_x * from_ratio) * renderConfig.scale,
             fromy = (from.y + delta_y * from_ratio) * renderConfig.scale,
             tox = (to.x - delta_x * to_ratio) * renderConfig.scale,
-            toy = (to.y - delta_y * to_ratio) * renderConfig.scale,
-            headlen = 10,
+            toy = (to.y - delta_y * to_ratio) * renderConfig.scale;
+
+        this.drawArrow(gfx, fromx, fromy, tox, toy, (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101);
+    }
+
+    drawArrow(gfx, fromx, fromy, tox, toy, color){
+        let headlen = 10,
             angle = Math.atan2(toy-fromy,tox-fromx);
 
         // Line
@@ -269,6 +267,8 @@ class Render {
 
     // Edge dragging
     startDrag(node, dragToOld=null){
+        if(node.owner !== this.player) return false;
+
         console.log("Start edge drag");
         this.viewport.pause = true;
         this.dragFrom = node;

@@ -225,13 +225,19 @@ pause and think
 0.5hr implement arrow algorithm from stackoverflow
 
 TODO
--tweak drag edge preview
--remove edge (drag)
+
+X remove edge (drag)
 	X add a custom hitbox to all edges (on the arrowhead) using a polygon (or a circle worst-case)
 		/ may need to copy code from drawArrow()
 	X state where drag is initiated from an arrowhead
 		X mousedown (edge starts following mouse, stop drawing old edge)
 		X mouseup (remove old edge, maybe create new one)
+- tweak drag edge preview
 - convert edge creation and deletion to server-friendly commands
+...
+- color scheme
+- arrow thickness, arrowhead size, node size, bubble size
+- bubble radius growww
+- text render
 
 0.5hr implement edge drag to remove arrow
