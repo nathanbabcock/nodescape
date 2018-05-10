@@ -284,14 +284,15 @@ class Render {
         if(!this.selectedNodeGfx) this.selectedNodeGfx = this.createSelectedNodeGraphics();
         let gfx = this.selectedNodeGfx;
         gfx.clear();
-        if(this.dragFrom) return;
+        // if(this.dragFrom) return;
         if(!this.selectedNode) return;
         this.game.getNeighbors(this.selectedNode).forEach(node => {
             if(this.selectedNode.edges.find(edge => edge.to === node.id)) return; // Edge already exists!
             if(node.edges.find(edge => edge.to === this.selectedNode.id)) return; // Edge already exists!
-            gfx.lineStyle(1, 0xd6d6d6);
-            gfx.moveTo(this.selectedNode.x * renderConfig.scale, this.selectedNode.y * renderConfig.scale);
-            gfx.lineTo(node.x * renderConfig.scale, node.y * renderConfig.scale);
+            if(node === this.dragFrom) return;
+            gfx.lineStyle(1, 0xd6d6d6)
+                .moveTo(this.selectedNode.x * renderConfig.scale, this.selectedNode.y * renderConfig.scale)
+                .lineTo(node.x * renderConfig.scale, node.y * renderConfig.scale);
         });
     }
 

@@ -251,3 +251,5 @@ X tweak drag edge preview
 100000
 1000000
 10000000
+
+0.5hr node potential edge mouseover 
