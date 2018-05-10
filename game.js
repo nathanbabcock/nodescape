@@ -109,6 +109,8 @@ class Game {
                 }
             });
         }
+
+        node.radius = this.getNodeRadius(node); // TODO move this?
     }
 
     updateEdge(edge){
@@ -217,6 +219,13 @@ class Game {
             "from": fromNode,
             "to": toNode
         }
+    }
+
+    getNodeRadius(node){ // Get node radius by capacity
+        let radius = Math.log10(node.bubbles) + 1;
+        if(radius < 1) radius = 1;
+        if(radius > 10) radius = 10;
+        return radius;
     }
 }
 

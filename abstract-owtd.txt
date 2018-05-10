@@ -237,7 +237,7 @@ X tweak drag edge preview
 ...
 - color scheme
 - arrow thickness, arrowhead size, node size, bubble size
-- bubble radius growww
+X bubble radius growww
 - text render
 
 0.5hr implement edge drag to remove arrow
@@ -252,4 +252,51 @@ X tweak drag edge preview
 1000000
 10000000
 
-0.5hr node potential edge mouseover 
+0.5hr node potential edge mouseover
+
+bug: bubbles remain when edge deleted (possible memory leak with graphics objects?)
+bug: hitArea radius not updated when node radius is updated (possible fix untested)
+
+TODO @ home:
+- test with procgen world
+- color scheme
+- thickness & sizing
+
+TODO @ work:
+- stats util
+	- how many sources do I own
+	- how many nodes do I own
+	- how many total bubbles
+	- what's my biggest node
+	- time node owned
+	- percentage of all nodes owned
+	- percentage of all bubbles owned
+- offline report:
+	- how many bubbles did I gain (count from all spawns)?
+	- how many bubbles did I lose (count from all collisions with enemy bubbles/nodes)?
+	- how many nodes did I gain?
+	- how many nodes did I lose?
+
+Stats:
+- Nodes: 100 (10 source, generating a total of 100 bubbles per second)
+- Bubbles: 3.9M - largest node: 100k (go there)
+
+Offline Report:
+- Bubbles gained -- Bubbles lost -- Net bubbles
+- Nodes gained -- Nodes lost -- Net nodes
+- Biggest competitor -- Bubbles spent -- Nodes captured (him, you, net)
+
+0.5hr node radius + some planning
+
+Leaderboards, obviously
+
+Features with potential for expansion:
+- Player profile view, with stats
+- Graphs :D
+- Offline mode report with MORE STATS
+- Daily/weekly email report, with copy of above
+- Server leaderboards, visible at all times like Agario
+- Easy to split up into different servers, especially if there is a single winner every time
+	- Global profile with "wins"
+- Show who is logged in
+- mobile version, obviously

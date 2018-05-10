@@ -24,24 +24,24 @@ class Render {
         return game;
     }
 
-    initGame(){
-        let game = setGame(new Game());
+    // initGame(){
+    //     let game = setGame(new Game());
         
-        let src = new Node(5, 5, true);
-        src.id = game.nodes.length;
-        game.nodes.push(src);
+    //     let src = new Node(5, 5, true);
+    //     src.id = game.nodes.length;
+    //     game.nodes.push(src);
         
-        let dest = new Node(5, 9, false);
-        dest.id = game.nodes.length;
-        game.nodes.push(dest);
+    //     let dest = new Node(5, 9, false);
+    //     dest.id = game.nodes.length;
+    //     game.nodes.push(dest);
 
-        let dest2 = new Node(9, 9, false);
-        dest2.id = game.nodes.length;
-        game.nodes.push(dest2);
+    //     let dest2 = new Node(9, 9, false);
+    //     dest2.id = game.nodes.length;
+    //     game.nodes.push(dest2);
 
-        src.edges.push(new Edge(0,1));
-        dest.edges.push(new Edge(1, 2));
-    }
+    //     src.edges.push(new Edge(0,1));
+    //     dest.edges.push(new Edge(1, 2));
+    // }
 
     initPixi(){
         // Root app
@@ -83,7 +83,7 @@ class Render {
     createNodeGraphics(node){
         let gfx = new PIXI.Graphics();
         gfx.interactive = true;
-        gfx.hitArea = new PIXI.Circle(node.x * renderConfig.scale, node.y * renderConfig.scale, node.radius * renderConfig.scale);
+        // gfx.hitArea = new PIXI.Circle(node.x * renderConfig.scale, node.y * renderConfig.scale, node.radius * renderConfig.scale);
         gfx.on('mousedown', () => this.startDrag(node));
         gfx.on('mouseup', this.stopDrag.bind(this));
         gfx.on('mouseupoutside', this.stopDrag.bind(this));
