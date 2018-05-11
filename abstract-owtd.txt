@@ -325,3 +325,23 @@ remove edge problem notes:
 	-That's not enough, because "removeEdge" doesn't get called on a server gamestate merge
 -so instead it needs to check everytime and do some manual garbage collection?
 	-parallel data structure of node->edge->bubble to hold graphics objs
+
+5/11
+
+options to fix the edge removal bug
+this bug applies to both graphics (view) and networking (controller)
+it applies to *any* array where items are removed
+
+Option 1: Pool everything
+- Even though it may not be necessary for memory/gc performance, any "delete" operation is always a "dead=true" operation
+- Downside: Bloat/memory creep (?)
+	- Worst case scenario: Every edge that could exist, does exist, and is sent over the network
+
+Option 2: observable triggers on almost every game operation
+- Downside: A lot of reponsibility for the game object model who is supposed to be a dumb object
+- Downside: Requires a different networking strategy, an object-wise merge wouldn't work anymore
+	- you would need to write a custom merge algo that fires off lots of observable triggers
+
+Option 3: parallel list of references in Render class which are manually kept in sync
+- Downside: complex, kind of a hassle
+- Upside: Game remains unchanged

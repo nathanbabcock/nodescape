@@ -130,6 +130,8 @@ class Render {
     }
     
     drawEdge(edge){
+        if(edge.dead && edge.graphics) edge.graphics.clear();
+        if(edge.dead) return;
         if(!edge.graphics) edge.graphics = this.createEdgeGraphics(edge);
 
         let gfx = edge.graphics,
@@ -253,7 +255,7 @@ class Render {
             toy = mouse.y;
 
         // Snap to eligible nodes
-        if(this.dragTo && !this.dragFrom.edges.find(a => a.to === this.dragTo.id) && color !== 0xFF0000){
+        if(this.dragTo && !this.dragFrom.edges.find(a => a.to === this.dragTo.id && !a.dead) && color !== 0xFF0000){
             // Redo calculations whee
             to = this.dragTo;
             dist = this.game.distance(from, to);
@@ -326,7 +328,7 @@ class Render {
         if(this.dragToOld)
             this.game.removeEdge(this.player, this.dragFrom.id, this.dragToOld.id);
 
-        if(this.dragFrom !== null && this.dragTo !== null && !this.dragFrom.edges.find(a => a.to === this.dragTo.id))
+        if(this.dragFrom !== null && this.dragTo !== null && !this.dragFrom.edges.find(a => a.to === this.dragTo.id && a.dead === false))
             this.game.createEdge(this.player, this.dragFrom.id, this.dragTo.id);
 
         this.viewport.pause = false;

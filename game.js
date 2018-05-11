@@ -32,6 +32,7 @@ class Edge {
         this.from = from;
         this.to = to;
         this.bubbles = [];
+        this.dead = false;
     }
 }
 
@@ -150,7 +151,8 @@ class Game {
         if(this.spawn_cooldown <= 0){
             node.edges.forEach(edge => {
                 if(node.isSource || node.bubbles > 0){
-                    edge.bubbles.push(new Bubble(node.owner, node.radius));
+                    this.spawnBubble(node, edge);
+                    //edge.bubbles.push(new Bubble(node.owner, node.radius));
                     // console.log("Bubble spawned");
                     if(!node.isSource) node.bubbles--;
                 }
@@ -158,6 +160,23 @@ class Game {
         }
 
         node.radius = this.getNodeRadius(node); // TODO move this?
+    }
+
+    spawnBubble(node, edge){
+        var bubble = null;
+        for(var i = 0; i < edge.bubbles.length; i++){
+            if(edge.bubbles[i].dead){
+                bubble = edge.bubbles[i];
+                bubble.dead = false;
+                break;
+            }
+        }
+        if(bubble === null){
+            bubble = new Bubble();
+            edge.bubbles.push(bubble);
+        }
+        bubble.owner = node.owner;
+        bubble.pos = node.radius;
     }
 
     updateEdge(edge){
@@ -203,6 +222,8 @@ class Game {
     createEdge(player, fromId, toId){
         let from = this.nodes[fromId],
             to = this.nodes[toId];
+
+        // Validation
         if(from.owner !== player){
             console.error(`Possible hack attempt identified: user ${player} trying to build an edge on someone else's node`);
             return false;
@@ -211,7 +232,27 @@ class Game {
             console.error(`Possible hack attempt: user ${player} trying to build an edge to a node that is too far away`);
             return false;
         }
-        from.edges.push(new Edge(fromId, toId));
+        if(from.edges.find(e=>!e.dead && e.to === toId)){
+            console.error(`Possible hack attempt: user ${player} trying to build a duplicate edge`);
+            return false;
+        }
+
+        // Object pooling
+        let edge = null;
+        for(var i = 0; i < from.edges.length; i++){
+            if(from.edges[i].dead){
+                edge = from.edges[i];
+                edge.dead = false;
+                break;
+            }
+        }
+        if(edge === null){
+            edge = new Edge();
+            from.edges.push(edge);
+        }
+        
+        edge.from = fromId;
+        edge.to = toId;
         this.notify("createEdge", player, fromId, toId);
         return true;
     }
@@ -223,8 +264,14 @@ class Game {
             console.error(`Possible hack attempt identified: user ${player} trying to remove an edge on someone else's node`);
             return false;
         }
-        let index = from.edges.findIndex(edge => edge.from === fromId && edge.to === toId);
-        from.edges.splice(index, 1);
+        // let index = from.edges.findIndex(edge => edge.from === fromId && edge.to === toId);
+        // from.edges.splice(index, 1);
+        let edge = from.edges.find(edge => edge.from === fromId && edge.to === toId);
+        if(!edge) {
+            console.error(`Could not find edge from ${fromId} to ${toId}`);
+            return;
+        }
+        edge.dead = true;
         this.notify("removeEdge", player, fromId, toId);
         return true;
     }
