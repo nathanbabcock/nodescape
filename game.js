@@ -1,8 +1,8 @@
 const config = {
     width: 100,
     height: 100,
-    max_edge: 42,
-    min_edge: 22,
+    max_edge: 25,
+    min_edge: 5,
     source_freq: 0.1,
     spawn_cooldown: 4,
     node_base_radius: 1,
@@ -114,18 +114,25 @@ class Game {
     procgen(){
         let added = 0,
         failStreak = 0;
-        outer: while(failStreak < 100){
+        outer: while(failStreak < 10){
             let newNode = new Node(chance.integer({ min: 0, max: this.config.width}), chance.integer({min: 0, max: this.config.height}));
+            let neighbors = 0;
             for(var i = 0; i < this.nodes.length; i++){
                 let dist = this.distance(newNode, this.nodes[i]);
                 if(dist > this.config.max_edge) continue;
                 
-                if(dist % 1 > 0 || dist < this.config.min_edge){
+                if(dist < this.config.min_edge){
                     failStreak++;
                     console.log("failed to add node");
                     continue outer;
                 }
+
+                neighbors++;
             }
+            // if(neighbors <= 0){
+            //     failStreak++;
+            //     continue outer;
+            // }
             newNode.id = this.nodes.length;
             newNode.isSource = chance.bool({likelihood: this.config.source_freq * 100});
             this.nodes.push(newNode);
@@ -150,7 +157,7 @@ class Game {
 
         if(this.spawn_cooldown <= 0){
             node.edges.forEach(edge => {
-                if(node.isSource || node.bubbles > 0){
+                if((node.isSource || node.bubbles > 0) && !edge.dead){
                     this.spawnBubble(node, edge);
                     //edge.bubbles.push(new Bubble(node.owner, node.radius));
                     // console.log("Bubble spawned");

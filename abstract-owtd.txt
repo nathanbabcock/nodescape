@@ -345,3 +345,10 @@ Option 2: observable triggers on almost every game operation
 Option 3: parallel list of references in Render class which are manually kept in sync
 - Downside: complex, kind of a hassle
 - Upside: Game remains unchanged
+
+5/12
+
+some testing @ home
+
+BUG: bubbles on edge when edge deleted
+30 min @ home playtesting
