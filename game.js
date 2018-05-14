@@ -1,3 +1,8 @@
+// Require
+if(typeof module !== "undefined"){
+    chance = new require('chance')();
+}
+
 const config = {
     width: 100,
     height: 100,
@@ -110,6 +115,23 @@ class Game {
         return radius;
     }
 
+    countEdges(){
+        let count = 0;
+        this.nodes.forEach(node => count += node.edges.filter(edge=>!edge.dead).length); // If I was a good functional programmer I would probably use a reduce op...
+        return count;
+    }
+
+    countBubbles(){
+        let count = 0;
+        this.nodes.forEach(node => {
+            node.edges.forEach(edge => {
+                if(edge.dead) return;
+                count += edge.bubbles.filter(bubble => !bubble.dead).length;
+            });
+        });
+        return count;
+    }
+
     // Procgen
     procgen(){
         let added = 0,
@@ -123,7 +145,7 @@ class Game {
                 
                 if(dist < this.config.min_edge){
                     failStreak++;
-                    console.log("failed to add node");
+                    // console.log("failed to add node");
                     continue outer;
                 }
 
@@ -136,7 +158,7 @@ class Game {
             newNode.id = this.nodes.length;
             newNode.isSource = chance.bool({likelihood: this.config.source_freq * 100});
             this.nodes.push(newNode);
-            console.log("added a node");
+            // console.log("added a node");
             added++;
             failStreak = 0;
         }
@@ -232,15 +254,15 @@ class Game {
 
         // Validation
         if(from.owner !== player){
-            console.error(`Possible hack attempt identified: user ${player} trying to build an edge on someone else's node`);
+            // console.error(`Possible hack attempt identified: user ${player} trying to build an edge on someone else's node`);
             return false;
         }
         if(this.distance(from, to) > this.config.max_edge){
-            console.error(`Possible hack attempt: user ${player} trying to build an edge to a node that is too far away`);
+            // console.error(`Possible hack attempt: user ${player} trying to build an edge to a node that is too far away`);
             return false;
         }
         if(from.edges.find(e=>!e.dead && e.to === toId)){
-            console.error(`Possible hack attempt: user ${player} trying to build a duplicate edge`);
+            // console.error(`Possible hack attempt: user ${player} trying to build a duplicate edge`);
             return false;
         }
 

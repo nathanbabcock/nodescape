@@ -9,13 +9,9 @@ class Server{
     constructor(port=9999){
         this.port = port;
         console.log("Starting server");
-        this.initGame();
+        //this.initGame();
         this.initWebsockets();
-        this.gameloop = setInterval(() => {
-            this.game.update.bind(this.game)();
-            if(this.game.spawn_cooldown <= 1)
-                this.wss.clients.forEach(this.sendFullGamestate, this);
-        }, this.game.config.tick_rate);
+
     };
 
     initGame(){
@@ -38,6 +34,16 @@ class Server{
             dest2.id = game.nodes.length;
             dest2.owner = "excalo";
             game.nodes.push(dest2);
+
+        this.startGameLoop();
+    }
+
+    startGameLoop(){
+        this.gameloop = setInterval(() => {
+            this.game.update.bind(this.game)();
+            if(this.game.spawn_cooldown <= 1)
+                this.wss.clients.forEach(this.sendFullGamestate, this);
+        }, this.game.config.tick_rate);
     }
 
     initWebsockets(){
@@ -103,6 +109,47 @@ class Server{
         // TODO: msgpack
         return JSON.stringify(data);
     }
+
+    loadTest(){
+        let game = new Game();
+        game.config.width = 1000;
+        game.config.height = 1000;
+        console.log("Procedurally generating map...");
+        let start = new Date().getTime();
+        game.procgen();
+        console.log(`Procgen took ${new Date().getTime() - start}ms`);
+        console.log("Width:", game.config.width);
+        console.log("Height:", game.config.height);
+        console.log("Nodes:", game.nodes.length);
+    
+        // Create maximum possible edges: from every node to every other node possible
+        console.log("Generating all possible edges");
+        game.nodes.forEach(node => {
+            node.owner = "excalo";
+            game.nodes.forEach(otherNode => {
+                game.createEdge("excalo", node.id, otherNode.id);
+            });
+        });
+        let numEdges = game.countEdges();
+        console.log("Edges:", numEdges);
+        console.log("Avg edges/node", numEdges / game.nodes.length);
+
+        // Game.update
+        for(var i = 0; i < 60 * 4; i++){
+            console.log(`Update #${i}`);
+            let start = new Date().getTime(); // Super rigorous production-quality benchmarking
+            game.update(); // Sample size of one because fuck the stats, who cares
+            let end = new Date().getTime();
+            console.log(`- Update took ${end - start}ms`);
+            console.log(`- Bubbles: ${game.countBubbles()}`);
+        }
+    
+        process.exit();
+        // server.game = game;
+        // server.startGameLoop();
+    }
 }
 
-new Server();
+let server = new Server();
+// server.initGame();
+server.loadTest();

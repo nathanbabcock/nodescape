@@ -1,0 +1,735 @@
+Windows PowerShell
+Copyright (C) 2016 Microsoft Corporation. All rights reserved.
+
+PS C:\Users\qmcx63\Documents\personal\abstract-owtd> node server.js
+Starting server
+Initializing websockets
+Procedurally generating map...
+Procgen took 80881ms
+Width: 2000
+Height: 2000
+Nodes: 29703
+Generating all possible edges
+Edges: 444655
+Avg edges/node 14.97003669662997
+Update #0
+- Update took 390ms
+- Bubbles: 45310
+Update #1
+- Update took 394ms
+- Bubbles: 42296
+Update #2
+- Update took 368ms
+- Bubbles: 42296
+Update #3
+- Update took 339ms
+- Bubbles: 42296
+Update #4
+- Update took 366ms
+- Bubbles: 87606
+Update #5
+- Update took 394ms
+- Bubbles: 84592
+Update #6
+- Update took 345ms
+- Bubbles: 84262
+Update #7
+- Update took 374ms
+- Bubbles: 83884
+Update #8
+- Update took 399ms
+- Bubbles: 129600
+Update #9
+- Update took 411ms
+- Bubbles: 125936
+Update #10
+- Update took 385ms
+- Bubbles: 125247
+Update #11
+- Update took 397ms
+- Bubbles: 124226
+Update #12
+- Update took 504ms
+- Bubbles: 171216
+Update #13
+- Update took 403ms
+- Bubbles: 166777
+Update #14
+- Update took 361ms
+- Bubbles: 165255
+Update #15
+- Update took 345ms
+- Bubbles: 163289
+Update #16
+- Update took 362ms
+- Bubbles: 212414
+Update #17
+- Update took 332ms
+- Bubbles: 207058
+Update #18
+- Update took 339ms
+- Bubbles: 204291
+Update #19
+- Update took 334ms
+- Bubbles: 201619
+Update #20
+- Update took 363ms
+- Bubbles: 253099
+Update #21
+- Update took 344ms
+- Bubbles: 246539
+Update #22
+- Update took 340ms
+- Bubbles: 243054
+Update #23
+- Update took 341ms
+- Bubbles: 239187
+Update #24
+- Update took 351ms
+- Bubbles: 293243
+Update #25
+- Update took 342ms
+- Bubbles: 284887
+Update #26
+- Update took 339ms
+- Bubbles: 280273
+Update #27
+- Update took 339ms
+- Bubbles: 274997
+Update #28
+- Update took 371ms
+- Bubbles: 332553
+Update #29
+- Update took 337ms
+- Bubbles: 322848
+Update #30
+- Update took 352ms
+- Bubbles: 316640
+Update #31
+- Update took 347ms
+- Bubbles: 309675
+Update #32
+- Update took 363ms
+- Bubbles: 371225
+Update #33
+- Update took 348ms
+- Bubbles: 359713
+Update #34
+- Update took 349ms
+- Bubbles: 351457
+Update #35
+- Update took 339ms
+- Bubbles: 341907
+Update #36
+- Update took 374ms
+- Bubbles: 409212
+Update #37
+- Update took 352ms
+- Bubbles: 395711
+Update #38
+- Update took 360ms
+- Bubbles: 385956
+Update #39
+- Update took 354ms
+- Bubbles: 374012
+Update #40
+- Update took 371ms
+- Bubbles: 446182
+Update #41
+- Update took 347ms
+- Bubbles: 430648
+Update #42
+- Update took 346ms
+- Bubbles: 418115
+Update #43
+- Update took 350ms
+- Bubbles: 402803
+Update #44
+- Update took 374ms
+- Bubbles: 482083
+Update #45
+- Update took 359ms
+- Bubbles: 464639
+Update #46
+- Update took 353ms
+- Bubbles: 449352
+Update #47
+- Update took 370ms
+- Bubbles: 432986
+Update #48
+- Update took 408ms
+- Bubbles: 517996
+Update #49
+- Update took 365ms
+- Bubbles: 500355
+Update #50
+- Update took 349ms
+- Bubbles: 484028
+Update #51
+- Update took 348ms
+- Bubbles: 465699
+Update #52
+- Update took 538ms
+- Bubbles: 552838
+Update #53
+- Update took 421ms
+- Bubbles: 533653
+Update #54
+- Update took 391ms
+- Bubbles: 516573
+Update #55
+- Update took 374ms
+- Bubbles: 497448
+Update #56
+- Update took 439ms
+- Bubbles: 587406
+Update #57
+- Update took 389ms
+- Bubbles: 567504
+Update #58
+- Update took 360ms
+- Bubbles: 549462
+Update #59
+- Update took 349ms
+- Bubbles: 527844
+Update #60
+- Update took 414ms
+- Bubbles: 621164
+Update #61
+- Update took 426ms
+- Bubbles: 600514
+Update #62
+- Update took 376ms
+- Bubbles: 581028
+Update #63
+- Update took 352ms
+- Bubbles: 557186
+Update #64
+- Update took 386ms
+- Bubbles: 654463
+Update #65
+- Update took 366ms
+- Bubbles: 633448
+Update #66
+- Update took 353ms
+- Bubbles: 612028
+Update #67
+- Update took 360ms
+- Bubbles: 586117
+Update #68
+- Update took 392ms
+- Bubbles: 686544
+Update #69
+- Update took 362ms
+- Bubbles: 664599
+Update #70
+- Update took 360ms
+- Bubbles: 641465
+Update #71
+- Update took 360ms
+- Bubbles: 613439
+Update #72
+- Update took 387ms
+- Bubbles: 718049
+Update #73
+- Update took 358ms
+- Bubbles: 695487
+Update #74
+- Update took 356ms
+- Bubbles: 670249
+Update #75
+- Update took 380ms
+- Bubbles: 640467
+Update #76
+- Update took 386ms
+- Bubbles: 748600
+Update #77
+- Update took 364ms
+- Bubbles: 725146
+Update #78
+- Update took 364ms
+- Bubbles: 698239
+Update #79
+- Update took 363ms
+- Bubbles: 666055
+Update #80
+- Update took 399ms
+- Bubbles: 778480
+Update #81
+- Update took 393ms
+- Bubbles: 754177
+Update #82
+- Update took 421ms
+- Bubbles: 725615
+Update #83
+- Update took 410ms
+- Bubbles: 691793
+Update #84
+- Update took 403ms
+- Bubbles: 807301
+Update #85
+- Update took 359ms
+- Bubbles: 782184
+Update #86
+- Update took 381ms
+- Bubbles: 752359
+Update #87
+- Update took 367ms
+- Bubbles: 716712
+Update #88
+- Update took 395ms
+- Bubbles: 835583
+Update #89
+- Update took 404ms
+- Bubbles: 809592
+Update #90
+- Update took 412ms
+- Bubbles: 778654
+Update #91
+- Update took 406ms
+- Bubbles: 741449
+Update #92
+- Update took 399ms
+- Bubbles: 863224
+Update #93
+- Update took 362ms
+- Bubbles: 836509
+Update #94
+- Update took 398ms
+- Bubbles: 805067
+Update #95
+- Update took 374ms
+- Bubbles: 766288
+Update #96
+- Update took 403ms
+- Bubbles: 890484
+Update #97
+- Update took 371ms
+- Bubbles: 862990
+Update #98
+- Update took 374ms
+- Bubbles: 830415
+Update #99
+- Update took 374ms
+- Bubbles: 790518
+Update #100
+- Update took 397ms
+- Bubbles: 917296
+Update #101
+- Update took 365ms
+- Bubbles: 889156
+Update #102
+- Update took 368ms
+- Bubbles: 855786
+Update #103
+- Update took 404ms
+- Bubbles: 813894
+Update #104
+- Update took 407ms
+- Bubbles: 943466
+Update #105
+- Update took 393ms
+- Bubbles: 914616
+Update #106
+- Update took 369ms
+- Bubbles: 879891
+Update #107
+- Update took 366ms
+- Bubbles: 836850
+Update #108
+- Update took 395ms
+- Bubbles: 969219
+Update #109
+- Update took 370ms
+- Bubbles: 939859
+Update #110
+- Update took 392ms
+- Bubbles: 904349
+Update #111
+- Update took 380ms
+- Bubbles: 859689
+Update #112
+- Update took 613ms
+- Bubbles: 994556
+Update #113
+- Update took 373ms
+- Bubbles: 964152
+Update #114
+- Update took 376ms
+- Bubbles: 927688
+Update #115
+- Update took 370ms
+- Bubbles: 881345
+Update #116
+- Update took 401ms
+- Bubbles: 1019282
+Update #117
+- Update took 373ms
+- Bubbles: 988648
+Update #118
+- Update took 385ms
+- Bubbles: 951215
+Update #119
+- Update took 374ms
+- Bubbles: 903335
+Update #120
+- Update took 403ms
+- Bubbles: 1043754
+Update #121
+- Update took 371ms
+- Bubbles: 1012330
+Update #122
+- Update took 396ms
+- Bubbles: 974031
+Update #123
+- Update took 375ms
+- Bubbles: 924792
+Update #124
+- Update took 404ms
+- Bubbles: 1067591
+Update #125
+- Update took 373ms
+- Bubbles: 1035558
+Update #126
+- Update took 380ms
+- Bubbles: 995893
+Update #127
+- Update took 382ms
+- Bubbles: 945344
+Update #128
+- Update took 405ms
+- Bubbles: 1091151
+Update #129
+- Update took 374ms
+- Bubbles: 1058595
+Update #130
+- Update took 414ms
+- Bubbles: 1017966
+Update #131
+- Update took 378ms
+- Bubbles: 965898
+Update #132
+- Update took 402ms
+- Bubbles: 1114081
+Update #133
+- Update took 387ms
+- Bubbles: 1081006
+Update #134
+- Update took 382ms
+- Bubbles: 1039504
+Update #135
+- Update took 381ms
+- Bubbles: 986502
+Update #136
+- Update took 421ms
+- Bubbles: 1136960
+Update #137
+- Update took 370ms
+- Bubbles: 1103240
+Update #138
+- Update took 388ms
+- Bubbles: 1061004
+Update #139
+- Update took 376ms
+- Bubbles: 1006339
+Update #140
+- Update took 422ms
+- Bubbles: 1159055
+Update #141
+- Update took 378ms
+- Bubbles: 1124805
+Update #142
+- Update took 399ms
+- Bubbles: 1081420
+Update #143
+- Update took 388ms
+- Bubbles: 1025807
+Update #144
+- Update took 423ms
+- Bubbles: 1180901
+Update #145
+- Update took 380ms
+- Bubbles: 1146316
+Update #146
+- Update took 393ms
+- Bubbles: 1102186
+Update #147
+- Update took 381ms
+- Bubbles: 1045052
+Update #148
+- Update took 476ms
+- Bubbles: 1202450
+Update #149
+- Update took 390ms
+- Bubbles: 1167119
+Update #150
+- Update took 383ms
+- Bubbles: 1121994
+Update #151
+- Update took 392ms
+- Bubbles: 1063675
+Update #152
+- Update took 411ms
+- Bubbles: 1223490
+Update #153
+- Update took 419ms
+- Bubbles: 1187654
+Update #154
+- Update took 411ms
+- Bubbles: 1141888
+Update #155
+- Update took 443ms
+- Bubbles: 1082658
+Update #156
+- Update took 488ms
+- Bubbles: 1244085
+Update #157
+- Update took 442ms
+- Bubbles: 1207941
+Update #158
+- Update took 430ms
+- Bubbles: 1161385
+Update #159
+- Update took 410ms
+- Bubbles: 1100873
+Update #160
+- Update took 429ms
+- Bubbles: 1264546
+Update #161
+- Update took 409ms
+- Bubbles: 1227969
+Update #162
+- Update took 434ms
+- Bubbles: 1180377
+Update #163
+- Update took 401ms
+- Bubbles: 1118479
+Update #164
+- Update took 450ms
+- Bubbles: 1284624
+Update #165
+- Update took 396ms
+- Bubbles: 1247607
+Update #166
+- Update took 391ms
+- Bubbles: 1199300
+Update #167
+- Update took 396ms
+- Bubbles: 1136336
+Update #168
+- Update took 424ms
+- Bubbles: 1304430
+Update #169
+- Update took 398ms
+- Bubbles: 1266980
+Update #170
+- Update took 390ms
+- Bubbles: 1218207
+Update #171
+- Update took 398ms
+- Bubbles: 1154084
+Update #172
+- Update took 423ms
+- Bubbles: 1323867
+Update #173
+- Update took 392ms
+- Bubbles: 1285783
+Update #174
+- Update took 380ms
+- Bubbles: 1235913
+Update #175
+- Update took 393ms
+- Bubbles: 1170611
+Update #176
+- Update took 416ms
+- Bubbles: 1342742
+Update #177
+- Update took 398ms
+- Bubbles: 1304353
+Update #178
+- Update took 430ms
+- Bubbles: 1253770
+Update #179
+- Update took 397ms
+- Bubbles: 1187938
+Update #180
+- Update took 698ms
+- Bubbles: 1361490
+Update #181
+- Update took 391ms
+- Bubbles: 1322551
+Update #182
+- Update took 394ms
+- Bubbles: 1271375
+Update #183
+- Update took 408ms
+- Bubbles: 1204068
+Update #184
+- Update took 425ms
+- Bubbles: 1380067
+Update #185
+- Update took 386ms
+- Bubbles: 1340677
+Update #186
+- Update took 385ms
+- Bubbles: 1288709
+Update #187
+- Update took 395ms
+- Bubbles: 1220085
+Update #188
+- Update took 416ms
+- Bubbles: 1398297
+Update #189
+- Update took 401ms
+- Bubbles: 1358779
+Update #190
+- Update took 400ms
+- Bubbles: 1306212
+Update #191
+- Update took 396ms
+- Bubbles: 1236739
+Update #192
+- Update took 425ms
+- Bubbles: 1416175
+Update #193
+- Update took 415ms
+- Bubbles: 1376142
+Update #194
+- Update took 406ms
+- Bubbles: 1322962
+Update #195
+- Update took 406ms
+- Bubbles: 1252135
+Update #196
+- Update took 430ms
+- Bubbles: 1433832
+Update #197
+- Update took 408ms
+- Bubbles: 1393446
+Update #198
+- Update took 414ms
+- Bubbles: 1339425
+Update #199
+- Update took 408ms
+- Bubbles: 1267796
+Update #200
+- Update took 415ms
+- Bubbles: 1450933
+Update #201
+- Update took 389ms
+- Bubbles: 1410114
+Update #202
+- Update took 406ms
+- Bubbles: 1355312
+Update #203
+- Update took 400ms
+- Bubbles: 1282886
+Update #204
+- Update took 413ms
+- Bubbles: 1467781
+Update #205
+- Update took 388ms
+- Bubbles: 1426560
+Update #206
+- Update took 398ms
+- Bubbles: 1371166
+Update #207
+- Update took 389ms
+- Bubbles: 1297685
+Update #208
+- Update took 429ms
+- Bubbles: 1484690
+Update #209
+- Update took 406ms
+- Bubbles: 1443296
+Update #210
+- Update took 405ms
+- Bubbles: 1387318
+Update #211
+- Update took 403ms
+- Bubbles: 1312742
+Update #212
+- Update took 437ms
+- Bubbles: 1501227
+Update #213
+- Update took 406ms
+- Bubbles: 1459485
+Update #214
+- Update took 419ms
+- Bubbles: 1402865
+Update #215
+- Update took 409ms
+- Bubbles: 1327044
+Update #216
+- Update took 427ms
+- Bubbles: 1517516
+Update #217
+- Update took 397ms
+- Bubbles: 1475388
+Update #218
+- Update took 409ms
+- Bubbles: 1417867
+Update #219
+- Update took 415ms
+- Bubbles: 1341134
+Update #220
+- Update took 443ms
+- Bubbles: 1533376
+Update #221
+- Update took 402ms
+- Bubbles: 1490893
+Update #222
+- Update took 410ms
+- Bubbles: 1432914
+Update #223
+- Update took 412ms
+- Bubbles: 1355495
+Update #224
+- Update took 460ms
+- Bubbles: 1549073
+Update #225
+- Update took 431ms
+- Bubbles: 1505910
+Update #226
+- Update took 416ms
+- Bubbles: 1447197
+Update #227
+- Update took 412ms
+- Bubbles: 1368534
+Update #228
+- Update took 470ms
+- Bubbles: 1564456
+Update #229
+- Update took 410ms
+- Bubbles: 1521123
+Update #230
+- Update took 419ms
+- Bubbles: 1462385
+Update #231
+- Update took 426ms
+- Bubbles: 1382731
+Update #232
+- Update took 465ms
+- Bubbles: 1579906
+Update #233
+- Update took 420ms
+- Bubbles: 1536097
+Update #234
+- Update took 476ms
+- Bubbles: 1476428
+Update #235
+- Update took 421ms
+- Bubbles: 1396063
+Update #236
+- Update took 455ms
+- Bubbles: 1594804
+Update #237
+- Update took 710ms
+- Bubbles: 1550976
+Update #238
+- Update took 433ms
+- Bubbles: 1490775
+Update #239
+- Update took 417ms
+- Bubbles: 1409585
+PS C:\Users\qmcx63\Documents\personal\abstract-owtd>

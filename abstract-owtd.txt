@@ -352,3 +352,63 @@ some testing @ home
 
 BUG: bubbles on edge when edge deleted
 30 min @ home playtesting
+
+5/14
+
+TODO for alpha:
+- determine world size (benchmark server update timing)
+- finish tweaking procgen (max_edge, min_edge)
+- optimize rendering
+	- don't bother rendering stuff outside of vision
+	- enforce a max zoom out distance
+- join game ui (pick username and color)
+- leave game -> return all nodes to server
+- host backend
+- pick name
+- graphics style tweaks (esp. arrowhead z-index and size)
+- kongregate release: '___ Alpha'
+- ??? super simple tutorial?
+
+TODO full release:
+- domain name (if not already done in alpha)
+- login + persistence
+	- stats
+	- reports
+	- multiple servers?
+- donations and/or ads
+- some sort of community engagement board
+
+NAME
+"Abstract Open World Tower Defence Alpha"
+
+Keywords:
+nouns:
+- node
+- flow
+- network
+- graph
+- digraph
+- path
+verbs:
+- connect
+- grow
+- accumulate
+- collect
+connotations:
+- online multiplayer
+- competetive
+- incremental/idle
+- persistent
+
+"Node Collector"
+"Bubble Collector"
+"BubbleScape"
+"Nodescape" (or "NodeScape") *
+
+"NodeScape Alpha"
+
+1hr server load testing, planning, name brainstorming
+
+"NodeStorm"
+"NodeStorm Alpha"
+
