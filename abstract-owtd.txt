@@ -429,3 +429,11 @@ BUGS:
 Optimization: X store all nodes as circles, then only re-draw if necessary
 X store text separately and update?
 
+For good performance:
+- need to use sprites instead of graphics :/
+- don't change text every frame
+- cull objects off screen (?)
+- .interactiveChildren=false if applicable
+- .hitArea faster than no hit area specified
+
+source: https://github.com/pixijs/pixi.js/wiki/v4-Performance-Tips
