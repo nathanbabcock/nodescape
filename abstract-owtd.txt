@@ -413,3 +413,19 @@ connotations:
 "NodeStorm Alpha"
 
 "NodeStorm" vs "NodeScape"
+
+1hr @home playtesting, bugfixing, balancing, performance investiagation
+
+BUGS:
+- destroy bubbles when edge removed
+- source nodes growing/gaining capacity...
+- not showing edge preview when a dead edge is there
+- radius can grow too big, nodes eclipse eachother
+- (minor) edge can snap to node which is too far?
+- light colors will make text unreadable
+- (minor) text not perfectly centered
+- abbreviate long text
+
+Optimization: X store all nodes as circles, then only re-draw if necessary
+X store text separately and update?
+

@@ -4,9 +4,9 @@ if(typeof module !== "undefined"){
 }
 
 const config = {
-    width: 100,
-    height: 100,
-    max_edge: 25,
+    width: 1000,
+    height: 1000,
+    max_edge: 10,
     min_edge: 5,
     source_freq: 0.1,
     spawn_cooldown: 4,
