@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="node_modules/pixi.js/dist/pixi.js"></script>
+</head>
+<body>
+    <script>
+// Root app
+    const app = new PIXI.Application({
+        antialias: true,
+        autoStart: true,
+        backgroundColor: 0xffffff,
+        width: window.innerWidth - 25,
+        height:window.innerHeight - 25,
+    });
+    window.addEventListener('resize', () => this.app.renderer.resize(window.innerWidth - 25, window.innerHeight - 25));
+    document.body.appendChild(app.view);
+
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+
+    app.ticker.add(() => app.renderer.render(app.stage));
+
+    let gfx = new PIXI.Graphics();
+    gfx.beginFill(0xffffff);
+    gfx.drawCircle(0, 0, 100);
+    gfx.endFill();
+    // app.stage.addChild(gfx);
+
+    // let tex = app.renderer.generateTexture(gfx, 1); //gfx.generateCanvasTexture();
+    let tex = gfx.generateCanvasTexture();
+
+    let sprite = new PIXI.Sprite(tex);
+    sprite.x = 100;
+    sprite.y = 100;
+    // sprite.width = 20;
+    // sprite.height = 20;
+    sprite.tint = 0xf4f4f4;
+    app.stage.addChild(sprite);
+
+
+    </script>
+</body>
+</html>

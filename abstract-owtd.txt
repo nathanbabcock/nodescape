@@ -437,3 +437,23 @@ For good performance:
 - .hitArea faster than no hit area specified
 
 source: https://github.com/pixijs/pixi.js/wiki/v4-Performance-Tips
+
+5/16:
+
+Performance changes plan:
+- Nodes and bubbles:
+	- Determine minimum zoom level, and apparent radius of (largest possible) nodes (and bubbles) at that level
+	- Draw a single white circle of the max radius
+	- Scale to correct size for node or bubble (or just have a separate one for bubble)
+	- Tint to the right color for node or bubble
+	- Node text: Child object of the node sprite?? Font size set for max zoom level, like nodes
+	- Check text before updating
+	- PROBLEM: antialiasing (might need scaled versions of sprites?)
+		- Solved by graphics.generateCanvasTexture()
+- Edges
+	- Arrowhead: render a single white arrowhead of max size 
+	- Tint, rotate, and scale as needed
+	- Every arrowhead is its own sprite (and interactive)
+	- Edges all rendered on a single graphics object (including edge preview)
+
+1.5hr performance testing 
