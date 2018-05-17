@@ -195,40 +195,41 @@ class Render {
     }
 
     drawBubble(bubble, edge){
-        if(bubble.dead && bubble.sprite)
+        if(!bubble.sprite) bubble.sprite = this.createBubbleSprite(bubble);
+        if(bubble.dead)
             bubble.sprite.visible = false;
-        else if(!bubble.dead && bubble.sprite && !bubble.sprite.visible)
+        else if(!bubble.dead && !bubble.sprite.visible)
             bubble.sprite.visible = true;
         if(bubble.dead) return;
-        if(!bubble.sprite) bubble.sprite = this.createBubbleSprite(bubble);
-
+        
         // Interpolate movement between grid squares
         let delta_time = Date.now() - this.game.last_update,
              tick_ratio = delta_time / this.game.config.tick_rate,
              interp_pos = bubble.pos + tick_ratio * this.game.config.bubble_radius;
 
         // Now convert distance on the node to (x, y)
-        let from = this.game.nodes[edge.from],
+        let sprite = bubble.sprite,
+            gfx = bubble.graphics,
+            from = this.game.nodes[edge.from],
             to = this.game.nodes[edge.to],
             edge_length = this.game.distance(from, to),
             pos_ratio = interp_pos / edge_length,
             delta_x = to.x - from.x,
             delta_y = to.y - from.y,
-            x = from.x + delta_x * pos_ratio,
-            y = from.y + delta_y * pos_ratio,
-            gfx = bubble.graphics,
-            radius = this.game.config.bubble_radius,
+            x = (from.x + delta_x * pos_ratio) * renderConfig.scale,
+            y = (from.y + delta_y * pos_ratio) * renderConfig.scale,
+            radius = this.game.config.bubble_radius * renderConfig.scale,
             color = this.game.players[bubble.owner].color,
             size = radius * 2;
         
         if(sprite.tint !== color) sprite.tint = color;
-        if(sprite.x !== x) sprite.x = x; // TODO could move this to createNodeSprite if desired...
+        if(sprite.x !== x) sprite.x = x;
         if(sprite.y !== y) sprite.y = y;
         if(sprite.width !== size) sprite.width = sprite.height = size;
     }
 
     // Drag
-    drawDrag(){ // TODO this has some redudancy with drawEdge (ideally we should have a ghots Edge object that gets updated and rendered directly)
+    drawDrag(){ // TODO this has some redudancy with drawEdge (ideally we should have a ghost Edge object that gets updated and rendered directly)
         if(!this.dragSprite) this.dragSprite = this.createEdgeSprite();
         let sprite = this.dragSprite;
         if(!this.dragFrom){
