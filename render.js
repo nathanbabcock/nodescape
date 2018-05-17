@@ -50,6 +50,7 @@ class Render {
         this.texture_cache.circle = gfx.generateCanvasTexture();
 
         // Arrowhead
+        gfx = new PIXI.Graphics();
         let tox = 0, toy = 0, headlen = 20, angle = 0;
         gfx.clear();
         gfx.beginFill(0xffffff);
@@ -168,7 +169,7 @@ class Render {
         // Arrowhead
         if(sprite.x !== tox) sprite.x = tox;
         if(sprite.y !== toy) sprite.y = toy;
-        if(sprite.angle !== angle) sprite.angle = angle;
+        if(sprite.rotation !== angle) sprite.rotation = angle;
         if(sprite.tint !== color) sprite.tint = color;
 
         // Line
@@ -276,7 +277,7 @@ class Render {
         // Arrowhead
         if(sprite.x !== tox) sprite.x = tox;
         if(sprite.y !== toy) sprite.y = toy;
-        if(sprite.angle !== angle) sprite.angle = angle;
+        if(sprite.rotation !== angle) sprite.rotation = angle;
         if(sprite.tint !== color) sprite.tint = color;
 
         // Line
