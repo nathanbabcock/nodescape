@@ -113,12 +113,14 @@ class Render {
     drawNode(node){
         if(!node.sprite) node.sprite = this.createNodeSprite(node);
         if(!node.text) node.text = this.createNodeText(node);
+
         let sprite = node.sprite,
             color = this.game.players[node.owner].color,
             x = node.x * renderConfig.scale,
             y = node.y * renderConfig.scale,
             size = node.radius * renderConfig.scale * 2,
             text = node.isSource ? '∞' : node.bubbles;
+
         if(sprite.tint !== color) sprite.tint = color;
         if(sprite.x !== x) sprite.x = x; // TODO could move this to createNodeSprite if desired...
         if(sprite.y !== y) sprite.y = y;
@@ -176,28 +178,29 @@ class Render {
     }
 
     // Bubbles
-    createBubbleGraphics(bubble){
-        let gfx = new PIXI.Graphics();
-        gfx.interactive = true;
-        gfx.hitArea = new PIXI.Circle(); // need params?
-        gfx.on('click', () => console.log("Clicked bubble ", bubble));
-        this.bubble_layer.addChild(gfx);
-        return gfx;
+    // createBubbleGraphics(bubble){
+    //     let gfx = new PIXI.Graphics();
+    //     gfx.interactive = true;
+    //     gfx.hitArea = new PIXI.Circle(); // need params?
+    //     gfx.on('click', () => console.log("Clicked bubble ", bubble));
+    //     this.bubble_layer.addChild(gfx);
+    //     return gfx;
+    // }
+
+    createBubbleSprite(bubble){
+        let sprite = new PIXI.Sprite(this.texture_cache.circle);
+        sprite.anchor.x = sprite.anchor.y = 0.5;
+        this.bubble_layer.addChild(sprite);
+        return sprite;
     }
 
     drawBubble(bubble, edge){
-        // Handle deads
-        // TODO death anim here?
-        if(bubble.dead && bubble.graphics)
-            bubble.graphics.visible = false;
-        
-        else if(!bubble.dead && bubble.graphics && !bubble.graphics.visible)
-            bubble.graphics.visible = true;
-
+        if(bubble.dead && bubble.sprite)
+            bubble.sprite.visible = false;
+        else if(!bubble.dead && bubble.sprite && !bubble.sprite.visible)
+            bubble.sprite.visible = true;
         if(bubble.dead) return;
-
-        // Spawn graphics for the first time
-        if(!bubble.graphics) bubble.graphics = this.createBubbleGraphics(bubble);
+        if(!bubble.sprite) bubble.sprite = this.createBubbleSprite(bubble);
 
         // Interpolate movement between grid squares
         let delta_time = Date.now() - this.game.last_update,
@@ -214,16 +217,14 @@ class Render {
             x = from.x + delta_x * pos_ratio,
             y = from.y + delta_y * pos_ratio,
             gfx = bubble.graphics,
-            radius = this.game.config.bubble_radius;
+            radius = this.game.config.bubble_radius,
+            color = this.game.players[bubble.owner].color,
+            size = radius * 2;
         
-        // Draw
-        gfx.hitArea.x = x * renderConfig.scale;
-        gfx.hitArea.y = y * renderConfig.scale; 
-        gfx.hitArea.radius = radius * renderConfig.scale; // TODO one line with destructuring?
-        gfx.clear();
-        gfx.beginFill(this.game.players[bubble.owner].color);
-        gfx.drawCircle(x * renderConfig.scale, y * renderConfig.scale, radius * renderConfig.scale);
-        gfx.endFill();
+        if(sprite.tint !== color) sprite.tint = color;
+        if(sprite.x !== x) sprite.x = x; // TODO could move this to createNodeSprite if desired...
+        if(sprite.y !== y) sprite.y = y;
+        if(sprite.width !== size) sprite.width = sprite.height = size;
     }
 
     // Drag
@@ -283,18 +284,9 @@ class Render {
         gfx.lineTo(tox, toy);
     }
 
-    //
-    createSelectedNodeGraphics(node){
-        let gfx = new PIXI.Graphics();
-        this.edge_layer.addChild(gfx);
-        return gfx;
-    }
-
+    // Selected Node
     drawSelectedNode(){
-        if(!this.selectedNodeGfx) this.selectedNodeGfx = this.createSelectedNodeGraphics();
-        let gfx = this.selectedNodeGfx;
-        gfx.clear();
-        // if(this.dragFrom) return;
+        let gfx = this.edgeGfx;
         if(!this.selectedNode) return;
         this.game.getNeighbors(this.selectedNode).forEach(node => {
             if(this.selectedNode.edges.find(edge => edge.to === node.id)) return; // Edge already exists!
