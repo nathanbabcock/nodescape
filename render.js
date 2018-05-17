@@ -13,8 +13,32 @@ class Render {
         this.selectedNode = null;
         this.selectedNodeGfx = null;
         this.player = "excalo";
+        this.loadTextures();
         this.initPixi();
+        this.texture_cache = {};
+        // this.layers = {}; // TODO?
         // initGame();
+    }
+
+    loadTextures(){ // TODO test the base textures, determine the size
+        // Nodes and bubbles
+        let gfx = new PIXI.Graphics();
+        gfx.beginFill(0xffffff);
+        gfx.drawCircle(0, 0, 100);
+        gfx.endFill();
+        this.texture_cache.circle = gfx.generateCanvasTexture();
+
+        // Arrowhead
+        let tox = 0, toy = 0, headlen = 20, angle = 0;
+        gfx.clear();
+        gfx.moveTo(tox, toy);
+        gfx.beginFill(0xffffff);
+        gfx.moveTo(tox, toy);
+        gfx.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
+        gfx.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));
+        gfx.lineTo(tox, toy);
+        gfx.endFill();
+        this.texture_cache.arrowhead = gfx.generateCanvasTexture();
     }
 
     setGame(game){
@@ -79,25 +103,17 @@ class Render {
         this.app.ticker.add(this.draw.bind(this));
     }
 
-    // Nodes
-    createNodeGraphics(node){
-        let gfx = new PIXI.Graphics();
-        gfx.interactive = true;
-        // gfx.hitArea = new PIXI.Circle(node.x * renderConfig.scale, node.y * renderConfig.scale, node.radius * renderConfig.scale);
-        gfx.on('mousedown', () => this.startDrag(node));
-        gfx.on('mouseup', this.stopDrag.bind(this));
-        gfx.on('mouseupoutside', this.stopDrag.bind(this));
-        gfx.on('mouseover', () => { this.dragTo = node===this.dragFrom ? null : node; this.selectedNode = node; });
-        gfx.on('mouseout', () => { this.dragTo = null; this.selectedNode = null; });
-        this.node_layer.addChild(gfx);
-        return gfx;
+    createNodeSprite(node){
+        let sprite = new PIXI.Sprite(this.texture_cache.circle);
+        this.node_layer.push(sprite);
+        return sprite;
     }
 
     createNodeText(node){
         let style = new PIXI.TextStyle({
             fontFamily: 'Arial',
             fontSize: renderConfig.scale,
-            fill: '#ffffff'
+            fill: '#ffffff' // TODO
         });
         let txt = new PIXI.Text("-1", style);
         txt.x = node.x * renderConfig.scale - renderConfig.scale / 2;
@@ -107,14 +123,19 @@ class Render {
     }
 
     drawNode(node){
-        if(!node.graphics) node.graphics = this.createNodeGraphics(node);
+        if(!node.sprite) node.sprite = createNodeSprite(node);
         if(!node.text) node.text = this.createNodeText(node);
-        let gfx = node.graphics;
-        gfx.clear();
-        gfx.beginFill(this.game.players[node.owner].color);
-        gfx.drawCircle(node.x * renderConfig.scale, node.y * renderConfig.scale, node.radius * renderConfig.scale);
-        gfx.endFill();
-        node.text.text = node.isSource ? '∞' : node.bubbles;
+        let sprite = node.sprite,
+            color = this.game.players[node.owner].color,
+            x = node.x * renderConfig.scale,
+            y = node.y * renderConfig.scale,
+            size = node.radius * renderConfig.scale,
+            text = node.isSource ? '∞' : node.bubbles;
+        if(sprite.tint !== color) sprite.tint = color;
+        if(sprite.x !== x) sprite.x = x;
+        if(sprite.y !== y) sprite.y = y;
+        if(sprite.width !== size) sprite.width = sprite.height = size;
+        if(node.text.text != text) node.text.text = text;
     }
 
     // Edges
