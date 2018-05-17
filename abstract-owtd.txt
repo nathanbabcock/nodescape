@@ -463,3 +463,4 @@ Performance changes plan:
 0.5hr blind refactor (node sprite)
 0.5hr blind refactor (edge sprite)
 0.5hr blind refactor (drag preview, bubble, selected node)
+0.5hr misc (arrowhead bugfix, planning)

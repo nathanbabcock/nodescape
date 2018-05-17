@@ -179,15 +179,6 @@ class Render {
     }
 
     // Bubbles
-    // createBubbleGraphics(bubble){
-    //     let gfx = new PIXI.Graphics();
-    //     gfx.interactive = true;
-    //     gfx.hitArea = new PIXI.Circle(); // need params?
-    //     gfx.on('click', () => console.log("Clicked bubble ", bubble));
-    //     this.bubble_layer.addChild(gfx);
-    //     return gfx;
-    // }
-
     createBubbleSprite(bubble){
         let sprite = new PIXI.Sprite(this.texture_cache.circle);
         sprite.anchor.x = sprite.anchor.y = 0.5;
