@@ -457,3 +457,6 @@ Performance changes plan:
 	- Edges all rendered on a single graphics object (including edge preview)
 
 1.5hr performance testing 
+
+5/17:
+0.5hr blind refactor (node sprite)

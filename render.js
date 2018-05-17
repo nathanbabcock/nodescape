@@ -105,6 +105,12 @@ class Render {
 
     createNodeSprite(node){
         let sprite = new PIXI.Sprite(this.texture_cache.circle);
+        sprite.interactive = true;
+        sprite.on('mousedown', () => this.startDrag(node));
+        sprite.on('mouseup', this.stopDrag.bind(this));
+        sprite.on('mouseupoutside', this.stopDrag.bind(this));
+        sprite.on('mouseover', () => { this.dragTo = node===this.dragFrom ? null : node; this.selectedNode = node; });
+        sprite.on('mouseout', () => { this.dragTo = null; this.selectedNode = null; });
         this.node_layer.push(sprite);
         return sprite;
     }
@@ -123,19 +129,19 @@ class Render {
     }
 
     drawNode(node){
-        if(!node.sprite) node.sprite = createNodeSprite(node);
+        if(!node.sprite) node.sprite = this.createNodeSprite(node);
         if(!node.text) node.text = this.createNodeText(node);
         let sprite = node.sprite,
             color = this.game.players[node.owner].color,
             x = node.x * renderConfig.scale,
             y = node.y * renderConfig.scale,
-            size = node.radius * renderConfig.scale,
+            size = node.radius * renderConfig.scale * 2,
             text = node.isSource ? '∞' : node.bubbles;
         if(sprite.tint !== color) sprite.tint = color;
         if(sprite.x !== x) sprite.x = x;
         if(sprite.y !== y) sprite.y = y;
         if(sprite.width !== size) sprite.width = sprite.height = size;
-        if(node.text.text != text) node.text.text = text;
+        if(node.text.text !== text) node.text.text = text;
     }
 
     // Edges
