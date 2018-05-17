@@ -52,7 +52,6 @@ class Render {
         // Arrowhead
         let tox = 0, toy = 0, headlen = 20, angle = 0;
         gfx.clear();
-        gfx.moveTo(tox, toy);
         gfx.beginFill(0xffffff);
         gfx.moveTo(tox, toy);
         gfx.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
@@ -128,24 +127,13 @@ class Render {
     }
 
     // Edges
-    createEdgeGraphics(edge){
-        let gfx = new PIXI.Graphics();
-        gfx.interactive = gfx.buttonmode = true;
-        gfx.on('mousedown', () => this.startDrag(this.game.nodes[edge.from], this.game.nodes[edge.to]));
-        gfx.on('mouseup', this.stopDrag.bind(this));
-        gfx.on('mouseupoutside', this.stopDrag.bind(this));
-        //gfx.hitArea = arrowhead;
-        this.edge_layer.addChild(gfx);
-        return gfx;
-    }
-
     createEdgeSprite(edge){
         let sprite = new PIXI.Sprite(this.texture_cache.arrowhead);
         sprite.interactive = sprite.buttonmode = true;
         sprite.on('mousedown', () => this.startDrag(this.game.nodes[edge.from], this.game.nodes[edge.to]));
         sprite.on('mouseup', this.stopDrag.bind(this));
         sprite.on('mouseupoutside', this.stopDrag.bind(this));
-        sprite.anchor.x = sprite.anchor.y = 0;
+        sprite.anchor.x = sprite.anchor.y = 0.5;
         this.edge_layer.addChild(sprite);
         return sprite;
     }
@@ -154,6 +142,7 @@ class Render {
         if(edge.dead && edge.sprite) edge.sprite.visible = false;
         if(edge.dead) return;
         if(!edge.sprite) edge.sprite = this.createEdgeSprite(edge);
+        if(!edge.sprite.visible) edge.sprite.visible = true;
 
         // Calculate position, angle, color
         let sprite = edge.sprite,
@@ -239,12 +228,13 @@ class Render {
 
     // Drag
     drawDrag(){ // TODO this has some redudancy with drawEdge (ideally we should have a ghots Edge object that gets updated and rendered directly)
-        if(!this.dragGfx) this.dragGfx = this.createEdgeGraphics();
-        let gfx = this.dragGfx;
+        if(!this.dragSprite) this.dragSprite = this.createEdgeSprite();
+        let sprite = this.dragSprite;
         if(!this.dragFrom){
-            gfx.clear();
+            sprite.visible = false;
             return;
-        }
+        } else if (!sprite.visible)
+            sprite.visible = true;
         let mouse = this.app.renderer.plugins.interaction.mouse.getLocalPosition(render.viewport);
 
         let color = 0x010101;
@@ -264,7 +254,9 @@ class Render {
             fromx = from.x * renderConfig.scale,
             fromy = from.y * renderConfig.scale,
             tox = mouse.x,
-            toy = mouse.y;
+            toy = mouse.y,
+            gfx = this.edgeGfx,
+            angle = Math.atan2(toy-fromy,tox-fromx);
 
         // Snap to eligible nodes
         if(this.dragTo && !this.dragFrom.edges.find(a => a.to === this.dragTo.id && !a.dead) && color !== 0xFF0000){
@@ -279,12 +271,16 @@ class Render {
             color = (this.dragFrom.owner === this.dragTo.owner) ? this.game.players[this.dragFrom.owner].color : 0x010101;
         }
 
-        gfx.clear();
-        this.drawArrow(gfx, fromx, fromy, tox, toy, color);
-        // gfx.clear();
-        // gfx.lineStyle(2, color);
-        // gfx.moveTo(this.dragFrom.x * renderConfig.scale, this.dragFrom.y * renderConfig.scale);
-        // gfx.lineTo(x, y);
+        // Arrowhead
+        if(sprite.x !== tox) sprite.x = tox;
+        if(sprite.y !== toy) sprite.y = toy;
+        if(sprite.angle !== angle) sprite.angle = angle;
+        if(sprite.tint !== color) sprite.tint = color;
+
+        // Line
+        gfx.lineStyle(2, color);
+        gfx.moveTo(fromx, fromy);
+        gfx.lineTo(tox, toy);
     }
 
     //
@@ -312,6 +308,7 @@ class Render {
 
     // Draw
     draw(){
+        this.edgeGfx.clear();
         this.game.nodes.forEach(node => {
             this.drawNode(node);
             node.edges.forEach(edge => {
