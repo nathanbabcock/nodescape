@@ -13,14 +13,35 @@ class Render {
         this.selectedNode = null;
         this.selectedNodeGfx = null;
         this.player = "excalo";
-        this.loadTextures();
         this.initPixi();
-        this.texture_cache = {};
         // this.layers = {}; // TODO?
         // initGame();
     }
 
-    loadTextures(){ // TODO test the base textures, determine the size
+    setGame(game){
+        if(this.gameloop) clearInterval(this.gameloop);
+        this.game = game;
+        //this.gameloop = setInterval(this.game.update.bind(this.game), this.game.config.tick_rate);
+        return game;
+    }
+
+    initPixi(){
+        // Root app
+        this.app = new PIXI.Application({
+            antialias: true,
+            autoStart: true,
+            backgroundColor: 0xffffff,
+            width: window.innerWidth - 25,
+            height:window.innerHeight - 25,
+        });
+        window.addEventListener('resize', () => this.app.renderer.resize(window.innerWidth - 25, window.innerHeight - 25));
+        document.body.appendChild(this.app.view);
+        this.app.stage.on("mouseup", this.stopDrag);
+        // this.app.view.style.opacity = 0;
+
+        // TEXTURES
+        this.texture_cache = {};
+
         // Nodes and bubbles
         let gfx = new PIXI.Graphics();
         gfx.beginFill(0xffffff);
@@ -39,47 +60,6 @@ class Render {
         gfx.lineTo(tox, toy);
         gfx.endFill();
         this.texture_cache.arrowhead = gfx.generateCanvasTexture();
-    }
-
-    setGame(game){
-        if(this.gameloop) clearInterval(this.gameloop);
-        this.game = game;
-        //this.gameloop = setInterval(this.game.update.bind(this.game), this.game.config.tick_rate);
-        return game;
-    }
-
-    // initGame(){
-    //     let game = setGame(new Game());
-        
-    //     let src = new Node(5, 5, true);
-    //     src.id = game.nodes.length;
-    //     game.nodes.push(src);
-        
-    //     let dest = new Node(5, 9, false);
-    //     dest.id = game.nodes.length;
-    //     game.nodes.push(dest);
-
-    //     let dest2 = new Node(9, 9, false);
-    //     dest2.id = game.nodes.length;
-    //     game.nodes.push(dest2);
-
-    //     src.edges.push(new Edge(0,1));
-    //     dest.edges.push(new Edge(1, 2));
-    // }
-
-    initPixi(){
-        // Root app
-        this.app = new PIXI.Application({
-            antialias: true,
-            autoStart: true,
-            backgroundColor: 0xffffff,
-            width: window.innerWidth - 25,
-            height:window.innerHeight - 25,
-        });
-        window.addEventListener('resize', () => this.app.renderer.resize(window.innerWidth - 25, window.innerHeight - 25));
-        document.body.appendChild(this.app.view);
-        this.app.stage.on("mouseup", this.stopDrag);
-        // this.app.view.style.opacity = 0;
 
         // Viewport
         this.viewport = new Viewport({
@@ -98,8 +78,11 @@ class Render {
         this.viewport.addChild(this.node_layer = new PIXI.Container());
         this.viewport.addChild(this.bubble_layer = new PIXI.Container());
 
+        // Edges
+        this.edgeGfx = new PIXI.Graphics();
+        this.edge_layer.addChild(edgeGfx);
+
         // Render Loop
-        // TODO clean this up
         this.app.ticker.add(this.draw.bind(this));
     }
 
@@ -138,7 +121,7 @@ class Render {
             size = node.radius * renderConfig.scale * 2,
             text = node.isSource ? '∞' : node.bubbles;
         if(sprite.tint !== color) sprite.tint = color;
-        if(sprite.x !== x) sprite.x = x;
+        if(sprite.x !== x) sprite.x = x; // TODO could move this to createNodeSprite if desired...
         if(sprite.y !== y) sprite.y = y;
         if(sprite.width !== size) sprite.width = sprite.height = size;
         if(node.text.text !== text) node.text.text = text;
@@ -155,20 +138,29 @@ class Render {
         this.edge_layer.addChild(gfx);
         return gfx;
     }
+
+    createEdgeSprite(edge){
+        let sprite = new PIXI.Sprite(this.texture_cache.arrowhead);
+        sprite.interactive = sprite.buttonmode = true;
+        sprite.on('mousedown', () => this.startDrag(this.game.nodes[edge.from], this.game.nodes[edge.to]));
+        sprite.on('mouseup', this.stopDrag.bind(this));
+        sprite.on('mouseupoutside', this.stopDrag.bind(this));
+        sprite.anchor.x = sprite.anchor.y = 0;
+        this.edge_layer.addChild(sprite);
+    }
     
     drawEdge(edge){
-        if(edge.dead && edge.graphics) edge.graphics.clear();
+        if(edge.dead && edge.sprite) edge.sprite.visible = false;
         if(edge.dead) return;
-        if(!edge.graphics) edge.graphics = this.createEdgeGraphics(edge);
+        if(!edge.sprite) edge.sprite = this.createEdgeSprite(edge);
 
-        let gfx = edge.graphics,
+        // Calculate position, angle, color
+        let sprite = edge.sprite,
+            gfx = this.edgeGfx,
             from = this.game.nodes[edge.from],
-            to = this.game.nodes[edge.to];
-        gfx.clear();
-        if(this.dragFrom === from && this.dragToOld === to) return;
-
-        // Stop arrow just before they get to a node
-        let dist = this.game.distance(from, to),
+            to = this.game.nodes[edge.to],
+            color = (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101,
+            dist = this.game.distance(from, to),
             delta_x = to.x - from.x,
             delta_y = to.y - from.y,
             to_ratio = to.radius / dist,
@@ -176,29 +168,21 @@ class Render {
             fromx = (from.x + delta_x * from_ratio) * renderConfig.scale,
             fromy = (from.y + delta_y * from_ratio) * renderConfig.scale,
             tox = (to.x - delta_x * to_ratio) * renderConfig.scale,
-            toy = (to.y - delta_y * to_ratio) * renderConfig.scale;
-
-        this.drawArrow(gfx, fromx, fromy, tox, toy, (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101);
-    }
-
-    drawArrow(gfx, fromx, fromy, tox, toy, color){
-        let headlen = 10,
+            toy = (to.y - delta_y * to_ratio) * renderConfig.scale,
             angle = Math.atan2(toy-fromy,tox-fromx);
+
+        if(this.dragFrom === from && this.dragToOld === to) return;
+
+        // Arrowhead
+        if(sprite.x !== tox) sprite.x = tox;
+        if(sprite.y !== toy) sprite.y = toy;
+        if(sprite.angle !== angle) sprite.angle = angle;
+        if(sprite.tint !== tint) sprite.tint = color;
 
         // Line
         gfx.lineStyle(2, color);
         gfx.moveTo(fromx, fromy);
         gfx.lineTo(tox, toy);
-
-        // Arrowhead
-        gfx.moveTo(fromx, fromy);
-        gfx.lineTo(tox, toy);
-        gfx.beginFill(color);
-        gfx.moveTo(tox, toy);
-        gfx.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
-        gfx.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));
-        gfx.lineTo(tox,toy);
-        gfx.endFill();
     }
 
     // Bubbles

@@ -448,6 +448,7 @@ Performance changes plan:
 	- Tint to the right color for node or bubble
 	- Node text: Child object of the node sprite?? Font size set for max zoom level, like nodes
 	- Check text before updating
+	- Might need to use BitmapText
 	- PROBLEM: antialiasing (might need scaled versions of sprites?)
 		- Solved by graphics.generateCanvasTexture()
 - Edges
@@ -460,3 +461,4 @@ Performance changes plan:
 
 5/17:
 0.5hr blind refactor (node sprite)
+0.5hr blind refactor (edge sprite)
