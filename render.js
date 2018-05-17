@@ -79,8 +79,7 @@ class Render {
         this.viewport.addChild(this.bubble_layer = new PIXI.Container());
 
         // Edges
-        this.edgeGfx = new PIXI.Graphics();
-        this.edge_layer.addChild(edgeGfx);
+        this.edge_layer.addChild(this.edgeGfx = new PIXI.Graphics());
 
         // Render Loop
         this.app.ticker.add(this.draw.bind(this));
@@ -89,12 +88,13 @@ class Render {
     createNodeSprite(node){
         let sprite = new PIXI.Sprite(this.texture_cache.circle);
         sprite.interactive = true;
+        sprite.anchor.x = sprite.anchor.y = 0.5;
         sprite.on('mousedown', () => this.startDrag(node));
         sprite.on('mouseup', this.stopDrag.bind(this));
         sprite.on('mouseupoutside', this.stopDrag.bind(this));
         sprite.on('mouseover', () => { this.dragTo = node===this.dragFrom ? null : node; this.selectedNode = node; });
         sprite.on('mouseout', () => { this.dragTo = null; this.selectedNode = null; });
-        this.node_layer.push(sprite);
+        this.node_layer.addChild(sprite);
         return sprite;
     }
 
@@ -147,6 +147,7 @@ class Render {
         sprite.on('mouseupoutside', this.stopDrag.bind(this));
         sprite.anchor.x = sprite.anchor.y = 0;
         this.edge_layer.addChild(sprite);
+        return sprite;
     }
     
     drawEdge(edge){
@@ -177,7 +178,7 @@ class Render {
         if(sprite.x !== tox) sprite.x = tox;
         if(sprite.y !== toy) sprite.y = toy;
         if(sprite.angle !== angle) sprite.angle = angle;
-        if(sprite.tint !== tint) sprite.tint = color;
+        if(sprite.tint !== color) sprite.tint = color;
 
         // Line
         gfx.lineStyle(2, color);
