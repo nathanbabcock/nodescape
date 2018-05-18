@@ -107,6 +107,23 @@ class Render {
         return (bg > 0xffffff/2) ? '#000000':'#ffffff';
     }
 
+    abbreviateNumber(value) {
+        var newValue = value;
+        if (value >= 1000) {
+            var suffixes = ["", "k", "m", "b","t"];
+            var suffixNum = Math.floor( (""+value).length/3 );
+            var shortValue = '';
+            for (var precision = 2; precision >= 1; precision--) {
+                shortValue = parseFloat( (suffixNum != 0 ? (value / Math.pow(1000,suffixNum) ) : value).toPrecision(precision));
+                var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g,'');
+                if (dotLessShortValue.length <= 2) { break; }
+            }
+            if (shortValue % 1 != 0)  shortNum = shortValue.toFixed(1);
+            newValue = shortValue+suffixes[suffixNum];
+        }
+        return newValue;
+    }
+
     createNodeText(node){
         let style = new PIXI.TextStyle({
             fontFamily: 'Arial',
@@ -129,7 +146,7 @@ class Render {
             x = node.x * renderConfig.scale,
             y = node.y * renderConfig.scale,
             size = node.radius * renderConfig.scale * 2,
-            text = node.isSource ? '∞' : node.bubbles,
+            text = node.isSource ? '∞' : this.abbreviateNumber(node.bubbles),
             textColor = this.getTextColor(color);
 
         if(sprite.tint !== color) sprite.tint = color;
