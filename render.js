@@ -145,13 +145,19 @@ class Render {
         if(edge.dead && edge.sprite) edge.sprite.visible = false;
         if(edge.dead) return;
         if(!edge.sprite) edge.sprite = this.createEdgeSprite(edge);
+
+        let from = this.game.nodes[edge.from],
+            to = this.game.nodes[edge.to];
+
+        if(this.dragFrom === from && this.dragToOld === to){
+            edge.sprite.visible = false;
+            return;
+        }
         if(!edge.sprite.visible) edge.sprite.visible = true;
 
         // Calculate position, angle, color
         let sprite = edge.sprite,
             gfx = this.edgeGfx,
-            from = this.game.nodes[edge.from],
-            to = this.game.nodes[edge.to],
             color = (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101,
             dist = this.game.distance(from, to),
             delta_x = to.x - from.x,
@@ -163,8 +169,6 @@ class Render {
             tox = (to.x - delta_x * to_ratio) * renderConfig.scale,
             toy = (to.y - delta_y * to_ratio) * renderConfig.scale,
             angle = Math.atan2(toy-fromy,tox-fromx);
-
-        if(this.dragFrom === from && this.dragToOld === to) return;
 
         // Arrowhead
         if(sprite.x !== tox) sprite.x = tox;
