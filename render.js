@@ -386,12 +386,14 @@ class Render {
     }
 
     stopDrag(){
-        // console.log("Stop edge drag");
-        if(this.dragToOld)
-            this.game.removeEdge(this.player, this.dragFrom.id, this.dragToOld.id);
+        // TODO ugly nested logic...how to do this with guard clauses, or otherwise more intuitively?
+        if(this.dragToOld && this.dragToOld !== this.dragTo){
+            if(this.dragToOld)
+                this.game.removeEdge(this.player, this.dragFrom.id, this.dragToOld.id);
 
-        if(this.dragFrom !== null && this.dragTo !== null && !this.dragFrom.edges.find(a => a.to === this.dragTo.id && a.dead === false))
-            this.game.createEdge(this.player, this.dragFrom.id, this.dragTo.id);
+            if(this.dragFrom !== null && this.dragTo !== null && !this.dragFrom.edges.find(a => a.to === this.dragTo.id && a.dead === false))
+                this.game.createEdge(this.player, this.dragFrom.id, this.dragTo.id);
+        }
 
         this.viewport.pause = false;
         this.dragFrom = null;
