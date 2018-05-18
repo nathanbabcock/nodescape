@@ -26,9 +26,11 @@ class Node {
 
         // dynamic
         this.bubbles = 0;
-        this.radius = config.node_base_radius;
         this.owner = "server";
         this.edges = [];
+
+        // deterministic
+        this.radius = config.node_base_radius;
     }
 }
 
@@ -301,6 +303,7 @@ class Game {
             return;
         }
         edge.dead = true;
+        edge.bubbles.forEach(bubble => bubble.dead = true);
         this.notify("removeEdge", player, fromId, toId);
         return true;
     }

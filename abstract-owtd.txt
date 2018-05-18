@@ -464,3 +464,73 @@ Performance changes plan:
 0.5hr blind refactor (edge sprite)
 0.5hr blind refactor (drag preview, bubble, selected node)
 0.5hr misc (arrowhead bugfix, planning)
+
+5/18:
+
+Potential network performance improvements:
+- batch up client inputs and send on a timer
+- send viewport rect to server
+- server sends back only entities in rect + some padding
+- server sends only certain properties
+	- not full-on delta compression yet
+- after certain zoom level, server stops sending bubbles (only nodes)
+- don't simulate all 10k+ entities in client, only a few hundred
+	- everything else, just wait for server to send it
+
+Bare minimum gamestate:
+{
+	nodes: [
+		{
+			id,
+			bubbles,
+			owner
+		},
+		...
+	],
+	edges: [
+		{
+			from,
+			to,
+			dead
+		},
+		...
+	],
+	bubbles: [
+		{
+			edge: (from, to),
+			owner,
+			dead,
+			pos
+		},
+		...
+	],
+	players:{
+		username:color,
+		...
+	}
+}
+
+TODO for alpha release:
+- determine world size (benchmark server network timing)
+- bugfixes (see below)
+- graphics optimization (if needed)
+	- clip nodes outside viewport
+	- bitmpatext
+- network optimization
+	- client sends viewport back
+	- server sends only entities in viewport
+- join game ui + logic (pick username and color, pick spawnpoint)
+- leave game UI  + logic -> return all nodes to server
+- host backend
+X pick name
+- ??? super simple tutorial?
+
+BUGS:
+- destroy bubbles when edge removed
+- source nodes growing/gaining capacity...
+- not showing edge preview when a dead edge is there
+- radius can grow too big, nodes eclipse eachother
+- (minor) edge can snap to node which is too far?
+- light colors will make text unreadable
+- (minor) text not perfectly centered
+- abbreviate long text
