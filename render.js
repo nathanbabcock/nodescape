@@ -190,9 +190,6 @@ class Render {
         if(edge.dead) return;
         if(!edge.sprite) edge.sprite = this.createEdgeSprite(edge);
 
-        // Viewport clipping
-        // TODO: determine if any part of the edge intersects the viewport
-
         // DragMode
         let from = this.game.nodes[edge.from],
             to = this.game.nodes[edge.to],
@@ -215,7 +212,15 @@ class Render {
             fromy = (from.y + delta_y * from_ratio) * renderConfig.scale,
             tox = (to.x - delta_x * to_ratio) * renderConfig.scale,
             toy = (to.y - delta_y * to_ratio) * renderConfig.scale,
-            angle = Math.atan2(toy-fromy,tox-fromx);
+            angle = Math.atan2(toy-fromy,tox-fromx),
+            maxEdge = this.game.config.max_edge * renderConfig.scale;
+
+        // Viewport clipping
+        if(fromx < this.viewport.left - maxEdge || fromx > this.viewport.right + maxEdge || fromy < this.viewport.top - maxEdge || fromy > this.viewport.bottom + maxEdge ||
+            tox < this.viewport.left - maxEdge || tox > this.viewport.right + maxEdge || toy < this.viewport.top - maxEdge || toy > this.viewport.bottom + maxEdge){
+            sprite.visible = false;
+            return;
+        }
 
         // Arrowhead
         if(sprite.x !== tox) sprite.x = tox;
