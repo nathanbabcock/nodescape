@@ -138,23 +138,37 @@ class Render {
     }
 
     drawNode(node){
+        // Sprite init
         if(!node.sprite) node.sprite = this.createNodeSprite(node);
         if(!node.text) node.text = this.createNodeText(node);
 
+        // Viewport clipping
         let sprite = node.sprite,
-            color = this.game.players[node.owner].color,
+            text = node.text,
             x = node.x * renderConfig.scale,
             y = node.y * renderConfig.scale,
-            size = node.radius * renderConfig.scale * 2,
-            text = node.isSource ? '∞' : this.abbreviateNumber(node.bubbles),
-            textColor = this.getTextColor(color);
+            radius = node.radius * renderConfig.scale;
+        if(x < this.viewport.left - radius || x > this.viewport.right + radius || y < this.viewport.top - radius || y > this.viewport.bottom + radius){
+            sprite.visible = false;
+            text.visible = false;
+            return;
+        }
+        if(!sprite.visible)
+            sprite.visible = true;
+        if(!text.visible)
+            text.visible = true;
 
+        // Update properties
+        let color = this.game.players[node.owner].color,
+            size = radius * 2,
+            textVal = node.isSource ? '∞' : this.abbreviateNumber(node.bubbles),
+            textColor = this.getTextColor(color);
         if(sprite.tint !== color) sprite.tint = color;
         if(sprite.x !== x) sprite.x = x; // TODO could move this to createNodeSprite if desired...
         if(sprite.y !== y) sprite.y = y;
         if(sprite.width !== size) sprite.width = sprite.height = size;
-        if(node.text.text !== text) node.text.text = text;
-        if(node.text.style.fill !== textColor) node.text.style.fill = textColor;
+        if(text.text !== textVal) text.text = textVal;
+        if(text.style.fill !== textColor) text.style.fill = textColor;
     }
 
     // Edges
