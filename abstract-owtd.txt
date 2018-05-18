@@ -510,20 +510,39 @@ Bare minimum gamestate:
 	}
 }
 
+KEY
+- = TODO
+X = DONE
+\ = IN PROGRESS
+> = DELAY
+
 TODO for alpha release:
 - determine world size (benchmark server network timing)
-- bugfixes (see below)
-- graphics optimization (if needed)
-	- clip nodes outside viewport
+\ bugfixes (see below)
+> graphics optimization (if needed)
+	X clip nodes outside viewport
 	- bitmpatext
-- network optimization
+	- stop rendering bubbles at a certain zoom level (width)
+> client optimization
+	- client only updates nodes within viewport (custom update method)
+		- abstract viewport clipping logic to a re-usable function
+> network optimization (postpone until post-alpha??)
 	- client sends viewport back
 	- server sends only entities in viewport
-- join game ui + logic (pick username and color, pick spawnpoint)
-- leave game UI  + logic -> return all nodes to server
+	- batch and/or rate-limit client updates
+- join game
+	- client UI: name + color picker
+	- client UI: quick GIF tutorial
+	- server logic: reject duplicate usernames
+		- client logic: handle username rejection
+	- server logic: assign spawnpoint close to center
+		- client logic: center viewport on assigned spawn
+- leave game UI
+	- client UI: pre-exit message
+	- server logic: return all nodes to server
+	- server logic: delete game.players[clientName]
 - host backend
 X pick name
-- ??? super simple tutorial?
 
 BUGS:
 X destroy bubbles when edge removed
@@ -538,6 +557,25 @@ X arrowhead rotating according to mouse pos rather than node center
 X arrowhead not disappearing during dragMode from existing edge
 - arrowhead a little too close to node (related to sprite anchor)
 X arrowhead not snapping to node it already exists on (dragging existing edge)
-X begining to remove an edge but then cancelling kills all bubbles
+X beginning to remove an edge but then cancelling kills all bubbles
 
 0.5hr bugfixes
+0.5hr render clipping
+
+Future QOL ideas
+- suicide/restart (without reloading page)
+- locate/center viewport on own nodes
+- stats
+- re-show tutorial
+- feedback
+- donate
+
+server connect protocol draft:
+-client connects
+-server sends full gamestate and starts sending updates
+-client sends spawn request with username, color
+-server validates and sends back either ID of assigned spawn OR reject msg
+
+PROBLEM: sprite objects attached directly to game objects (will be serialized and sent :/)
+- solution 1: custom serializer which strips out certain properties (builds separate obj for each client, each tick)
+- solution 2: move sprites to a parallel list maintained in render class (maybe keyed by object? is this where WeakMap/WeakSet is used?)

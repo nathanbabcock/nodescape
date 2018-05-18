@@ -400,6 +400,4 @@ class Render {
         this.dragTo = null;
         this.dragToOld = null;
     }
-
 }
-
