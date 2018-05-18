@@ -285,7 +285,7 @@ class Render {
             angle = Math.atan2(toy-fromy,tox-fromx);
 
         // Snap to eligible nodes
-        if(this.dragTo && !this.dragFrom.edges.find(a => a.to === this.dragTo.id && !a.dead) && color !== 0xFF0000){
+        if(this.dragTo && !this.dragFrom.edges.find(a => a.to === this.dragTo.id && !a.dead && a.to !== this.dragToOld.id) && color !== 0xFF0000){
             // Redo calculations whee
             to = this.dragTo;
             dist = this.game.distance(from, to);

@@ -537,4 +537,4 @@ X abbreviate long text
 X arrowhead rotating according to mouse pos rather than node center
 X arrowhead not disappearing during dragMode from existing edge
 - arrowhead a little too close to node
-- arrowhead not snapping to node it already exists on (dragging existing edge)
+X arrowhead not snapping to node it already exists on (dragging existing edge)
