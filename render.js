@@ -282,8 +282,8 @@ class Render {
         let gfx = this.edgeGfx;
         if(!this.selectedNode) return;
         this.game.getNeighbors(this.selectedNode).forEach(node => {
-            if(this.selectedNode.edges.find(edge => edge.to === node.id)) return; // Edge already exists!
-            if(node.edges.find(edge => edge.to === this.selectedNode.id)) return; // Edge already exists!
+            if(this.selectedNode.edges.find(edge => edge.to === node.id && !edge.dead)) return; // Edge already exists!
+            if(node.edges.find(edge => edge.to === this.selectedNode.id && !edge.dead)) return; // Edge already exists!
             if(node === this.dragFrom) return;
             gfx.lineStyle(1, 0xd6d6d6)
                 .moveTo(this.selectedNode.x * renderConfig.scale, this.selectedNode.y * renderConfig.scale)
