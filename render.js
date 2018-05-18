@@ -295,6 +295,7 @@ class Render {
             tox = (to.x - delta_x * to_ratio) * renderConfig.scale;
             toy = (to.y - delta_y * to_ratio) * renderConfig.scale;
             color = (this.dragFrom.owner === this.dragTo.owner) ? this.game.players[this.dragFrom.owner].color : 0x010101;
+            angle = Math.atan2(toy-fromy,tox-fromx);
         }
 
         // Arrowhead
