@@ -225,6 +225,8 @@ class Game {
             // Check collision with node
             if(bubble.pos >= edgeLength){
                 // console.log("Bubble hit node");
+                if(toNode.isSource)
+                    ;// do nothing
                 if(bubble.owner === toNode.owner)
                     toNode.bubbles++;
                 else if(toNode.bubbles <= 0){
