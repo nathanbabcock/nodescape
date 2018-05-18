@@ -25,6 +25,11 @@ class Render {
         return game;
     }
 
+    // https://24ways.org/2010/calculating-color-contrast/
+    getContrast50(hexcolor){
+        return (parseInt(hexcolor, 16) > 0xffffff/2) ? 0x000000:0xffffff;
+    }
+
     initPixi(){
         // Root app
         this.app = new PIXI.Application({
@@ -98,6 +103,10 @@ class Render {
         return sprite;
     }
 
+    getTextColor(bg){
+        return (bg > 0xffffff/2) ? '#000000':'#ffffff';
+    }
+
     createNodeText(node){
         let style = new PIXI.TextStyle({
             fontFamily: 'Arial',
@@ -120,13 +129,15 @@ class Render {
             x = node.x * renderConfig.scale,
             y = node.y * renderConfig.scale,
             size = node.radius * renderConfig.scale * 2,
-            text = node.isSource ? '∞' : node.bubbles;
+            text = node.isSource ? '∞' : node.bubbles,
+            textColor = this.getTextColor(color);
 
         if(sprite.tint !== color) sprite.tint = color;
         if(sprite.x !== x) sprite.x = x; // TODO could move this to createNodeSprite if desired...
         if(sprite.y !== y) sprite.y = y;
         if(sprite.width !== size) sprite.width = sprite.height = size;
         if(node.text.text !== text) node.text.text = text;
+        if(node.text.style.fill !== textColor) node.text.style.fill = textColor;
     }
 
     // Edges

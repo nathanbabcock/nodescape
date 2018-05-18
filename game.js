@@ -61,7 +61,7 @@ class Game {
                 color: 0x707070
             },
             "excalo": {
-                color: 0x4286f4
+                color: parseInt(chance.color({format: '0x'}))//0x4286f4
             }
         };
         this.spawn_cooldown = 0;
