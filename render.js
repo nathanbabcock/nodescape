@@ -1,6 +1,7 @@
 // Render Config
 const renderConfig = {
-    scale:25
+    scale:25,
+    arrowhead_size:20
 };
 
 class Render {
@@ -56,7 +57,7 @@ class Render {
 
         // Arrowhead
         gfx = new PIXI.Graphics();
-        let tox = 0, toy = 0, headlen = 20, angle = 0;
+        let tox = 0, toy = 0, headlen = renderConfig.arrowhead_size, angle = 0;
         gfx.clear();
         gfx.beginFill(0xffffff);
         gfx.moveTo(tox, toy);
@@ -184,22 +185,26 @@ class Render {
     }
     
     drawEdge(edge){
+        // Sprite lifecycle
         if(edge.dead && edge.sprite) edge.sprite.visible = false;
         if(edge.dead) return;
         if(!edge.sprite) edge.sprite = this.createEdgeSprite(edge);
 
-        let from = this.game.nodes[edge.from],
-            to = this.game.nodes[edge.to];
+        // Viewport clipping
+        // TODO: determine if any part of the edge intersects the viewport
 
+        // DragMode
+        let from = this.game.nodes[edge.from],
+            to = this.game.nodes[edge.to],
+            sprite = edge.sprite;
         if(this.dragFrom === from && this.dragToOld === to){
-            edge.sprite.visible = false;
+            sprite.visible = false;
             return;
         }
-        if(!edge.sprite.visible) edge.sprite.visible = true;
+        if(!sprite.visible) sprite.visible = true;
 
         // Calculate position, angle, color
-        let sprite = edge.sprite,
-            gfx = this.edgeGfx,
+        let gfx = this.edgeGfx,
             color = (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101,
             dist = this.game.distance(from, to),
             delta_x = to.x - from.x,
@@ -233,13 +238,14 @@ class Render {
     }
 
     drawBubble(bubble, edge){
+        // Sprite lifecycle
         if(!bubble.sprite) bubble.sprite = this.createBubbleSprite(bubble);
         if(bubble.dead)
             bubble.sprite.visible = false;
         else if(!bubble.dead && !bubble.sprite.visible)
             bubble.sprite.visible = true;
         if(bubble.dead) return;
-        
+
         // Interpolate movement between grid squares
         let delta_time = Date.now() - this.game.last_update,
              tick_ratio = delta_time / this.game.config.tick_rate,
@@ -260,6 +266,16 @@ class Render {
             color = this.game.players[bubble.owner].color,
             size = radius * 2;
         
+        // Viewport clipping
+        // TODO slightly better to clip before all the calculations above
+        if(x < this.viewport.left - radius || x > this.viewport.right + radius || y < this.viewport.top - radius || y > this.viewport.bottom + radius){
+            sprite.visible = false;
+            return;
+        }
+        if(!sprite.visible)
+            sprite.visible = true;
+
+        // Update
         if(sprite.tint !== color) sprite.tint = color;
         if(sprite.x !== x) sprite.x = x;
         if(sprite.y !== y) sprite.y = y;
