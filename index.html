@@ -21,6 +21,7 @@
                 client = new Client("excalo");
             render.setGame(game);
             client.setGame(game);
+            client.setRender(render);
             client.connect("ws://localhost:9999");
                 
             // let src = new Node(5, 5, true);

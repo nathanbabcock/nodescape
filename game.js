@@ -309,6 +309,33 @@ class Game {
         this.notify("removeEdge", player, fromId, toId);
         return true;
     }
+
+    getSpawn(){
+        const SPAWN_POSSIBILITIES = 5;
+        let center = {x: this.config.width / 2, y: this.config.height / 2};
+        let centerNodes = [];
+        this.nodes.filter(node => node.isSource && node.owner === 'server').forEach(node => {
+            let dist = this.distance(center, node);
+            if(centerNodes.length === 0){
+                centerNodes.push(node);
+                return;
+            }
+            for(var i = 0; i < centerNodes.length; i++){
+                if(centerNodes[i].dist > dist){
+                    centerNodes.splice(i, 0, {node:node, dist:dist});
+                    if(centerNodes.length > SPAWN_POSSIBILITIES)
+                        centerNodes.splice(SPAWN_POSSIBILITIES, centerNodes.length - SPAWN_POSSIBILITIES);
+                    break;
+                }
+            }
+        });
+
+        // No available spawns!
+        if(centerNodes.length === 0)
+            return false;
+
+        return chance.pickone(centerNodes);
+    }
 }
 
 // Node

@@ -23,15 +23,19 @@ class Client {
         return game;
     }
 
+    setRender(render){
+        this.render = render;
+    }
+
     connect(url){
         let ws = this.ws = new WebSocket(url);
         ws.onopen = () => {
             console.log("Succesfully connected to websocket server")
-            ws.send(this.serialize({
-                msgtype: "playerconnect",
-                username: this.username,
-                color: this.game.players[this.username].color//0x01F45D,
-            }));
+            // ws.send(this.serialize({
+            //     msgtype: "playerconnect",
+            //     username: this.username,
+            //     color: this.game.players[this.username].color//0x01F45D,
+            // }));
         }
         ws.onmessage = this.handleServerMessage.bind(this);
     }
@@ -44,18 +48,47 @@ class Client {
         this.ws.send(this.serialize(obj));
     }
 
+    spawn(username, color){
+        this.send({
+            msgtype: "spawnplayer",
+            username: username,
+            color: color
+        });
+    }
+
     handleServerMessage(event){
-        let gamestate = JSON.parse(event.data);
-        _.merge(game, gamestate);
+        let msg = this.deserialize(event.data);
+        // console.log(msg);
+
+        let handlers = {};
+
+        handlers.spawn_success = () => {
+            let spawn = this.game.nodes[msg.spawn];
+            if(this.render)
+                this.render.player = msg.username;
+            this.render.viewport.moveCenter(spawn.x * renderConfig.scale, spawn.y * renderConfig.scale);
+            console.log(`Succesfully spawned at ${msg.spawn}`);
+        }
+
+        if(msg.msgtype && handlers[msg.msgtype] === undefined){
+            console.error(`Unrecognized server msgtype ${msg.msgtype}`);
+            return;
+        }
+
+        if(msg.msgtype){
+            handlers[msg.msgtype]();
+            return;
+        }
+
+        // Default action: merge gamestate
+        _.merge(this.game, msg);
         // console.log(gamestate);
 
         // Handle deletions
-        this.game.nodes.splice(gamestate.nodes.length);
-        for(var node = 0; node < this.game.nodes.length; node++){
-            this.game.nodes[node].edges.splice(gamestate.nodes[node].edges.length);
-            // TODO also splice bubbles?
-        }
-        //TODO also need to clean these up from the renderer
+        // this.game.nodes.splice(gamestate.nodes.length);
+        // for(var node = 0; node < this.game.nodes.length; node++){
+        //     this.game.nodes[node].edges.splice(gamestate.nodes[node].edges.length);
+        // }
     }
 
     deserialize(data){

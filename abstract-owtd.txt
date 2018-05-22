@@ -580,3 +580,9 @@ PROBLEM: sprite objects attached directly to game objects (will be serialized an
 - solution 1: custom serializer which strips out certain properties (builds separate obj for each client, each tick)
 	- hurts memory on the server side a little bit; O(num_clients)
 - solution 2: move sprites to a parallel list maintained in render class (maybe keyed by object? is this where WeakMap/WeakSet is used?)
+
+5/22
+
+1hr server-client protocol
+
+bug: can't make edges
