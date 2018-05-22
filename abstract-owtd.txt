@@ -585,4 +585,6 @@ PROBLEM: sprite objects attached directly to game objects (will be serialized an
 
 1hr server-client protocol
 
-bug: can't make edges
+BUG: can't make edges FIXED
+
+BUG: client render loop may be out of sync with server loop (hitching every second)

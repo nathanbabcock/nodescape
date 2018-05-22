@@ -6,7 +6,7 @@ class Client {
     setGame(game){
         if(this.gameloop) clearInterval(this.gameloop);
         this.game = game;
-        this.gameloop = setInterval(this.game.update.bind(this.game), this.game.config.tick_rate);
+        //this.gameloop = setInterval(this.game.update.bind(this.game), this.game.config.tick_rate);
 
         // Game listeners
         this.game.on("createEdge", (player, from, to) => { this.send({
@@ -81,6 +81,8 @@ class Client {
         }
 
         // Default action: merge gamestate
+        if(!this.gameloop)
+            this.gameloop = setInterval(this.game.update.bind(this.game), this.game.config.tick_rate);
         _.merge(this.game, msg);
         // console.log(gamestate);
 
