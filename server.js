@@ -18,22 +18,22 @@ class Server{
         console.log("Initializing server game instance");
 
         let game = this.game = new Game();
-        //this.game.procgen();
+        this.game.procgen();
 
-        let src = new Node(5, 5, true);
-            src.id = game.nodes.length;
-            //src.owner = "excalo";
-            game.nodes.push(src);
+        // let src = new Node(5, 5, true);
+        //     src.id = game.nodes.length;
+        //     //src.owner = "excalo";
+        //     game.nodes.push(src);
     
-            let dest = new Node(5, 15, false);
-            dest.id = game.nodes.length;
-            //dest.owner = "excalo";
-            game.nodes.push(dest);
+        //     let dest = new Node(5, 15, false);
+        //     dest.id = game.nodes.length;
+        //     //dest.owner = "excalo";
+        //     game.nodes.push(dest);
     
-            let dest2 = new Node(15, 15, false);
-            dest2.id = game.nodes.length;
-            //dest2.owner = "excalo";
-            game.nodes.push(dest2);
+        //     let dest2 = new Node(15, 15, false);
+        //     dest2.id = game.nodes.length;
+        //     //dest2.owner = "excalo";
+        //     game.nodes.push(dest2);
 
         this.startGameLoop();
     }
@@ -64,6 +64,11 @@ class Server{
         wss.on('connection', ws => {
             console.log("Client connected.");
             ws.on('message', data => this.handleClientMsg(data, ws));
+            ws.on('close', () => {
+                console.log(`Client ${ws.username} disconnected`);
+                this.game.removePlayer(ws.username);
+                // TODO pongs with timeout to detect broken connections
+            });
         });
     }
 

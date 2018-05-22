@@ -588,3 +588,13 @@ PROBLEM: sprite objects attached directly to game objects (will be serialized an
 BUG: can't make edges FIXED
 
 BUG: client render loop may be out of sync with server loop (hitching every second)
+
+TODO:
+- client connect UI
+- status UI (color, username, game name)
+- spawn FAB
+- @work: game.removePlayer, server handle player leave
+- restart game FAB?
+- client leave UI
+- AWS instance
+	- Docker?

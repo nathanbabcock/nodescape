@@ -4,8 +4,8 @@ if(typeof module !== "undefined"){
 }
 
 const config = {
-    width: 1000,
-    height: 1000,
+    width: 50,
+    height: 50,
     max_edge: 10,
     min_edge: 5,
     source_freq: 0.1,
@@ -335,6 +335,21 @@ class Game {
             return false;
 
         return chance.pickone(centerNodes);
+    }
+
+    removePlayer(player){
+        delete this.players[player];
+
+        this.nodes.forEach(node => {
+            if(node.owner === player){
+                node.owner = 'server';
+                node.bubbles = 0;
+                node.edges.forEach(edge => {
+                    edge.dead = true;
+                    edge.bubbles.forEach(bubble =>bubble.dead = true);
+                });
+            }
+        });
     }
 }
 
