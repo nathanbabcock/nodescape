@@ -598,3 +598,6 @@ TODO:
 - client leave UI
 - AWS instance
 	- Docker?
+
+
+1hr server disconnect, aws setup
