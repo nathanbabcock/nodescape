@@ -601,3 +601,7 @@ TODO:
 
 
 1hr server disconnect, aws setup
+
+5/23
+
+1.5hr debugging aws websockets
