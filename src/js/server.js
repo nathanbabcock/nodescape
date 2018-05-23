@@ -76,6 +76,7 @@ class Server{
                 this.game.removePlayer(ws.username);
                 // TODO pongs with timeout to detect broken connections
             });
+            this.sendFullGamestate(ws);
         });
     }
 
