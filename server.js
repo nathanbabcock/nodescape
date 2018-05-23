@@ -1,4 +1,5 @@
 const WS = require('ws'),
+    http = require('http'),
     _game = require('./game'),
     Game = _game.Game,
     Node = _game.Node,
@@ -6,7 +7,7 @@ const WS = require('ws'),
     Bubble = _game.Bubble;
 
 class Server{
-    constructor(port=9999){
+    constructor(port=8081){
         this.port = port;
         console.log("Starting server");
         //this.initGame();
@@ -49,7 +50,9 @@ class Server{
     initWebsockets(){
         console.log("Initializing websockets");
 
-        let wss = this.wss = new WS.Server({ port: this.port });
+        let server = this.server = new http.createServer();
+        let wss = this.wss = new WS.Server({ server });
+        server.listen(this.port);
         
         // Broadcast to all.
         wss.broadcast = function broadcast(data) {
