@@ -1,5 +1,6 @@
 const WS = require('ws'),
-    http = require('http'),
+    https = require('https'),
+    fs = require('fs'),
     _game = require('./game'),
     Game = _game.Game,
     Node = _game.Node,
@@ -50,7 +51,10 @@ class Server{
     initWebsockets(){
         console.log("Initializing websockets");
 
-        let server = this.server = new http.createServer();
+        let server = this.server = new https.createServer({
+            cert: fs.readFileSync('cert.pem'),
+            key: fs.readFileSync('key.pem')
+          });
         let wss = this.wss = new WS.Server({ server });
         server.listen(this.port);
         
