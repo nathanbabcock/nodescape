@@ -1,8 +1,8 @@
 {
-  "name": "abstract-owtd",
-  "version": "1.0.0",
+  "name": "nodescape",
+  "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/js/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/js/server.js"

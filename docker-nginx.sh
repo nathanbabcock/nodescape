@@ -1,7 +1,7 @@
 #!/bin/bash
 
-docker rm -f nginx
-docker run -d \
+sudo docker rm -f nginx
+sudo docker run -d \
     --name nginx \
     --restart=always \
     -p 80:80 \
