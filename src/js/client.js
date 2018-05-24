@@ -126,6 +126,7 @@ class Client {
     deserialize(data){
         // TODO: msgpack
         // TODO: move this to a common Network class
+        console.log(`websocket msg is ${data.length} bytes`);
         return JSON.parse(data);
     }
 

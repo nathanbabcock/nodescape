@@ -4,8 +4,8 @@ if(typeof module !== "undefined"){
 }
 
 const config = {
-    width: 50,
-    height: 50,
+    width: 1000,
+    height: 1000,
     max_edge: 10,
     min_edge: 5,
     source_freq: 0.1,

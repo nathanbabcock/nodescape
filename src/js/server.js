@@ -54,8 +54,10 @@ class Server{
         console.log("Initializing websockets");
 
         let server = this.server = new https.createServer({
-            cert: fs.readFileSync('cert/cert-local.pem'),
-            key: fs.readFileSync('cert/key-local.pem')
+            // cert: fs.readFileSync('cert/cert-local.pem'),
+            // key: fs.readFileSync('cert/key-local.pem')
+            cert: fs.readFileSync('cert/fullchain.pem'),
+            key: fs.readFileSync('cert/privkey.pem')
           });
         let wss = this.wss = new WS.Server({ server });
         server.listen(this.port);

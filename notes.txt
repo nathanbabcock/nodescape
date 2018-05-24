@@ -631,6 +631,7 @@ TODO
 - Clamp max zoom, pan
 X nodescape.io SSL cert
 - client handle server disconnection (another timeout?)
+- devops: configure node environments to easily switch between local server and remote server
 
 Server optimization
 - It is not necessary to send all entities to all players
