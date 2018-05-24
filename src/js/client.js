@@ -56,6 +56,20 @@ class Client {
         });
     }
 
+    startGameLoop(){
+        this.gameloop = setInterval(() => {
+            this.game.update();
+            if(this.game.spawn_cooldown <= 1)
+                this.send({
+                    msgtype: "viewport",
+                    top: this.render.viewport.top / renderConfig.scale,
+                    right: this.render.viewport.right / renderConfig.scale,
+                    bottom: this.render.viewport.bottom / renderConfig.scale,
+                    left: this.render.viewport.left / renderConfig.scale,
+                });
+        }, this.game.config.tick_rate);
+    }
+
     handleServerMessage(event){
         let msg = this.deserialize(event.data);
         // console.log(msg);
@@ -80,9 +94,11 @@ class Client {
             return;
         }
 
-        // Default action: merge gamestate
+        // Start game loop (roughly in sync with server game loop)
         if(!this.gameloop)
-            this.gameloop = setInterval(this.game.update.bind(this.game), this.game.config.tick_rate);
+            this.startGameLoop();
+
+        // Default action: merge gamestate
         _.merge(this.game, msg);
         // console.log(gamestate);
 

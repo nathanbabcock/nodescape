@@ -54,8 +54,8 @@ class Server{
         console.log("Initializing websockets");
 
         let server = this.server = new https.createServer({
-            cert: fs.readFileSync('cert/fullchain.pem'),
-            key: fs.readFileSync('cert/privkey.pem')
+            cert: fs.readFileSync('cert/cert-local.pem'),
+            key: fs.readFileSync('cert/key-local.pem')
           });
         let wss = this.wss = new WS.Server({ server });
         server.listen(this.port);
@@ -149,6 +149,12 @@ class Server{
             spawn.owner = msg.username;
             ws.username = msg.username;
             this.send(ws, {msgtype: 'spawn_success', username: msg.username, spawn:spawn.id});
+        };
+
+        handlers.viewport = msg => {
+            ws.viewport = msg;
+            ws.lastupdate = new Date();
+            //console.log("Nodes in viewport this frame:", this.game.nodes.filter(node => node.x >= ws.viewport.left && node.x <= ws.viewport.right && node.y <= ws.viewport.bottom && node.y >= ws.viewport.top).length);
         };
 
         handlers.colorchange = msg => this.game.players[ws.username].color = msg.color;

@@ -629,6 +629,8 @@ TODO
 - ?? feedback widget
 - Logo (font)
 - Clamp max zoom, pan
+X nodescape.io SSL cert
+- client handle server disconnection (another timeout?)
 
 Server optimization
 - It is not necessary to send all entities to all players
@@ -649,3 +651,12 @@ Server optimization
 	- Cache the serialized nodes per tick
 	- Instead of one monolithic gamestate you get 100+ mini streaming updates
 	- Only question is the ws overhead
+
+2hr ssl
+
+Server optimization
+- Client sends their viewport rect to server every second
+	- this also functions as a ping, and a timeout can check for expired clients and remove them
+- every second, server serializes *individual nodes* and caches them
+	- for each client, for each node: checks if node is in viewport, and if so sends the serialized copy over ws
+	- also checks the timestamp of last ack (viewport update) and times out dead clients
