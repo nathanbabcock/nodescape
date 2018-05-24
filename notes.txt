@@ -609,3 +609,43 @@ TODO:
 1hr dns
 1hr docker
 1hr nginx
+
+5/24
+
+TODO
+- client join UI ("NodeScape Alpha" + name + color pick)
+- node owner name on hover
+	- canvas or DOM?
+- top status bar with your username + color + name "NodeScape Alpha"
+	- ?? button to hide bar
+	- ?? dropdown menu with:
+		- restart
+		- locate
+- ?? server highscores?
+	- Nodes owned vs Bubbles owned
+- leave game ui
+- ?? server geo optimization
+	- chunks
+- ?? feedback widget
+- Logo (font)
+- Clamp max zoom, pan
+
+Server optimization
+- It is not necessary to send all entities to all players
+- It is not efficient to build and serialize a separate gamestate for every player
+- Break the data structure in the core game model into geometrically discrete chunks
+	- Provide simple query returning which chunks correspond to a given query rect
+- Each tick, all chunks are serialized (if needed; cached for 1 tick)
+- Clients are sent only chunks that are relevant (an array of relevant chunks)
+- Playerlist is sent separately
+	- No geo optimization
+- BUG: Render resources are still attached to game resources (?)
+	- No, server renders nothing so nothing gets attached
+- What is the optimal chunk size (and why?)
+	- Half an avg screen size?
+	- ~100 units? (10-20 nodes?)
+- Before implementing full chunk data struct, maybe trying streaming individual nodes over ws?
+	- Imitating a chunk size of n = 1
+	- Cache the serialized nodes per tick
+	- Instead of one monolithic gamestate you get 100+ mini streaming updates
+	- Only question is the ws overhead

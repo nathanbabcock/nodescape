@@ -43,8 +43,10 @@ class Server{
     startGameLoop(){
         this.gameloop = setInterval(() => {
             this.game.update.bind(this.game)();
-            if(this.game.spawn_cooldown <= 1)
-                this.wss.clients.forEach(this.sendFullGamestate, this);
+            if(this.game.spawn_cooldown <= 1){
+                let serialized = this.serialize(this.game);
+                this.wss.clients.forEach(client => client.send(serialized));
+            }
         }, this.game.config.tick_rate);
     }
 
@@ -57,14 +59,6 @@ class Server{
           });
         let wss = this.wss = new WS.Server({ server });
         server.listen(this.port);
-        
-        // Broadcast to all.
-        wss.broadcast = function broadcast(data) {
-            wss.clients.forEach(client => {
-                if (client.readyState === WebSocket.OPEN)
-                    client.send(data);
-            });
-        };
         
         wss.on('open', ()=>console.log(`Websocket server running on port ${this.port}`));
 
