@@ -6,6 +6,7 @@ class Client {
     setGame(game){
         if(this.gameloop) clearInterval(this.gameloop);
         this.game = game;
+        this.startGameLoop();
         //this.gameloop = setInterval(this.game.update.bind(this.game), this.game.config.tick_rate);
 
         // Game listeners
@@ -57,17 +58,31 @@ class Client {
     }
 
     startGameLoop(){
+        if(this.gameloop) clearInterval(this.gameloop);
         this.gameloop = setInterval(() => {
             this.game.update();
-            if(this.game.spawn_cooldown <= 1)
-                this.send({
-                    msgtype: "viewport",
-                    top: this.render.viewport.top / renderConfig.scale,
-                    right: this.render.viewport.right / renderConfig.scale,
-                    bottom: this.render.viewport.bottom / renderConfig.scale,
-                    left: this.render.viewport.left / renderConfig.scale,
-                });
+            // if(this.game.spawn_cooldown <= 1)
+            //     this.send({
+            //         msgtype: "viewport",
+            //         top: this.render.viewport.top / renderConfig.scale,
+            //         right: this.render.viewport.right / renderConfig.scale,
+            //         bottom: this.render.viewport.bottom / renderConfig.scale,
+            //         left: this.render.viewport.left / renderConfig.scale,
+            //     });
         }, this.game.config.tick_rate);
+    }
+
+    startClientUpdateLoop(){
+        if(this.clientupdateloop) clearInterval(this.clientupdateloop);
+        this.clientupdateloop = setInterval(() => {
+            this.send({
+                msgtype: "viewport",
+                top: this.render.viewport.top / renderConfig.scale,
+                right: this.render.viewport.right / renderConfig.scale,
+                bottom: this.render.viewport.bottom / renderConfig.scale,
+                left: this.render.viewport.left / renderConfig.scale,
+            });
+        }, 1000);
     }
 
     handleServerMessage(event){
@@ -94,9 +109,8 @@ class Client {
             return;
         }
 
-        // Start game loop (roughly in sync with server game loop)
-        if(!this.gameloop)
-            this.startGameLoop();
+        // Re-start gameloop to sync with server
+        this.startGameLoop();
 
         // Default action: merge gamestate
         _.merge(this.game, msg);

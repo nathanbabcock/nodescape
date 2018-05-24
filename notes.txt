@@ -660,3 +660,5 @@ Server optimization
 - every second, server serializes *individual nodes* and caches them
 	- for each client, for each node: checks if node is in viewport, and if so sends the serialized copy over ws
 	- also checks the timestamp of last ack (viewport update) and times out dead clients
+
+0.5hr netcode optimization
