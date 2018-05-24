@@ -1,3 +1,7 @@
+# certbot
+cert/privkey.pem
+cert/fullchain.pem
+
 # Logs
 logs
 *.log
