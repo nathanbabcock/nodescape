@@ -311,31 +311,21 @@ class Game {
         return true;
     }
 
+    // Randomly selects form a set of available source nodes closest to the center of the map (forces players into proximity)
     getSpawn(){
-        const SPAWN_POSSIBILITIES = 5;
+        const SPAWN_POSSIBILITIES = 10;
         let center = {x: this.config.width / 2, y: this.config.height / 2};
-        let centerNodes = [];
-        this.nodes.filter(node => node.isSource && node.owner === 'server').forEach(node => {
-            let dist = this.distance(center, node);
-            if(centerNodes.length === 0){
-                centerNodes.push(node);
-                return;
-            }
-            for(var i = 0; i < centerNodes.length; i++){
-                if(centerNodes[i].dist > dist){
-                    centerNodes.splice(i, 0, {node:node, dist:dist});
-                    if(centerNodes.length > SPAWN_POSSIBILITIES)
-                        centerNodes.splice(SPAWN_POSSIBILITIES, centerNodes.length - SPAWN_POSSIBILITIES);
-                    break;
-                }
-            }
-        });
+        let centerNodes = this.nodes
+            .filter(node => node.isSource && node.owner === 'server')
+            .map(node => { return {node, dist: this.distance(center, node)}; })
+            .sort((a, b) => a.dist - b.dist)
+            .slice(0, SPAWN_POSSIBILITIES);
 
         // No available spawns!
         if(centerNodes.length === 0)
             return false;
 
-        return chance.pickone(centerNodes);
+        return chance.pickone(centerNodes).node;
     }
 
     removePlayer(player){

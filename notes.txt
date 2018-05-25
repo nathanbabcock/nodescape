@@ -721,10 +721,16 @@ X enter does not submit game start form (add onsubmit())
 X refactor ui to ui.js
 - show node owner on hover
 - Google fonts
-- callback handlers for username taken, etc
+/ callback handlers for username taken, etc
 - ui handlers for server disconnect
 - disable text selection on modal
 - devops: configure node environments to easily switch between local server and remote server
 - color picker
+- color scheme for UI/modal
+- sexy third party modal?
+- sexy third party toasts?
+> minimize spawn modal to FAB
+> 'locate me' google maps-style FAB
 
 0.5hr netcode optimization
+0.5hr UI
