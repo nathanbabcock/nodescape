@@ -704,7 +704,7 @@ TODOlist (compiled from yesterday's notes)
 - player spawns not randomized (array length always === 1)
 	- hold up maybe its fine actually...
 	- but wait they seem too spread...
-- source nodes *still* growing
+/ source nodes *still* growing
 - can pick white as a color (enforce maximum brightness)
 - also zoom in on spawn select
 - fix consistent jitter
@@ -716,7 +716,7 @@ TODOlist (compiled from yesterday's notes)
 - enter does not submit game start form (add onsubmit())
 > clicking non-owned nodes does not drag the viewport (? below a certain zoom lvl?)
 - nodes still eclipse
-- network optimization (send only nodes in viewport, > 90% bandwidth savings)
+/ network optimization (send only nodes in viewport, > 90% bandwidth savings)
 - endgame ui
 - refactor ui to ui.js
 - show node owner on hover
@@ -725,5 +725,6 @@ TODOlist (compiled from yesterday's notes)
 - ui handlers for server disconnect
 - disable text selection on modal
 - devops: configure node environments to easily switch between local server and remote server
+- color picker
 
 0.5hr netcode optimization

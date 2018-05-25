@@ -28,6 +28,10 @@ class Client {
         this.render = render;
     }
 
+    setUI(ui){
+        this.ui = ui;
+    }
+
     connect(url){
         let ws = this.ws = new WebSocket(url);
         ws.onopen = () => {
@@ -99,7 +103,7 @@ class Client {
             this.render.viewport.moveCenter(spawn.x * renderConfig.scale, spawn.y * renderConfig.scale);
             //spawn.sprite.tint = this.game.players[msg.username].color;
             console.log(`Succesfully spawned at ${msg.spawn}`);
-            document.getElementById("spawn").style.display="none"; // TODO THIS IS UI
+            if(this.ui) this.ui.onSpawn();
         }
 
         if(msg.msgtype && handlers[msg.msgtype] === undefined){
@@ -138,12 +142,6 @@ class Client {
         return JSON.stringify(data);
     }
 
-    //// TODO: where do these UI functions go??
-    joinGameButton(){
-        let name = document.getElementById("name").value,
-            color = parseInt(document.getElementById("color").value, 16);
-        this.spawn(name, color);
-    }
 }
 
 // let client = new Client("excalo");

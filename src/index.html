@@ -11,15 +11,32 @@
     <script src="js/game.js"></script>
     <script src="js/render.js"></script>
     <script src="js/client.js"></script>
+    <script src="js/ui.js"></script>
     <script src="js/pixi.js"></script>
     <script src="js/viewport-browser.js"></script>
     <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
+    <div id="spawn">
+            <h1>NodeScape <span>Alpha</span></h1>
+            <form name="spawn" onsubmit="event.preventDefault(); return ui.submitSpawn()">
+                <div class="row">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" id="name" value="player1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                </div>
+                <div class="row">
+                    <label for="color">Color:</label>
+                    <input type="text" name="color" id="color" value="0x0000ff" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                </div>
+                <button type="submit">Join Game</button>
+            </form>
+        </div>
+
     <script>
         let render = new Render(),
             game = new Game(),
-            client = new Client("excalo");
+            client = new Client("excalo"),
+            ui = new UI(client);
         render.setGame(game);
         client.setGame(game);
         client.setRender(render);
@@ -45,17 +62,5 @@
 
         // game.printmap();
     </script>
-    <div id="spawn">
-        <h1>NodeScape <span>Alpha</span></h1>
-        <div class="row">
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" value="player1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-        </div>
-        <div class="row">
-            <label for="color">Color:</label>
-            <input type="text" name="color" id="color" value="0x0000ff" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-        </div>
-        <button onClick="client.joinGameButton()">Join Game</button>
-    </div>
 </body>
 </html>
