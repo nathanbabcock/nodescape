@@ -663,3 +663,37 @@ Server optimization
 	- also checks the timestamp of last ack (viewport update) and times out dead clients
 
 0.5hr netcode optimization
+
+0.5hr @home graphics tweaks
+
+BUG: player spawns not randomized (array length always === 1)
+- hold up maybe its fine actually...
+- but wait they seem too spread...
+
+BUG: source nodes *still* growing
+
+BUG: can pick white as a color (enforce maximum brightness)
+
+BUG: also zoom in on spawn select
+
+BUG: consistent jitter
+
+BUG: spawns are way too separated
+
+BUG: nodes are too far apart on avg
+
+probably need a restart button
+
+FEATURE: autoscrolling (and zooming?) camera pre-join? or focus on any content already there?
+
+FEATURE: LOD to fix the gross antialiasing?
+
+MINOR FEATURE: client-side inject the right color into the spawn before the server update comes
+
+MINOR BUG: enter does not submit game start form (add onsubmit())
+
+MINOR FEATURE: clicking non-owned nodes does not drag the viewport (? below a certain zoom lvl?)
+
+BUG: nodes still eclipse
+
+0.5hr @home pregame UI

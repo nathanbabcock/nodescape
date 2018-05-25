@@ -13,36 +13,49 @@
     <script src="js/client.js"></script>
     <script src="js/pixi.js"></script>
     <script src="js/viewport-browser.js"></script>
+    <link rel="stylesheet" href="css/style.css"> 
 </head>
 <body>
     <script>
-            let render = new Render(),
-                game = new Game(),
-                client = new Client("excalo");
-            render.setGame(game);
-            client.setGame(game);
-            client.setRender(render);
-            // client.connect("wss://localhost:8081");
-            // client.connect("wss://54.174.27.158:8081");
-            client.connect("wss://nodescape.io:8081");
-            // client.connect("ws://nbabcock-lb-1594337385.us-east-1.elb.amazonaws.com:8081");
-                
-            // let src = new Node(5, 5, true);
-            // src.id = game.nodes.length;
-            // game.nodes.push(src);
-    
-            // let dest = new Node(5, 9, false);
-            // dest.id = game.nodes.length;
-            // game.nodes.push(dest);
-    
-            // let dest2 = new Node(9, 9, false);
-            // dest2.id = game.nodes.length;
-            // game.nodes.push(dest2);
-    
-            // src.edges.push(new Edge(0,1));
-            // dest.edges.push(new Edge(1, 2));
-    
-            // game.printmap();
-        </script>
+        let render = new Render(),
+            game = new Game(),
+            client = new Client("excalo");
+        render.setGame(game);
+        client.setGame(game);
+        client.setRender(render);
+        // client.connect("wss://localhost:8081");
+        // client.connect("wss://54.174.27.158:8081");
+        client.connect("wss://nodescape.io:8081");
+        // client.connect("ws://nbabcock-lb-1594337385.us-east-1.elb.amazonaws.com:8081");
+            
+        // let src = new Node(5, 5, true);
+        // src.id = game.nodes.length;
+        // game.nodes.push(src);
+
+        // let dest = new Node(5, 9, false);
+        // dest.id = game.nodes.length;
+        // game.nodes.push(dest);
+
+        // let dest2 = new Node(9, 9, false);
+        // dest2.id = game.nodes.length;
+        // game.nodes.push(dest2);
+
+        // src.edges.push(new Edge(0,1));
+        // dest.edges.push(new Edge(1, 2));
+
+        // game.printmap();
+    </script>
+    <div id="spawn">
+        <h1>NodeScape <span>Alpha</span></h1>
+        <div class="row">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" value="player1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        </div>
+        <div class="row">
+            <label for="color">Color:</label>
+            <input type="text" name="color" id="color" value="0x0000ff" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        </div>
+        <button onClick="client.joinGameButton()">Join Game</button>
+    </div>
 </body>
 </html>

@@ -85,8 +85,8 @@ class Render {
             .clampZoom({
                 maxWidth:config.width*10,
                 maxHeight:config.height*10,
-                minWidth:config.width,
-                minHeight:config.height
+                minWidth:config.width/3,
+                minHeight:config.height/3
             })
             .moveCenter(config.width * renderConfig.scale / 2, config.height * renderConfig.scale / 2);
         this.app.stage.addChild(this.viewport);
@@ -168,8 +168,7 @@ class Render {
         }
         if(!sprite.visible)
             sprite.visible = true;
-        if(!text.visible)
-            text.visible = true;
+        text.visible = this.viewport.right - this.viewport.left < 5000;
 
         // Update properties
         let color = this.game.players[node.owner].color,
@@ -419,4 +418,5 @@ class Render {
         this.dragTo = null;
         this.dragToOld = null;
     }
+
 }

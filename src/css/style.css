@@ -1,0 +1,51 @@
+#spawn {
+    position:absolute;
+    width: 600px;
+    margin-left: -300px;
+    height: 400px;
+    margin-top: -200px;
+    background-color:white;
+    box-shadow: 0px 0px 5px black;
+    left: 50%;
+    top: 50%;
+    font-size:20px;
+}
+
+#spawn h1{
+    text-align:center;
+}
+
+#spawn span {
+    color: gray;
+}
+
+#spawn .row {
+    width:fit-content;
+    margin:0 auto 20px;
+}
+
+#spawn label {
+    width: 50px;
+    display:inline-block;
+    padding-right:15px;
+    text-align:right;
+}
+
+#spawn input{
+    font-size:20px;
+    padding: 10px;
+}
+
+#spawn button {
+    background-color:green;
+    font-size:24px;
+    padding:20px;
+    /* border:none; */
+    color:white;
+    margin: 0 auto;
+    display:block;
+}
+
+#spawn button:hover {
+    background-color:green;
+}
