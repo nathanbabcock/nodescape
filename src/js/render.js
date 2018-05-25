@@ -40,7 +40,11 @@ class Render {
             width: window.innerWidth - 25,
             height:window.innerHeight - 25,
         });
-        window.addEventListener('resize', () => this.app.renderer.resize(window.innerWidth - 25, window.innerHeight - 25));
+        window.addEventListener('resize', () => {
+            this.app.renderer.resize(window.innerWidth - 25, window.innerHeight - 25);
+            this.viewport.screenWidth = window.innerWidth - 25,
+            this.viewport.screenHeight = window.innerHeight - 25;
+        });
         document.body.appendChild(this.app.view);
         this.app.stage.on("mouseup", this.stopDrag);
         // this.app.view.style.opacity = 0;
@@ -69,14 +73,22 @@ class Render {
 
         // Viewport
         this.viewport = new Viewport({
-            screenWidth: window.innerWidth,
-            screenHeight: window.innerHeight,
-            worldWidth: 1000,
-            worldHeight: 1000
+            screenWidth: window.innerWidth - 25,
+            screenHeight: window.innerHeight - 25,
+            worldWidth: config.width * renderConfig.scale,
+            worldHeight: config.height * renderConfig.scale
         }).drag()
             .wheel()
             .pinch()
-            .decelerate();
+            .decelerate()
+            .clamp({left:true, right:true, top:true, bottom:true})
+            .clampZoom({
+                maxWidth:config.width*10,
+                maxHeight:config.height*10,
+                minWidth:config.width,
+                minHeight:config.height
+            })
+            .moveCenter(config.width * renderConfig.scale / 2, config.height * renderConfig.scale / 2);
         this.app.stage.addChild(this.viewport);
 
         // Layers
