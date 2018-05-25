@@ -701,11 +701,11 @@ BUG: nodes still eclipse
 5/25
 
 TODOlist (compiled from yesterday's notes)
-- player spawns not randomized (array length always === 1)
+X player spawns not randomized (array length always === 1)
 	- hold up maybe its fine actually...
 	- but wait they seem too spread...
 / source nodes *still* growing
-- can pick white as a color (enforce maximum brightness)
+/ can pick white as a color (enforce maximum brightness)
 - also zoom in on spawn select
 - fix consistent jitter
 - nodes are too far apart on avg
@@ -734,3 +734,5 @@ X refactor ui to ui.js
 
 0.5hr netcode optimization
 0.5hr UI
+0.35hr game.getSpawn() bugfix
+0.15hr color validation
