@@ -44,8 +44,8 @@ class Server{
         this.gameloop = setInterval(() => {
             this.game.update.bind(this.game)();
             if(this.game.spawn_cooldown <= 1){
-                let serialized = this.serialize(this.game);
-                this.wss.clients.forEach(client => client.send(serialized));
+                //let serialized = this.serialize(this.game);
+                this.wss.clients.forEach(this.sendLightGamestate, this);
             }
         }, this.game.config.tick_rate);
     }
@@ -54,10 +54,10 @@ class Server{
         console.log("Initializing websockets");
 
         let server = this.server = new https.createServer({
-            // cert: fs.readFileSync('cert/cert-local.pem'),
-            // key: fs.readFileSync('cert/key-local.pem')
-            cert: fs.readFileSync('cert/fullchain.pem'),
-            key: fs.readFileSync('cert/privkey.pem')
+            cert: fs.readFileSync('cert/cert-local.pem'),
+            key: fs.readFileSync('cert/key-local.pem')
+            // cert: fs.readFileSync('cert/fullchain.pem'),
+            // key: fs.readFileSync('cert/privkey.pem')
           });
         let wss = this.wss = new WS.Server({ server });
         server.listen(this.port);
@@ -82,8 +82,27 @@ class Server{
     }
 
     sendLightGamestate(ws){
+        if(!ws.viewport)
+            return this.sendFullGamestate(ws);
+
+        let gamestate = {
+            spawn_cooldown: this.game.spawn_cooldown,
+            players: this.game.players, // TODO could optimize this array too
+            nodes: {} // send as obj instead of array since it's gonna be sparse
+        };
+
+        let padding = this.game.config.max_edge;
+        for(var i = 0; i < this.game.nodes.length; i++){
+            let node = this.game.nodes[i];
+            if(node.x < ws.viewport.left - padding || node.x > ws.viewport.right + padding || node.y < ws.viewport.top - padding || node.y > ws.viewport.bottom + padding)
+                continue;
+            gamestate.nodes[i] = node;
+        }
+
+        this.send(ws, gamestate);
+
         // console.log("Sending light gamestate...");
-        console.error("Not yet implemented");
+        // console.error("Not yet implemented");
         // ws.send(this.serialize(this.game));
     }
 

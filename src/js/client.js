@@ -31,7 +31,8 @@ class Client {
     connect(url){
         let ws = this.ws = new WebSocket(url);
         ws.onopen = () => {
-            console.log("Succesfully connected to websocket server")
+            console.log("Succesfully connected to websocket server");
+            this.startClientUpdateLoop();
             // ws.send(this.serialize({
             //     msgtype: "playerconnect",
             //     username: this.username,
