@@ -36,6 +36,7 @@ class Client {
         let ws = this.ws = new WebSocket(url);
         ws.onopen = () => {
             console.log("Succesfully connected to websocket server");
+            if(this.ui) this.ui.onConnect();
             this.startClientUpdateLoop();
             // ws.send(this.serialize({
             //     msgtype: "playerconnect",
@@ -43,6 +44,7 @@ class Client {
             //     color: this.game.players[this.username].color//0x01F45D,
             // }));
         }
+
         ws.onmessage = this.handleServerMessage.bind(this);
     }
 
@@ -104,6 +106,11 @@ class Client {
             //spawn.sprite.tint = this.game.players[msg.username].color;
             console.log(`Succesfully spawned at ${msg.spawn}`);
             if(this.ui) this.ui.onSpawn();
+        }
+
+        handlers.spawn_failed = () => {
+            console.error(msg.error);
+            if(this.ui) this.ui.onSpawnFailed(msg.error);
         }
 
         if(msg.msgtype && handlers[msg.msgtype] === undefined){

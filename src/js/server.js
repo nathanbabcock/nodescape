@@ -144,23 +144,32 @@ class Server{
         handlers.spawnplayer = msg => {
             // Username already taken
             if(this.game.players[msg.username]){
-                console.error(`Username ${msg.username} taken`);
-                this.send(ws, {msgtype: 'username_taken_error'});
+                let error = `Username ${msg.username} taken`;
+                console.error(error);
+                this.send(ws, {msgtype: 'spawn_failed', error});
+                return;
+            }
+
+            // Username too short
+            if(msg.username.length < 1){
+                let error = `No username specified`;
+                this.send(ws, {msgtype: 'spawn_failed', error});
                 return;
             }
 
             // Username too long
             if(msg.username.length > 128){
-                console.error(`Username ${msg.username} too long`);
-                this.send(ws, {msgtype: 'username_validation_error'});
+                let error = `Username ${msg.username} too long`;
+                this.send(ws, {msgtype: 'spawn_failed', error});
                 return;
             }
 
             // Validation passed; get spawnpoint
             let spawn = this.game.getSpawn();
             if(!spawn){
-                console.error(`Cannot get spawn for username ${msg.username}; server full`);
-                this.send(ws, {msgtype: 'server_full_error'});
+                let error = `Cannot get spawn for username ${msg.username}; server full`;
+                console.error(error);
+                this.send(ws, {msgtype: 'spawn_failed', error});
                 return;
             }
 

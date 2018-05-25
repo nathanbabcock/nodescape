@@ -19,6 +19,7 @@
 <body>
     <div id="spawn">
             <h1>NodeScape <span>Alpha</span></h1>
+            <div id="error"></div>
             <form name="spawn" onsubmit="event.preventDefault(); return ui.submitSpawn()">
                 <div class="row">
                     <label for="name">Name:</label>
@@ -28,7 +29,7 @@
                     <label for="color">Color:</label>
                     <input type="text" name="color" id="color" value="0x0000ff" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                 </div>
-                <button type="submit">Join Game</button>
+                <button type="submit" id="submit" disabled>Join Game</button>
             </form>
         </div>
 

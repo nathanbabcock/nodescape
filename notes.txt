@@ -713,12 +713,12 @@ TODOlist (compiled from yesterday's notes)
 > autoscrolling (and zooming?) camera pre-join? or focus on any content already there?
 > LOD to fix the gross antialiasing?
 > client-side inject the right color into the spawn before the server update comes
-- enter does not submit game start form (add onsubmit())
-> clicking non-owned nodes does not drag the viewport (? below a certain zoom lvl?)
+X enter does not submit game start form (add onsubmit())
+> clicking non-owned nodes should not drag the viewport (? below a certain zoom lvl?)
 - nodes still eclipse
 / network optimization (send only nodes in viewport, > 90% bandwidth savings)
 - endgame ui
-- refactor ui to ui.js
+X refactor ui to ui.js
 - show node owner on hover
 - Google fonts
 - callback handlers for username taken, etc
