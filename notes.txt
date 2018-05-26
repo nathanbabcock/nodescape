@@ -720,7 +720,7 @@ X enter does not submit game start form (add onsubmit())
 - endgame ui
 X refactor ui to ui.js
 - show node owner on hover
-- Google fonts
+X Google fonts
 / callback handlers for username taken, etc
 - ui handlers for server disconnect
 - disable text selection on modal
@@ -741,3 +741,11 @@ X color picker
 
 0.16hr @home color picker
 0.25hr @home font
+0.5hr @home buttons & pre-game ui
+
+BETA TODO
+- zoom out nodes before spawn
+- animate zoom in on spawn node
+- animate viewport pre-spawn
+- better random color selection
+	- https://www.npmjs.com/package/randomcolor

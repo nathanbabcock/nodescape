@@ -2,13 +2,23 @@ body, input, button {
     font-family: 'Montserrat', sans-serif;
 }
 
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+}
+
 #spawn {
     position:absolute;
     width: 600px;
     margin-left: -300px;
     height: 400px;
     margin-top: -200px;
-    /* background-color:#BBBBBB; */
+    background-color:#ECECEC;
     box-shadow: 0px 0px 5px black;
     left: 50%;
     top: 50%;
@@ -43,18 +53,23 @@ body, input, button {
 }
 
 #spawn button {
-    background-color:green;
+    /* background-color:green; */
     font-size:24px;
     padding:20px;
     /* border:none; */
-    color:white;
+    /* color:white; */
     margin: 0 auto;
     display:block;
     font-weight:bold;
+    color:white;
 }
 
-#spawn button:hover {
-    background-color:green;
+#spawn button:disabled {
+    opacity:0.5;
+}
+
+#spawn button:disabled:hover {
+    background-color:#2ecc71;
 }
 
 #spawn #error {

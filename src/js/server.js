@@ -132,7 +132,7 @@ class Server{
     handleClientMsg(data, ws){
         //console.log("Received", data);
         let msg = this.deserialize(data);
-        console.log(msg);
+        // console.log(msg);
 
         let handlers = {};
 
