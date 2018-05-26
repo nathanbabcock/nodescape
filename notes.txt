@@ -726,7 +726,7 @@ X Google fonts
 - disable text selection on modal
 - devops: configure node environments to easily switch between local server and remote server
 X color picker
-- color scheme for UI/modal
+X color scheme for UI/modal
 - sexy third party modal?
 - sexy third party toasts?
 > minimize spawn modal to FAB
@@ -750,3 +750,7 @@ BETA TODO
 - better random color selection
 	- https://www.npmjs.com/package/randomcolor
 - enforce non-greyscale colors
+- bright colors still fucked
+- node environments (dev vs prod)
+- fix config
+	- zoom lvl where things disappear

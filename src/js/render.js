@@ -356,10 +356,28 @@ class Render {
         gfx.lineTo(tox, toy);
     }
 
+    createSelectedNodeText(){
+        let style = new PIXI.TextStyle({
+            fontFamily: 'Arial',
+            fontSize: renderConfig.scale / 2,
+            fill: '#707070'
+        });
+        let txt = new PIXI.Text("server", style);
+        // txt.x = node.x * renderConfig.scale - renderConfig.scale / 2;
+        // txt.y = node.y * renderConfig.scale - renderConfig.scale / 2 - node.radius - 10;
+        this.node_layer.addChild(txt);
+        return txt;
+    }
+
     // Selected Node
     drawSelectedNode(){
         let gfx = this.edgeGfx;
-        if(!this.selectedNode) return;
+        if(!this.selectedNode) {
+            if(this.selectedNodeTxt && this.selectedNodeTxt.visible) this.selectedNodeTxt.visible = false;
+            return;
+        }
+
+        // Draw ghost edges
         this.game.getNeighbors(this.selectedNode).forEach(node => {
             if(this.selectedNode.edges.find(edge => edge.to === node.id && !edge.dead)) return; // Edge already exists!
             if(node.edges.find(edge => edge.to === this.selectedNode.id && !edge.dead)) return; // Edge already exists!
@@ -368,6 +386,19 @@ class Render {
                 .moveTo(this.selectedNode.x * renderConfig.scale, this.selectedNode.y * renderConfig.scale)
                 .lineTo(node.x * renderConfig.scale, node.y * renderConfig.scale);
         });
+
+        // Draw owner name
+        if(!this.selectedNodeTxt) this.selectedNodeTxt = this.createSelectedNodeText();
+        let node = this.selectedNode,
+            text = this.selectedNodeTxt,
+            value = this.selectedNode.owner,
+            metrics = PIXI.TextMetrics.measureText(value, text.style),
+            x = node.x * renderConfig.scale - metrics.width / 2,
+            y = (node.y - node.radius) * renderConfig.scale - metrics.height / 2 - 20;           
+        text.visible = this.viewport.right - this.viewport.left < 5000;
+        if(text.x !== x) text.x = x;
+        if(text.y !== y) text.y = y;
+        if(text.text !== value) text.text = value;
     }
 
     // Draw

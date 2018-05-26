@@ -164,12 +164,12 @@ class Server{
                 return;
             }
 
-            // TODO validate color for brightness
-            if(msg.color > 0xf0f0f0){
-                let error = `Color #${msg.color.toString(16)} too bright, pick a darker color`;
-                this.send(ws, {msgtype: 'spawn_failed', error});
-                return;
-            }
+            // // TODO validate color for brightness
+            // if(msg.color > 0xf0f0f0){
+            //     let error = `Color #${msg.color.toString(16)} too bright, pick a darker color`;
+            //     this.send(ws, {msgtype: 'spawn_failed', error});
+            //     return;
+            // }
 
             // Validation passed; get spawnpoint
             let spawn = this.game.getSpawn();
