@@ -135,7 +135,7 @@ class Tutorial {
         let myNode2 = new Node(game.config.width/2 + 10, game.config.height/2, false);
         myNode2.owner = "other";
         myNode2.id = game.nodes.length;
-        myNode2.bubbles = 10;
+        myNode2.bubbles = 9;
         game.nodes.push(myNode2);
 
         game.createEdge("excalo", 0, 1);

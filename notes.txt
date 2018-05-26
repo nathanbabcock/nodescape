@@ -787,3 +787,5 @@ Tutorial
 	- "Drag an edge's arrowhead to remove it."
 - Gif 4:
 	- "Capture enemy nodes with your bubbles!"
+
+1.5hr @home tutorial gifs

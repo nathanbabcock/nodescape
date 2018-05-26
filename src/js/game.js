@@ -218,6 +218,7 @@ class Game {
             edgeLength = this.distance(fromNode, toNode) - toNode.radius;
 
         edge.bubbles.forEach(bubble => {
+            console.log(`bubble pos ${bubble.pos}`);
             if(bubble.dead) return;
 
             // Move
@@ -243,7 +244,9 @@ class Game {
             if(opposingEdge == undefined) return;
             for(var i = 0; i < opposingEdge.bubbles.length; i++){
                 let enemyBubble = opposingEdge.bubbles[i];
-                if(Math.abs(enemyBubble.pos - bubble.pos) <= 2 * this.config.bubble_radius){
+                if(enemyBubble.dead) continue;
+                let enemyPos = edgeLength - enemyBubble.pos;
+                if(Math.abs(enemyPos - bubble.pos) <= 2 * this.config.bubble_radius){
                     bubble.dead = true;
                     enemyBubble.dead = true;
                     break;
