@@ -2,6 +2,20 @@ body, input, button {
     font-family: 'Montserrat', sans-serif;
 }
 
+.tutorial {
+    font-family: 'Montserrat', sans-serif;
+    font-size:20px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    text-align:center;
+    width: 400px;
+    margin-left: -200px;
+    height:30px;
+    margin-top:-15px;
+    pointer-events: none;
+}
+
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
       -webkit-user-select: none; /* Safari */
@@ -16,8 +30,8 @@ body, input, button {
     position:absolute;
     width: 600px;
     margin-left: -300px;
-    height: 400px;
-    margin-top: -200px;
+    height: 700px;
+    margin-top: -350px;
     background-color:#ECECEC;
     box-shadow: 0px 0px 5px black;
     left: 50%;
@@ -70,6 +84,10 @@ body, input, button {
 
 #spawn button:disabled:hover {
     background-color:#2ecc71;
+}
+
+#spawn form {
+    margin-top:15px;
 }
 
 #spawn #error {

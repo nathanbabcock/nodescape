@@ -15,6 +15,7 @@
     <script src="js/pixi.js"></script>
     <script src="js/viewport-browser.js"></script>
     <script src="js/jscolor.js"></script>
+    <script src="js/tutorial.js"></script> <!-- TODO REMOVE-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900" rel="stylesheet">
     <link rel="stylesheet" href="css/button.css"> 
     <link rel="stylesheet" href="css/style.css"> 
@@ -22,6 +23,7 @@
 <body>
     <div id="spawn" class="noselect">
             <h1>NodeScape <span>Alpha</span></h1>
+            <img src="img/tutorial_4.gif">
             <div id="error"></div>
             <form name="spawn" onsubmit="event.preventDefault(); return ui.submitSpawn()">
                 <div class="row">
@@ -44,7 +46,7 @@
         render.setGame(game);
         client.setGame(game);
         client.setRender(render);
-        client.connect("wss://localhost:8081");
+        // client.connect("wss://localhost:8081");
         // client.connect("wss://54.174.27.158:8081");
         // client.connect("wss://nodescape.io:8081");
         // client.connect("ws://nbabcock-lb-1594337385.us-east-1.elb.amazonaws.com:8081");

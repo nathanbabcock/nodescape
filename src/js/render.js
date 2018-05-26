@@ -13,7 +13,7 @@ class Render {
         this.dragGfx = null;
         this.selectedNode = null;
         this.selectedNodeGfx = null;
-        this.player = "excalo";
+        this.player = null
         this.initPixi();
         // this.layers = {}; // TODO?
         // initGame();
@@ -171,6 +171,9 @@ class Render {
         text.visible = this.viewport.right - this.viewport.left < 5000;
 
         // Update properties
+        // console.log(node.owner);
+        // console.log(this.game.players);
+        // console.log(this.game.players[node.owner]);
         let color = this.game.players[node.owner].color,
             size = radius * 2,
             textVal = node.isSource ? '∞' : this.abbreviateNumber(node.bubbles),

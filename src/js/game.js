@@ -60,9 +60,9 @@ class Game {
             "server": {
                 color: 0x707070
             },
-            "excalo": {
-                color: parseInt(chance.color({format: '0x'}))//0x4286f4
-            }
+            // "excalo": {
+            //     color: parseInt(chance.color({format: '0x'}))//0x4286f4
+            // }
         };
         this.spawn_cooldown = 0;
         this.last_update = Date.now();
@@ -112,9 +112,9 @@ class Game {
 
     getNodeRadius(node){ // Get node radius by capacity
         if(node.isSource) return 1;
-        let radius = Math.log10(node.bubbles) + 1;
+        let radius = Math.floor(Math.log10(node.bubbles)) + 1;
         if(radius < 1) radius = 1;
-        if(radius > 10) radius = 10;
+        if(radius > 4) radius = 4;
         return radius;
     }
 

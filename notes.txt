@@ -710,6 +710,7 @@ X player spawns not randomized (array length always === 1)
 - fix consistent jitter
 - nodes are too far apart on avg
 - probably need a restart button
+- probably need a "find me" button
 > autoscrolling (and zooming?) camera pre-join? or focus on any content already there?
 > LOD to fix the gross antialiasing?
 > client-side inject the right color into the spawn before the server update comes
@@ -719,16 +720,16 @@ X enter does not submit game start form (add onsubmit())
 / network optimization (send only nodes in viewport, > 90% bandwidth savings)
 - endgame ui
 X refactor ui to ui.js
-- show node owner on hover
+X show node owner on hover
 X Google fonts
 / callback handlers for username taken, etc
 - ui handlers for server disconnect
-- disable text selection on modal
-- devops: configure node environments to easily switch between local server and remote server
+X disable text selection on modal
+> devops: configure node environments to easily switch between local server and remote server
 X color picker
 X color scheme for UI/modal
-- sexy third party modal?
-- sexy third party toasts?
+> sexy third party modal?
+> sexy third party toasts?
 > minimize spawn modal to FAB
 > 'locate me' google maps-style FAB
 
@@ -742,6 +743,22 @@ X color scheme for UI/modal
 0.16hr @home color picker
 0.25hr @home font
 0.5hr @home buttons & pre-game ui
+0.3hr @home node owner render
+
+ALPHA TODO
+- Tutorial (?)
+- Procgen tweaks
+	- Less disconnected subgraphs
+	- Don't worry about edge lengths being integers?
+	- Try to avoid eclipses
+
+ALPHA or BETA?
+- "find me" button
+- "restart" button
+- pixellation on zoom-in
+	- quickfix: lock zoom in to good lvl
+- on zoomout, stop rendering bubbles and increase edge radius
+- pre-spawn viewport animation/zoom
 
 BETA TODO
 - zoom out nodes before spawn
@@ -754,3 +771,19 @@ BETA TODO
 - node environments (dev vs prod)
 - fix config
 	- zoom lvl where things disappear
+- show dotted circle of possible edge radius around a node?
+- node radius increases edge radius?
+- endgame ui
+- BUG: only text has hitbox??
+
+Tutorial
+- Gif 1:
+	- "Click and drag from a node you own to create an edge."
+- Gif 2:
+	- "Bubbles travel along edges to capture other nodes."
+- Gif 3:
+	- "Source nodes generate new bubbles on every edge."
+- Gif 4:
+	- "Drag an edge's arrowhead to remove it."
+- Gif 4:
+	- "Capture enemy nodes with your bubbles!"
