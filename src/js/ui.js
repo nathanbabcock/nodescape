@@ -20,7 +20,7 @@ class UI {
     }
 
     submitSpawn(){
-        this.client.spawn(this.dom.name.value, this.dom.color.value);
+        this.client.spawn(this.dom.name.value, parseInt(this.dom.color.value, 16));
         return false;
     }
 
