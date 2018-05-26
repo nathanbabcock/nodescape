@@ -725,7 +725,7 @@ X refactor ui to ui.js
 - ui handlers for server disconnect
 - disable text selection on modal
 - devops: configure node environments to easily switch between local server and remote server
-- color picker
+X color picker
 - color scheme for UI/modal
 - sexy third party modal?
 - sexy third party toasts?
@@ -736,3 +736,8 @@ X refactor ui to ui.js
 0.5hr UI
 0.35hr game.getSpawn() bugfix
 0.15hr color validation
+
+5/26
+
+0.16hr @home color picker
+0.25hr @home font
