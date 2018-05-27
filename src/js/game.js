@@ -112,9 +112,9 @@ class Game {
 
     getNodeRadius(node){ // Get node radius by capacity
         if(node.isSource) return 1;
-        let radius = Math.floor(Math.log10(node.bubbles)) + 1;
+        let radius = Math.floor(Math.log10(node.bubbles)) / 2 + 1;
         if(radius < 1) radius = 1;
-        if(radius > 4) radius = 4;
+        if(radius > 2.5) radius = 2.5;
         return radius;
     }
 

@@ -776,6 +776,7 @@ BETA TODO
 - endgame ui
 - BUG: only text has hitbox??
 - BUG: when zoomed out, some edges disappear and some bubbles don't move?? 
+- BUG: some arrowheads cant be grabbed
 
 Tutorial
 - Gif 1:
@@ -797,10 +798,14 @@ Tutorial
 
 
 TODO
-- fix jitter?
+X fix jitter?
 - fix eclipse?
 	- nodes radius grow smaller increments (0.5?)
 - dont render bubbles when zoomed out
 	- edge radius++ (only when zoomed out, or all the time?)
+- animate viewport pregame
 
+TODO sometime?
+- center number
 
+1hr @home playtest bugfix
