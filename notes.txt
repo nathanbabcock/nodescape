@@ -799,7 +799,7 @@ Tutorial
 
 TODO
 X fix jitter?
-- fix eclipse?
+X fix eclipse?
 	- nodes radius grow smaller increments (0.5?)
 - dont render bubbles when zoomed out
 	- edge radius++ (only when zoomed out, or all the time?)
@@ -808,4 +808,4 @@ X fix jitter?
 TODO sometime?
 - center number
 
-1hr @home playtest bugfix
+1hr @home playtest, bugfix, balance

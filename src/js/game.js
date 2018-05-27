@@ -316,7 +316,7 @@ class Game {
 
     // Randomly selects form a set of available source nodes closest to the center of the map (forces players into proximity)
     getSpawn(){
-        const SPAWN_POSSIBILITIES = 10;
+        const SPAWN_POSSIBILITIES = 5;
         let center = {x: this.config.width / 2, y: this.config.height / 2};
         let centerNodes = this.nodes
             .filter(node => node.isSource && node.owner === 'server')

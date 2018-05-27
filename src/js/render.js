@@ -1,7 +1,8 @@
 // Render Config
 const renderConfig = {
     scale:25,
-    arrowhead_size:20
+    arrowhead_size:20,
+    line_thickness: 3
 };
 
 class Render {
@@ -93,8 +94,8 @@ class Render {
 
         // Layers
         this.viewport.addChild(this.edge_layer = new PIXI.Container());
-        this.viewport.addChild(this.node_layer = new PIXI.Container());
         this.viewport.addChild(this.bubble_layer = new PIXI.Container());
+        this.viewport.addChild(this.node_layer = new PIXI.Container());
 
         // Edges
         this.edge_layer.addChild(this.edgeGfx = new PIXI.Graphics());
@@ -147,6 +148,7 @@ class Render {
         let txt = new PIXI.Text("-1", style);
         txt.x = node.x * renderConfig.scale - renderConfig.scale / 2;
         txt.y = node.y * renderConfig.scale - renderConfig.scale / 2;
+        txt.interactive = false;
         this.node_layer.addChild(txt);
         return txt;
     }
@@ -228,7 +230,8 @@ class Render {
             tox = (to.x - delta_x * to_ratio) * renderConfig.scale,
             toy = (to.y - delta_y * to_ratio) * renderConfig.scale,
             angle = Math.atan2(toy-fromy,tox-fromx),
-            maxEdge = this.game.config.max_edge * renderConfig.scale;
+            maxEdge = this.game.config.max_edge * renderConfig.scale,
+            thickness = this.viewport.right - this.viewport.left < 5000 ? renderConfig.line_thickness : 15;
 
         // Viewport clipping
         if(fromx < this.viewport.left - maxEdge || fromx > this.viewport.right + maxEdge || fromy < this.viewport.top - maxEdge || fromy > this.viewport.bottom + maxEdge ||
@@ -244,7 +247,7 @@ class Render {
         if(sprite.tint !== color) sprite.tint = color;
 
         // Line
-        gfx.lineStyle(2, color);
+        gfx.lineStyle(thickness, color);
         gfx.moveTo(fromx, fromy);
         gfx.lineTo(tox, toy);
     }
@@ -253,6 +256,7 @@ class Render {
     createBubbleSprite(bubble){
         let sprite = new PIXI.Sprite(this.texture_cache.circle);
         sprite.anchor.x = sprite.anchor.y = 0.5;
+        sprite.interactive = false;
         this.bubble_layer.addChild(sprite);
         return sprite;
     }
@@ -289,6 +293,10 @@ class Render {
         // Viewport clipping
         // TODO slightly better to clip before all the calculations above
         if(x < this.viewport.left - radius || x > this.viewport.right + radius || y < this.viewport.top - radius || y > this.viewport.bottom + radius){
+            sprite.visible = false;
+            return;
+        }
+        if(this.viewport.right - this.viewport.left >= 5000){
             sprite.visible = false;
             return;
         }
@@ -335,7 +343,7 @@ class Render {
             angle = Math.atan2(toy-fromy,tox-fromx);
 
         // Snap to eligible nodes
-        if(this.dragTo && !this.dragFrom.edges.find(a => a.to === this.dragTo.id && !a.dead && a.to !== this.dragToOld.id) && color !== 0xFF0000){
+        if(this.dragTo && !this.dragFrom.edges.find(a => a.to === this.dragTo.id && !a.dead && (this.dragToOld && a.to !== this.dragToOld.id)) && color !== 0xFF0000){
             // Redo calculations whee
             to = this.dragTo;
             dist = this.game.distance(from, to);
@@ -355,7 +363,7 @@ class Render {
         if(sprite.tint !== color) sprite.tint = color;
 
         // Line
-        gfx.lineStyle(2, color);
+        gfx.lineStyle(renderConfig.line_thickness, color);
         gfx.moveTo(fromx, fromy);
         gfx.lineTo(tox, toy);
     }
