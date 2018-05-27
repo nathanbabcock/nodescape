@@ -807,10 +807,19 @@ X dont render bubbles when zoomed out
 
 TODO sometime?
 - center number
+- font resolution (easy?)
 X make source nodes stand out more
 	- border
 	- black bg
-- LOD (antialiasing at small zooms)
+X LOD (antialiasing at small zooms)
+- stop edges at node edges
+- leave behind a ghost edge when dragging an existing edge away
+- Player name color in spawn form matches color picker
+- Animate zoom and pan to spawn location (!)
+- Ambient animation before spawn
+- Sometimes bubbles immediately bounce on an empty node, sometimes they stay for 1 tick (update loop sync)
+
 
 1hr @home playtest, bugfix, balance
-1hr @home polish
+2hr @home polish
+1hr @home being braindead, looking for an option in the viewport API
