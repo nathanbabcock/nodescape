@@ -789,3 +789,7 @@ Tutorial
 	- "Capture enemy nodes with your bubbles!"
 
 1.5hr @home tutorial gifs
+
+5/27
+
+0.16hr @home flickity!

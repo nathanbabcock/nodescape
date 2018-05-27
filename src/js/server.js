@@ -20,7 +20,7 @@ class Server{
         console.log("Initializing server game instance");
 
         let game = this.game = new Game();
-        //this.game.procgen();
+        this.game.procgen();
 
         // let src = new Node(5, 5, true);
         //     src.id = game.nodes.length;

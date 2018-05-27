@@ -9,6 +9,14 @@ class UI {
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
         this.dom.color.value = chance.integer({min: 0x00000, max:0xf0f0f0}).toString(16);
+
+        this.initCarousel();
+    }
+
+    initCarousel(){
+        var flkty = new Flickity( '.main-carousel', {
+        // options
+        });
     }
 
     onConnect(){
