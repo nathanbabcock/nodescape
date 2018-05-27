@@ -406,18 +406,22 @@ class Render {
 
     // Draw
     draw(){
-        this.edgeGfx.clear();
-        this.game.nodes.forEach(node => {
-            this.drawNode(node);
-            node.edges.forEach(edge => {
-                this.drawEdge(edge);
-                edge.bubbles.forEach(bubble => this.drawBubble(bubble, edge));
-            })
-        });
-        this.drawDrag();
-        this.drawSelectedNode();
+        try{
+            this.edgeGfx.clear();
+            this.game.nodes.forEach(node => {
+                this.drawNode(node);
+                node.edges.forEach(edge => {
+                    this.drawEdge(edge);
+                    edge.bubbles.forEach(bubble => this.drawBubble(bubble, edge));
+                })
+            });
+            this.drawDrag();
+            this.drawSelectedNode();
 
-        this.app.renderer.render(this.app.stage);
+            this.app.renderer.render(this.app.stage);
+        } catch(e) {
+            console.error(e);
+        }
     }
 
     // Edge dragging

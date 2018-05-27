@@ -128,6 +128,7 @@ class Client {
 
         // Default action: merge gamestate
         _.merge(this.game, msg);
+        this.game.last_update = Date.now();
         // console.log(gamestate);
 
         // Handle deletions

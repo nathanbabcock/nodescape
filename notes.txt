@@ -775,6 +775,7 @@ BETA TODO
 - node radius increases edge radius?
 - endgame ui
 - BUG: only text has hitbox??
+- BUG: when zoomed out, some edges disappear and some bubbles don't move?? 
 
 Tutorial
 - Gif 1:
@@ -793,3 +794,13 @@ Tutorial
 5/27
 
 0.16hr @home flickity!
+
+
+TODO
+- fix jitter?
+- fix eclipse?
+	- nodes radius grow smaller increments (0.5?)
+- dont render bubbles when zoomed out
+	- edge radius++ (only when zoomed out, or all the time?)
+
+

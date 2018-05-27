@@ -6,7 +6,7 @@ if(typeof module !== "undefined"){
 const config = {
     width: 1000,
     height: 1000,
-    max_edge: 10,
+    max_edge: 13,
     min_edge: 5,
     source_freq: 0.1,
     spawn_cooldown: 4,
@@ -218,7 +218,7 @@ class Game {
             edgeLength = this.distance(fromNode, toNode) - toNode.radius;
 
         edge.bubbles.forEach(bubble => {
-            console.log(`bubble pos ${bubble.pos}`);
+            // console.log(`bubble pos ${bubble.pos}`);
             if(bubble.dead) return;
 
             // Move
