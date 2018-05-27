@@ -56,9 +56,9 @@ class Render {
         // Nodes and bubbles
         let gfx = new PIXI.Graphics();
         gfx.lineStyle(15, 0xffffff);
-        //gfx.beginFill(0xffffff);
+        // gfx.beginFill(0xffffff);
         gfx.drawCircle(0, 0, 100);
-        //gfx.endFill();
+        // gfx.endFill();
         this.texture_cache.circle_stroke = gfx.generateCanvasTexture();
 
         gfx = new PIXI.Graphics();
@@ -414,11 +414,13 @@ class Render {
             value = this.selectedNode.owner,
             metrics = PIXI.TextMetrics.measureText(value, text.style),
             x = node.x * renderConfig.scale - metrics.width / 2,
-            y = (node.y - node.radius) * renderConfig.scale - metrics.height / 2 - 20;           
+            y = (node.y - node.radius) * renderConfig.scale - metrics.height / 2 - 15,
+            color = "#"+this.game.players[this.selectedNode.owner].color.toString(16);
         text.visible = this.viewport.right - this.viewport.left < 5000;
         if(text.x !== x) text.x = x;
         if(text.y !== y) text.y = y;
         if(text.text !== value) text.text = value;
+        if(text.style.fill !== color) text.style.fill = color;
     }
 
     // Draw

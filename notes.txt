@@ -807,8 +807,10 @@ X dont render bubbles when zoomed out
 
 TODO sometime?
 - center number
-- make source nodes stand out more
+X make source nodes stand out more
 	- border
 	- black bg
+- LOD (antialiasing at small zooms)
 
 1hr @home playtest, bugfix, balance
+1hr @home polish
