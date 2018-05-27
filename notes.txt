@@ -801,11 +801,14 @@ TODO
 X fix jitter?
 X fix eclipse?
 	- nodes radius grow smaller increments (0.5?)
-- dont render bubbles when zoomed out
+X dont render bubbles when zoomed out
 	- edge radius++ (only when zoomed out, or all the time?)
 - animate viewport pregame
 
 TODO sometime?
 - center number
+- make source nodes stand out more
+	- border
+	- black bg
 
 1hr @home playtest, bugfix, balance

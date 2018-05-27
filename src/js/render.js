@@ -55,6 +55,13 @@ class Render {
 
         // Nodes and bubbles
         let gfx = new PIXI.Graphics();
+        gfx.lineStyle(15, 0xffffff);
+        //gfx.beginFill(0xffffff);
+        gfx.drawCircle(0, 0, 100);
+        //gfx.endFill();
+        this.texture_cache.circle_stroke = gfx.generateCanvasTexture();
+
+        gfx = new PIXI.Graphics();
         gfx.beginFill(0xffffff);
         gfx.drawCircle(0, 0, 100);
         gfx.endFill();
@@ -105,7 +112,8 @@ class Render {
     }
 
     createNodeSprite(node){
-        let sprite = new PIXI.Sprite(this.texture_cache.circle);
+        let tex = node.isSource ? this.texture_cache.circle_stroke : this.texture_cache.circle,
+            sprite = new PIXI.Sprite(tex);
         sprite.interactive = true;
         sprite.anchor.x = sprite.anchor.y = 0.5;
         sprite.on('mousedown', () => this.startDrag(node));
@@ -180,7 +188,7 @@ class Render {
         let color = this.game.players[node.owner].color,
             size = radius * 2,
             textVal = node.isSource ? '∞' : this.abbreviateNumber(node.bubbles),
-            textColor = this.getTextColor(color);
+            textColor = node.isSource ? color : this.getTextColor(color);
         if(sprite.tint !== color) sprite.tint = color;
         if(sprite.x !== x) sprite.x = x; // TODO could move this to createNodeSprite if desired...
         if(sprite.y !== y) sprite.y = y;
