@@ -55,17 +55,30 @@ class Render {
 
         // Nodes and bubbles
         let gfx = new PIXI.Graphics();
-        gfx.lineStyle(15, 0xffffff);
+        gfx.lineStyle(10, 0xffffff);
         // gfx.beginFill(0xffffff);
-        gfx.drawCircle(0, 0, 100);
+        gfx.drawCircle(0, 0, 50);
         // gfx.endFill();
         this.texture_cache.circle_stroke = gfx.generateCanvasTexture();
 
         gfx = new PIXI.Graphics();
         gfx.beginFill(0xffffff);
-        gfx.drawCircle(0, 0, 100);
+        gfx.drawCircle(0, 0, 50);
         gfx.endFill();
         this.texture_cache.circle = gfx.generateCanvasTexture();
+
+        gfx = new PIXI.Graphics();
+        gfx.beginFill(0xffffff);
+        gfx.drawCircle(0, 0, 10);
+        gfx.endFill();
+        this.texture_cache.circle_small = gfx.generateCanvasTexture();
+
+        gfx = new PIXI.Graphics();
+        gfx.lineStyle(2, 0xffffff);
+        // gfx.beginFill(0xffffff);
+        gfx.drawCircle(0, 0, 10);
+        // gfx.endFill();
+        this.texture_cache.circle_stroke_small = gfx.generateCanvasTexture();
 
         // Arrowhead
         gfx = new PIXI.Graphics();
@@ -171,7 +184,8 @@ class Render {
             text = node.text,
             x = node.x * renderConfig.scale,
             y = node.y * renderConfig.scale,
-            radius = node.radius * renderConfig.scale;
+            radius = node.radius * renderConfig.scale,
+            zoomedIn = this.viewport.right - this.viewport.left < 5000;
         if(x < this.viewport.left - radius || x > this.viewport.right + radius || y < this.viewport.top - radius || y > this.viewport.bottom + radius){
             sprite.visible = false;
             text.visible = false;
@@ -179,7 +193,13 @@ class Render {
         }
         if(!sprite.visible)
             sprite.visible = true;
-        text.visible = this.viewport.right - this.viewport.left < 5000;
+        text.visible = zoomedIn;
+
+        // LOD
+        if(!zoomedIn && node.isSource && sprite.texture !== this.texture_cache.circle_stroke_small) sprite.texture = this.texture_cache.circle_stroke_small;
+        else if(!zoomedIn && !node.isSource && sprite.texture !== this.texture_cache.circle_small) sprite.texture = this.texture_cache.circle_small;
+        else if(zoomedIn && node.isSource && sprite.texture !== this.texture_cache.circle_stroke) sprite.texture = this.texture_cache.circle_stroke;
+        else if(zoomedIn && !node.isSource && sprite.texture !== this.texture_cache.circle) sprite.texture = this.texture_cache.circle;
 
         // Update properties
         // console.log(node.owner);
