@@ -102,8 +102,8 @@ class Client {
             let spawn = this.game.nodes[msg.spawn];
             if(this.render)
                 this.render.player = msg.username;
-            this.render.viewport.snap(spawn.x * renderConfig.scale, spawn.y * renderConfig.scale, {removeOnComplete:true});
-            this.render.viewport.snapZoom({width:1895, removeOnComplete:true, time:3000});
+            this.render.viewport.snap(spawn.x * renderConfig.scale, spawn.y * renderConfig.scale, {removeOnComplete:true, time:1500});
+            this.render.viewport.snapZoom({width:1895, removeOnComplete:true, time:1500});
             //this.render.viewport.moveCenter(spawn.x * renderConfig.scale, spawn.y * renderConfig.scale);
             //spawn.sprite.tint = this.game.players[msg.username].color;
             console.log(`Succesfully spawned at ${msg.spawn}`);

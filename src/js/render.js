@@ -109,7 +109,8 @@ class Render {
                 minWidth:config.width/3,
                 minHeight:config.height/3
             })
-            .moveCenter(config.width * renderConfig.scale / 2, config.height * renderConfig.scale / 2);
+            .moveCenter(config.width * renderConfig.scale / 2, config.height * renderConfig.scale / 2)
+            .snapZoom({width: config.width*10, removeOnComplete:true});
         this.app.stage.addChild(this.viewport);
 
         // Layers
