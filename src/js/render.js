@@ -164,13 +164,14 @@ class Render {
     createNodeText(node){
         let style = new PIXI.TextStyle({
             fontFamily: 'Arial',
-            fontSize: renderConfig.scale,
+            fontSize: renderConfig.scale * 2,
             fill: '#ffffff' // TODO
         });
         let txt = new PIXI.Text("-1", style);
         txt.x = node.x * renderConfig.scale - renderConfig.scale / 2;
         txt.y = node.y * renderConfig.scale - renderConfig.scale / 2;
         txt.interactive = false;
+        txt.scale.x = txt.scale.y = 0.5;
         this.node_layer.addChild(txt);
         return txt;
     }
@@ -216,8 +217,8 @@ class Render {
         if(sprite.y !== y) sprite.y = y;
         if(sprite.width !== size) sprite.width = sprite.height = size;
         if(text.text !== value) text.text = value;
-        if(text.x !== x - text.width / 2) text.x = x - metrics.width / 2;
-        if(text.y !== y - text.height / 2) text.y = y - metrics.height / 2;
+        if(text.x !== x - text.width / 2) text.x = x - metrics.width / 4; // text sprites are scaled down, and textmetrics doesn't reflect that
+        if(text.y !== y - text.height / 2) text.y = y - metrics.height / 4;
         if(text.style.fill !== textColor) text.style.fill = textColor;
     }
 
