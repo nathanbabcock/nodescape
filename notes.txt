@@ -812,8 +812,8 @@ X make source nodes stand out more
 	- border
 	- black bg
 X LOD (antialiasing at small zooms)
-- stop edges at node edges
-- stop arrowheads at right spot
+X stop edges at node edges
+/ stop arrowheads at right spot
 - leave behind a ghost edge when dragging an existing edge away
 - Player name color in spawn form matches color picker
 X Animate zoom and pan to spawn location (!)
@@ -826,3 +826,5 @@ X Ambient animation before spawn
 1hr @home being braindead, looking for an option in the viewport API
 
 5/28
+
+0.33hr @home polish (edge render)

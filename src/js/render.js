@@ -243,12 +243,11 @@ class Render {
         // DragMode
         let from = this.game.nodes[edge.from],
             to = this.game.nodes[edge.to],
-            sprite = edge.sprite;
-        if(this.dragFrom === from && this.dragToOld === to){
+            sprite = edge.sprite,
+            dragged = this.dragFrom === from && this.dragToOld === to;
+        if(dragged)
             sprite.visible = false;
-            return;
-        }
-        if(!sprite.visible) sprite.visible = true;
+        else if(!sprite.visible) sprite.visible = true;
 
         // Calculate position, angle, color
         let gfx = this.edgeGfx,
@@ -256,6 +255,7 @@ class Render {
             dist = this.game.distance(from, to),
             delta_x = to.x - from.x,
             delta_y = to.y - from.y,
+            // to_ratio = (to.radius + 7 / renderConfig.scale) / dist,
             to_ratio = to.radius / dist,
             from_ratio = from.radius / dist,
             fromx = (from.x + delta_x * from_ratio) * renderConfig.scale,
@@ -264,7 +264,14 @@ class Render {
             toy = (to.y - delta_y * to_ratio) * renderConfig.scale,
             angle = Math.atan2(toy-fromy,tox-fromx),
             maxEdge = this.game.config.max_edge * renderConfig.scale,
-            thickness = this.viewport.right - this.viewport.left < 5000 ? renderConfig.line_thickness : 15;
+            zoomedIn = this.viewport.right - this.viewport.left < 5000,
+            thickness = zoomedIn ? renderConfig.line_thickness : 15;
+
+        // DragMode Ghost Edge
+        if(dragged){
+            color = 0xd6d6d6;
+            thickness = 1;
+        }
 
         // Viewport clipping
         if(fromx < this.viewport.left - maxEdge || fromx > this.viewport.right + maxEdge || fromy < this.viewport.top - maxEdge || fromy > this.viewport.bottom + maxEdge ||
@@ -274,6 +281,8 @@ class Render {
         }
 
         // Arrowhead
+        if(!dragged && zoomedIn && !sprite.visible) sprite.visible = true;
+        if(!dragged && !zoomedIn && sprite.visibl) sprite.visible = false;
         if(sprite.x !== tox) sprite.x = tox;
         if(sprite.y !== toy) sprite.y = toy;
         if(sprite.rotation !== angle) sprite.rotation = angle;
