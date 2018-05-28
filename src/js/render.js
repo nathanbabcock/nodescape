@@ -2,7 +2,8 @@
 const renderConfig = {
     scale:25,
     arrowhead_size:20,
-    line_thickness: 3
+    line_thickness: 3,
+    scrollbar_padding: 5
 };
 
 class Render {
@@ -39,13 +40,13 @@ class Render {
             antialias: true,
             autoStart: true,
             backgroundColor: 0xffffff,
-            width: window.innerWidth - 25,
-            height:window.innerHeight - 25,
+            width: window.innerWidth - renderConfig.scrollbar_padding,
+            height:window.innerHeight - renderConfig.scrollbar_padding,
         });
         window.addEventListener('resize', () => {
-            this.app.renderer.resize(window.innerWidth - 25, window.innerHeight - 25);
-            this.viewport.screenWidth = window.innerWidth - 25,
-            this.viewport.screenHeight = window.innerHeight - 25;
+            this.app.renderer.resize(window.innerWidth - renderConfig.scrollbar_padding, window.innerHeight - renderConfig.scrollbar_padding);
+            this.viewport.screenWidth = window.innerWidth - renderConfig.scrollbar_padding,
+            this.viewport.screenHeight = window.innerHeight - renderConfig.scrollbar_padding;
         });
         document.body.appendChild(this.app.view);
         this.app.stage.on("mouseup", this.stopDrag);
@@ -95,8 +96,8 @@ class Render {
 
         // Viewport
         this.viewport = new Viewport({
-            screenWidth: window.innerWidth - 25,
-            screenHeight: window.innerHeight - 25,
+            screenWidth: window.innerWidth - renderConfig.scrollbar_padding,
+            screenHeight: window.innerHeight - renderConfig.scrollbar_padding,
             worldWidth: config.width * renderConfig.scale,
             worldHeight: config.height * renderConfig.scale
         }).drag()
@@ -287,7 +288,7 @@ class Render {
 
         // Arrowhead
         if(!dragged && zoomedIn && !sprite.visible) sprite.visible = true;
-        if(!dragged && !zoomedIn && sprite.visibl) sprite.visible = false;
+        if(!dragged && !zoomedIn && sprite.visible) sprite.visible = false;
         if(sprite.x !== tox) sprite.x = tox;
         if(sprite.y !== toy) sprite.y = toy;
         if(sprite.rotation !== angle) sprite.rotation = angle;
