@@ -38,7 +38,7 @@ class UI {
     }
 
     onSpawnFailed(error){
-        this.dom.error.style.display="block";
+        // this.dom.error.style.display="block";
         this.dom.error.innerHTML = error;
     }
 

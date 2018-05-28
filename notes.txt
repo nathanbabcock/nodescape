@@ -824,6 +824,8 @@ X Watermark logo
 X Animate modal
 - BUG: sometimes color picker starts at FFFFFF
 	- Probably cuz color picker initializes late
+- more pixel-perfect bubble collision (?)
+- randomize or *cycle* which edge node take
 
 1hr @home playtest, bugfix, balance
 2hr @home polish
