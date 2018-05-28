@@ -16,6 +16,7 @@ class Render {
         this.selectedNodeGfx = null;
         this.player = null
         this.initPixi();
+        this.ease = new Ease.list();
         // this.layers = {}; // TODO?
         // initGame();
     }
@@ -215,7 +216,11 @@ class Render {
         if(sprite.tint !== color) sprite.tint = color;
         if(sprite.x !== x) sprite.x = x; // TODO could move this to createNodeSprite if desired...
         if(sprite.y !== y) sprite.y = y;
-        if(sprite.width !== size) sprite.width = sprite.height = size;
+        if(sprite.width !== size){
+            if(!this.ease.list.find(ease => ease.object === sprite))
+                this.ease.add(new Ease.to(sprite, { width: size, height: size}, 1000, {ease:"easeOutElastic"}));
+                //sprite.width = sprite.height = size;
+        }
         if(text.text !== value) text.text = value;
         if(text.x !== x - text.width / 2) text.x = x - metrics.width / 4; // text sprites are scaled down, and textmetrics doesn't reflect that
         if(text.y !== y - text.height / 2) text.y = y - metrics.height / 4;
