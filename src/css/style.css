@@ -1,3 +1,8 @@
+body{
+    padding:0;
+    margin:0;
+}
+
 body, input, button {
     font-family: 'Montserrat', sans-serif;
 }
@@ -43,12 +48,12 @@ body, input, button {
     transition:         top 600ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
 }
 
-#spawn h1{
+h1{
     text-align:center;
     font-weight:900;
 }
 
-#spawn span {
+h1 span {
     color: gray;
 }
 
@@ -98,4 +103,18 @@ body, input, button {
     color: red;
     text-align:center;
     margin-bottom:10px;
+}
+
+#watermark {
+    position:absolute;
+    text-align:right;
+    right:0;
+    bottom:0;
+    padding:10px;
+    pointer-events:none;
+    font-size:18px;
+    opacity:0.5;
+    margin:0;
+    width:fit-content;
+    display:none;
 }

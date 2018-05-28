@@ -821,7 +821,7 @@ X Ambient animation before spawn
 > Sometimes bubbles immediately bounce on an empty node, sometimes they stay for 1 tick (update loop sync)
 X Ease radius changes
 - Watermark logo
-- Animate modal
+X Animate modal
 - BUG: sometimes color picker starts at FFFFFF
 	- Probably cuz color picker initializes late
 
