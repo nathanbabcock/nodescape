@@ -838,3 +838,7 @@ FUTURE WORK
 - randomize or *cycle* which edge node take
 - hover edge highlights node it's attached to??
 - favicon
+- remove non-responsive clients after timeout
+- BUG: gifs sometimes don't load (on webserver)
+
+5/28 11:12 AM alpha 0.1.0 release !!!!!
