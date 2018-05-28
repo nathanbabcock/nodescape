@@ -404,10 +404,11 @@ class Render {
     createSelectedNodeText(){
         let style = new PIXI.TextStyle({
             fontFamily: 'Arial',
-            fontSize: renderConfig.scale / 2,
+            fontSize: renderConfig.scale,
             fill: '#707070'
         });
         let txt = new PIXI.Text("server", style);
+        txt.scale.x = txt.scale.y = 0.5;
         // txt.x = node.x * renderConfig.scale - renderConfig.scale / 2;
         // txt.y = node.y * renderConfig.scale - renderConfig.scale / 2 - node.radius - 10;
         this.node_layer.addChild(txt);
@@ -438,8 +439,8 @@ class Render {
             text = this.selectedNodeTxt,
             value = this.selectedNode.owner,
             metrics = PIXI.TextMetrics.measureText(value, text.style),
-            x = node.x * renderConfig.scale - metrics.width / 2,
-            y = (node.y - node.radius) * renderConfig.scale - metrics.height / 2 - 15,
+            x = node.x * renderConfig.scale - metrics.width / 4,
+            y = (node.y - node.radius) * renderConfig.scale - metrics.height / 4 - 15,
             color = "#"+this.game.players[this.selectedNode.owner].color.toString(16);
         text.visible = this.viewport.right - this.viewport.left < 5000;
         if(text.x !== x) text.x = x;
