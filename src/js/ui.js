@@ -17,6 +17,7 @@ class UI {
 
     initCarousel(){
         var flkty = new Flickity( '.main-carousel', {
+            //autoPlay: 10000
         // options
         });
     }
@@ -26,7 +27,8 @@ class UI {
     }
 
     onSpawn(){
-        this.dom.spawn.style.display="none";
+        //this.dom.spawn.style.display="none";
+        this.dom.spawn.style.top = "-725px";
     }
 
     submitSpawn(){

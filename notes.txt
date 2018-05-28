@@ -815,13 +815,15 @@ X LOD (antialiasing at small zooms)
 X stop edges at node edges
 / stop arrowheads at right spot
 X leave behind a ghost edge when dragging an existing edge away
-- Player name color in spawn form matches color picker
+X Player name color in spawn form matches color picker
 X Animate zoom and pan to spawn location (!)
 X Ambient animation before spawn
 > Sometimes bubbles immediately bounce on an empty node, sometimes they stay for 1 tick (update loop sync)
-- Ease radius changes
-- Watermark logo top left
+X Ease radius changes
+- Watermark logo
 - Animate modal
+- BUG: sometimes color picker starts at FFFFFF
+	- Probably cuz color picker initializes late
 
 1hr @home playtest, bugfix, balance
 2hr @home polish
