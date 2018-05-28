@@ -821,7 +821,7 @@ X Ambient animation before spawn
 > Sometimes bubbles immediately bounce on an empty node, sometimes they stay for 1 tick (update loop sync)
 - Ease radius changes
 - Watermark logo top left
-	- Animate modal
+- Animate modal
 
 1hr @home playtest, bugfix, balance
 2hr @home polish

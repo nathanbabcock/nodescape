@@ -40,7 +40,7 @@
                 </div>
                 <div class="row">
                     <label for="color">Color:</label>
-                    <input type="text" class="jscolor" name="color" id="color" value="0000ff" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                    <input type="text" class="jscolor {onFineChange:'ui.changeColor(this)'}" name="color" id="color" value="0000ff" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                 </div>
                 <button type="submit" id="submit" disabled class="btn btn-success btn-lg">Join Game</button>
             </form>

@@ -8,7 +8,9 @@ class UI {
         ["spawn", "name", "color", "error", "submit"].forEach(id => this.dom[id] = document.getElementById(id));
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
-        this.dom.color.value = chance.integer({min: 0x00000, max:0xf0f0f0}).toString(16);
+        let color = chance.integer({min: 0x00000, max:0xf0f0f0}).toString(16);
+        this.dom.color.value = color;
+        this.dom.name.style.color = `#${color}`;
 
         this.initCarousel();
     }
@@ -35,5 +37,9 @@ class UI {
     onSpawnFailed(error){
         this.dom.error.style.display="block";
         this.dom.error.innerHTML = error;
+    }
+
+    changeColor(jscolor){
+        this.dom.name.style.color = `#${jscolor}`;
     }
 }
