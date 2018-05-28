@@ -391,8 +391,6 @@ class Render {
             gfx = this.edgeGfx,
             angle = Math.atan2(toy-fromy,tox-fromx);
 
-        console.log(delta_x, delta_y);
-
         // Snap to eligible nodes
         if(this.dragTo && !this.dragFrom.edges.find(a => a.to === this.dragTo.id && !a.dead && (this.dragToOld && a.to !== this.dragToOld.id)) && color !== 0xFF0000){
             // Redo calculations whee
