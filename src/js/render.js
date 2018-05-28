@@ -158,7 +158,7 @@ class Render {
         //     newValue = shortValue+suffixes[suffixNum];
         // }
         // return newValue;
-        return value;
+        return value.toString();
     }
 
     createNodeText(node){
@@ -208,13 +208,16 @@ class Render {
         // console.log(this.game.players[node.owner]);
         let color = this.game.players[node.owner].color,
             size = radius * 2,
-            textVal = node.isSource ? '∞' : this.abbreviateNumber(node.bubbles),
-            textColor = node.isSource ? color : this.getTextColor(color);
+            value = node.isSource ? '∞' : this.abbreviateNumber(node.bubbles),
+            textColor = node.isSource ? color : this.getTextColor(color),
+            metrics = PIXI.TextMetrics.measureText(value, text.style);
         if(sprite.tint !== color) sprite.tint = color;
         if(sprite.x !== x) sprite.x = x; // TODO could move this to createNodeSprite if desired...
         if(sprite.y !== y) sprite.y = y;
         if(sprite.width !== size) sprite.width = sprite.height = size;
-        if(text.text !== textVal) text.text = textVal;
+        if(text.text !== value) text.text = value;
+        if(text.x !== x - text.width / 2) text.x = x - metrics.width / 2;
+        if(text.y !== y - text.height / 2) text.y = y - metrics.height / 2;
         if(text.style.fill !== textColor) text.style.fill = textColor;
     }
 

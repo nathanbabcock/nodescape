@@ -803,7 +803,7 @@ X fix eclipse?
 	- nodes radius grow smaller increments (0.5?)
 X dont render bubbles when zoomed out
 	- edge radius++ (only when zoomed out, or all the time?)
-- animate viewport pregame
+X animate viewport pregame
 
 TODO sometime?
 - center number
@@ -813,10 +813,11 @@ X make source nodes stand out more
 	- black bg
 X LOD (antialiasing at small zooms)
 - stop edges at node edges
+- stop arrowheads at right spot
 - leave behind a ghost edge when dragging an existing edge away
 - Player name color in spawn form matches color picker
-- Animate zoom and pan to spawn location (!)
-- Ambient animation before spawn
+X Animate zoom and pan to spawn location (!)
+X Ambient animation before spawn
 - Sometimes bubbles immediately bounce on an empty node, sometimes they stay for 1 tick (update loop sync)
 
 
