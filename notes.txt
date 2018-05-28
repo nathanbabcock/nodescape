@@ -806,8 +806,8 @@ X dont render bubbles when zoomed out
 X animate viewport pregame
 
 TODO sometime?
-- center number
-- font resolution (easy?)
+X center number
+X font resolution (easy?)
 X make source nodes stand out more
 	- border
 	- black bg
@@ -819,8 +819,10 @@ X LOD (antialiasing at small zooms)
 X Animate zoom and pan to spawn location (!)
 X Ambient animation before spawn
 - Sometimes bubbles immediately bounce on an empty node, sometimes they stay for 1 tick (update loop sync)
-
+- Ease radius changes
 
 1hr @home playtest, bugfix, balance
 2hr @home polish
 1hr @home being braindead, looking for an option in the viewport API
+
+5/28

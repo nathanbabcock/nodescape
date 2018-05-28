@@ -345,6 +345,7 @@ class Render {
 
     // Drag
     drawDrag(){ // TODO this has some redudancy with drawEdge (ideally we should have a ghost Edge object that gets updated and rendered directly)
+        // Sprite lifecycle
         if(!this.dragSprite) this.dragSprite = this.createEdgeSprite();
         let sprite = this.dragSprite;
         if(!this.dragFrom){
@@ -352,28 +353,30 @@ class Render {
             return;
         } else if (!sprite.visible)
             sprite.visible = true;
-        let mouse = this.app.renderer.plugins.interaction.mouse.getLocalPosition(render.viewport);
-
-        let color = 0x010101;
-        if(this.game.distance({x: mouse.x / renderConfig.scale, y: mouse.y / renderConfig.scale}, this.dragFrom) > this.game.config.max_edge)
+        
+        let mouse = this.app.renderer.plugins.interaction.mouse.getLocalPosition(render.viewport),
+            color = 0x010101,
+            dist = this.game.distance({x: mouse.x / renderConfig.scale, y: mouse.y / renderConfig.scale}, this.dragFrom);
+        if(dist > this.game.config.max_edge)
             color = 0xFF0000;
 
         // Stop arrow just before they get to a node
         let from = this.dragFrom,
             to = mouse,
-            dist = this.game.distance(from, to),
-            delta_x = to.x - from.x,
-            delta_y = to.y - from.y,
-            to_ratio = to.radius / dist,
+            delta_x = to.x / renderConfig.scale - from.x,
+            delta_y = to.y / renderConfig.scale - from.y,
+            to_ratio,
             from_ratio = from.radius / dist,
-            // fromx = (from.x + delta_x * from_ratio) * renderConfig.scale,
-            // fromy = (from.y + delta_y * from_ratio) * renderConfig.scale,
-            fromx = from.x * renderConfig.scale,
-            fromy = from.y * renderConfig.scale,
+            fromx = (from.x + delta_x * from_ratio) * renderConfig.scale,
+            fromy = (from.y + delta_y * from_ratio) * renderConfig.scale,
+            // fromx = from.x * renderConfig.scale,
+            // fromy = from.y * renderConfig.scale,
             tox = mouse.x,
             toy = mouse.y,
             gfx = this.edgeGfx,
             angle = Math.atan2(toy-fromy,tox-fromx);
+
+        console.log(delta_x, delta_y);
 
         // Snap to eligible nodes
         if(this.dragTo && !this.dragFrom.edges.find(a => a.to === this.dragTo.id && !a.dead && (this.dragToOld && a.to !== this.dragToOld.id)) && color !== 0xFF0000){
@@ -417,7 +420,6 @@ class Render {
 
     // Selected Node
     drawSelectedNode(){
-        let gfx = this.edgeGfx;
         if(!this.selectedNode) {
             if(this.selectedNodeTxt && this.selectedNodeTxt.visible) this.selectedNodeTxt.visible = false;
             return;
@@ -428,9 +430,26 @@ class Render {
             if(this.selectedNode.edges.find(edge => edge.to === node.id && !edge.dead)) return; // Edge already exists!
             if(node.edges.find(edge => edge.to === this.selectedNode.id && !edge.dead)) return; // Edge already exists!
             if(node === this.dragFrom) return;
+
+            let gfx = this.edgeGfx,
+                color = 0xd6d6d6,
+                thickness = 1,
+                from = this.selectedNode,
+                to = node,
+                dist = this.game.distance(from, to),
+                delta_x = to.x - from.x,
+                delta_y = to.y - from.y,
+                to_ratio = to.radius / dist,
+                from_ratio = from.radius / dist,
+                fromx = (from.x + delta_x * from_ratio) * renderConfig.scale,
+                fromy = (from.y + delta_y * from_ratio) * renderConfig.scale,
+                tox = (to.x - delta_x * to_ratio) * renderConfig.scale,
+                toy = (to.y - delta_y * to_ratio) * renderConfig.scale,
+                angle = Math.atan2(toy-fromy,tox-fromx);
+
             gfx.lineStyle(1, 0xd6d6d6)
-                .moveTo(this.selectedNode.x * renderConfig.scale, this.selectedNode.y * renderConfig.scale)
-                .lineTo(node.x * renderConfig.scale, node.y * renderConfig.scale);
+                .moveTo(fromx, fromy)
+                .lineTo(tox, toy);
         });
 
         // Draw owner name
