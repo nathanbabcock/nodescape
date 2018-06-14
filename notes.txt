@@ -832,6 +832,7 @@ X Animate modal
 2hr @home polish
 
 FUTURE WORK
+- hover node = enlarge arrowheads for easy clicking
 - BUG: sometimes color picker starts at FFFFFF
 	- Probably cuz color picker initializes late
 - more pixel-perfect bubble collision (?)
@@ -842,3 +843,47 @@ FUTURE WORK
 - BUG: gifs sometimes don't load (on webserver)
 
 5/28 11:12 AM alpha 0.1.0 release !!!!!
+
+==== 45.38 total hours from scratch to alpha ====
+
+6/14
+
+METAGAME
+- Gameplay upgrades
+	- Per-node (purchased) or global (unlocked)
+	- Examples
+		- Bubble spawn rate
+		- Edge radius
+	- Potentially damages the minimalism/core vision
+- Leaderboard
+	- Not that compelling for most players
+	- Not a good driver of premium purchases
+	- COMPLEMENTARY to core vision (territory expansion)
+- XP/Level system (xp = total bubbles across all nodes)
+- Cosmetics
+	- Node/bubble shape, pattern, skin
+	- Damages the minimalism/core vision
+- Prestige/roguelike?
+	- Requires persistent user account ever for free users
+- TF2/RL item drops + economy
+	- Wtf do items do?
+- Cookie clicker numerical incremental
+	- Bubble form the base/lowest layer of the incremental
+- Achievements
+	- Requires persistent user account
+	
+
+METAGAME REQUIREMENTS
+- Must be COMPLEMENTARY to core vision
+	- Territory expansion
+	- Simple minimalist mechanics
+	- Intuitive gameplay
+		- No complex upgrade/buff/level system
+- Goals should be visibile, compelling, tantalizing
+- Pacing: appropriate so some quick early unlocks introduce players
+	to the upgrade system, while others would take days to unlock
+
+IDEAS
+- Show x/y coordinates in status bar, for navigation and communication purposes?
+- Allow linking to certain x/y?
+	- But how does this work with a pre-existing window? Won't it kill your nodes to load the new page?
