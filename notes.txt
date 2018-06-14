@@ -836,11 +836,30 @@ FUTURE WORK
 - BUG: sometimes color picker starts at FFFFFF
 	- Probably cuz color picker initializes late
 - more pixel-perfect bubble collision (?)
-- randomize or *cycle* which edge node take
+- !! randomize or *cycle* which edge node take
 - hover edge highlights node it's attached to??
 - favicon
 - remove non-responsive clients after timeout
 - BUG: gifs sometimes don't load (on webserver)
+- "Are you sure you want to leave?"
+- Procgen only generates nodes on an integer grid...why?
+- get zoom to start at the right lvl instead of flashing the zoomed-in version and then snapping
+- minor visual bug during radius easing
+- dragmode edges should be thick like normal edges
+- BUG: source nodes aren't captured automatically (do they STILL have capacity?)
+- a ghost client bubble is spawned before the real server bubble on newly captured bubbles
+
+IDEAS
+- little speech bubbles you can spawn in space?? (dark souls-style)
+- URL which centers screen on certain place
+- should all edges be unidirectional? kind of like settlers of catan?
+
+TOP feedback
+- arrowheads impossibly hard to remove
+- bidirectional edges not intuitive
+- multiple edges should cycle spawns
+- warning prompt before exit
+
 
 5/28 11:12 AM alpha 0.1.0 release !!!!!
 
