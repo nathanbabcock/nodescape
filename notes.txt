@@ -865,7 +865,6 @@ TOP feedback
 
 5/28 11:12 AM alpha 0.1.0 release !!!!!
 
-<<<<<<< HEAD
 Alpha 0.1.1 TODO
 - arrowheads easier to click
 - multiple edges cycle
@@ -873,7 +872,6 @@ Alpha 0.1.1 TODO
 - tutorial gif preload
 -----
 - patchnotes (cookie?)
-=======
 5/28 11:12 AM alpha 0.1.0 release !!!!!
 
 ==== 45.38 total hours from scratch to alpha ====
@@ -919,4 +917,3 @@ IDEAS
 - Show x/y coordinates in status bar, for navigation and communication purposes?
 - Allow linking to certain x/y?
 	- But how does this work with a pre-existing window? Won't it kill your nodes to load the new page?
->>>>>>> ad364b11246f59d3a7e4ebb1c23464e8d0728c6b
