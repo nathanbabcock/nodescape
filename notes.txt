@@ -848,19 +848,30 @@ FUTURE WORK
 - dragmode edges should be thick like normal edges
 - BUG: source nodes aren't captured automatically (do they STILL have capacity?)
 - a ghost client bubble is spawned before the real server bubble on newly captured bubbles
+- client reconnect
+- server detect disconnect
 
 IDEAS
 - little speech bubbles you can spawn in space?? (dark souls-style)
 - URL which centers screen on certain place
 - should all edges be unidirectional? kind of like settlers of catan?
+- cumulative node value = global currency
+- 3rd zoom out lvl showing polygons, or more likely *only edges*
 
 TOP feedback
 - arrowheads impossibly hard to remove
-- bidirectional edges not intuitive
 - multiple edges should cycle spawns
 - warning prompt before exit
 
+5/28 11:12 AM alpha 0.1.0 release !!!!!
 
+Alpha 0.1.1 TODO
+- arrowheads easier to click
+- multiple edges cycle
+- warning prompt before exit
+- tutorial gif preload
+-----
+- patchnotes (cookie?)
 5/28 11:12 AM alpha 0.1.0 release !!!!!
 
 ==== 45.38 total hours from scratch to alpha ====
@@ -906,6 +917,7 @@ IDEAS
 - Show x/y coordinates in status bar, for navigation and communication purposes?
 - Allow linking to certain x/y?
 	- But how does this work with a pre-existing window? Won't it kill your nodes to load the new page?
+<<<<<<< HEAD
 
 For really strong engagement, the game needs better OFFENSIVE gameplay, in turn forcing more DEFENSIVE gameplay,
 as well as NEUTRAL gameplay -- i.e., a purpose for garnering lots of bubbles in uncontested nodes deep in the
@@ -919,3 +931,5 @@ indication of node power, and potential to attack or repel attacks.
 
 The only trick is to accomplish this without muddying the simplicity of the core gameplay with a bunch of annoying,
 complicated, unintuitive status effects and modifiers. The upgrade system has to be obvious.
+=======
+>>>>>>> ebeb1501e2de5cabc0f99a7de3b9c30058ff7293
