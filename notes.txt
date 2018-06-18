@@ -847,17 +847,27 @@ FUTURE WORK
 - dragmode edges should be thick like normal edges
 - BUG: source nodes aren't captured automatically (do they STILL have capacity?)
 - a ghost client bubble is spawned before the real server bubble on newly captured bubbles
+- client reconnect
+- server detect disconnect
 
 IDEAS
 - little speech bubbles you can spawn in space?? (dark souls-style)
 - URL which centers screen on certain place
 - should all edges be unidirectional? kind of like settlers of catan?
+- cumulative node value = global currency
+- 3rd zoom out lvl showing polygons, or more likely *only edges*
 
 TOP feedback
 - arrowheads impossibly hard to remove
-- bidirectional edges not intuitive
 - multiple edges should cycle spawns
 - warning prompt before exit
 
-
 5/28 11:12 AM alpha 0.1.0 release !!!!!
+
+Alpha 0.1.1 TODO
+- arrowheads easier to click
+- multiple edges cycle
+- warning prompt before exit
+- tutorial gif preload
+-----
+- patchnotes (cookie?)
