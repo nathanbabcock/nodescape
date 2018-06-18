@@ -135,10 +135,19 @@ class Render {
         sprite.on('mousedown', () => this.startDrag(node));
         sprite.on('mouseup', this.stopDrag.bind(this));
         sprite.on('mouseupoutside', this.stopDrag.bind(this));
-        sprite.on('mouseover', () => { this.dragTo = node===this.dragFrom ? null : node; this.selectedNode = node; });
-        sprite.on('mouseout', () => { this.dragTo = null; this.selectedNode = null; });
+        sprite.on('mouseover', () => { this.dragTo = node===this.dragFrom ? null : node; this.selectedNode = node; this.scaleArrowheads(node, 2); });
+        sprite.on('mouseout', () => { this.dragTo = null; this.selectedNode = null;  this.scaleArrowheads(node, 1); });
         this.node_layer.addChild(sprite);
         return sprite;
+    }
+
+    scaleArrowheads(node, scale){
+        this.game.nodes.forEach(mNode => {
+            mNode.edges.forEach(edge => {
+                if(edge.to === node.index)
+                    edge.sprite.scale = scale;
+            });
+        });
     }
 
     getTextColor(bg){
@@ -235,6 +244,8 @@ class Render {
         sprite.on('mousedown', () => this.startDrag(this.game.nodes[edge.from], this.game.nodes[edge.to]));
         sprite.on('mouseup', this.stopDrag.bind(this));
         sprite.on('mouseupoutside', this.stopDrag.bind(this));
+        sprite.on('mouseover', () => { sprite.scale = 2;});
+        sprite.on('mouseout', () => { sprite.scale = 1;});
         sprite.anchor.x = sprite.anchor.y = 0.5;
         this.edge_layer.addChild(sprite);
         return sprite;

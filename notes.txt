@@ -917,7 +917,6 @@ IDEAS
 - Show x/y coordinates in status bar, for navigation and communication purposes?
 - Allow linking to certain x/y?
 	- But how does this work with a pre-existing window? Won't it kill your nodes to load the new page?
-<<<<<<< HEAD
 
 For really strong engagement, the game needs better OFFENSIVE gameplay, in turn forcing more DEFENSIVE gameplay,
 as well as NEUTRAL gameplay -- i.e., a purpose for garnering lots of bubbles in uncontested nodes deep in the
@@ -931,5 +930,6 @@ indication of node power, and potential to attack or repel attacks.
 
 The only trick is to accomplish this without muddying the simplicity of the core gameplay with a bunch of annoying,
 complicated, unintuitive status effects and modifiers. The upgrade system has to be obvious.
-=======
->>>>>>> ebeb1501e2de5cabc0f99a7de3b9c30058ff7293
+
+6/18
+0.1hr untested arrowhead size
