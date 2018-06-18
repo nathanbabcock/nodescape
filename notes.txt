@@ -890,7 +890,7 @@ METAGAME
 	- Bubble form the base/lowest layer of the incremental
 - Achievements
 	- Requires persistent user account
-	
+
 
 METAGAME REQUIREMENTS
 - Must be COMPLEMENTARY to core vision
@@ -906,3 +906,16 @@ IDEAS
 - Show x/y coordinates in status bar, for navigation and communication purposes?
 - Allow linking to certain x/y?
 	- But how does this work with a pre-existing window? Won't it kill your nodes to load the new page?
+
+For really strong engagement, the game needs better OFFENSIVE gameplay, in turn forcing more DEFENSIVE gameplay,
+as well as NEUTRAL gameplay -- i.e., a purpose for garnering lots of bubbles in uncontested nodes deep in the
+heart of a player's network
+
+Perhaps the NEUTRAL gameplay (i.e. upgrades, buffs, or otherwise spending the bubbles in a node) can directly affect the
+OFFENSIVE gameplay, and solve all three problems by domino effect
+
+In other words, node capacity/value goes being a relatively meaningless or boring shield buffer to a real relevant
+indication of node power, and potential to attack or repel attacks.
+
+The only trick is to accomplish this without muddying the simplicity of the core gameplay with a bunch of annoying,
+complicated, unintuitive status effects and modifiers. The upgrade system has to be obvious.
