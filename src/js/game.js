@@ -181,6 +181,11 @@ class Game {
         node.edges.forEach(this.updateEdge, this);
 
         if(this.spawn_cooldown <= 0){
+            // TODO change this to support surplus edges
+            // 1. Sort a list of edges by angle
+            // 2. Try n times (n = num edges)
+            //      - Spawn a bubble on "next" edge, increment "next" edge counter for node
+            //      - If failed, break loop
             node.edges.forEach(edge => {
                 if((node.isSource || node.bubbles > 0) && !edge.dead){
                     this.spawnBubble(node, edge);

@@ -933,3 +933,60 @@ complicated, unintuitive status effects and modifiers. The upgrade system has to
 
 6/18
 0.1hr untested arrowhead size
+
+Alpha 0.1.1 TODO
+/ arrowheads easier to click
+	/ mouseover approach
+		- ease it?
+			- probably not
+	- hitarea approach
+- multiple edges cycle
+- warning prompt before exit
+- tutorial gif preload
+
+UPGRADES
+- Uprade the spawn rate of a node
+- Upgrade bubble size of a node
+	- Same as above but doesn't require faster server tick rate (also less intuitive?)
+	- Bubbles have numbers on them just like nodes
+	- In a collision, value is subtracted from a bubble
+	- Positive bubble collisions also?
+	- 100 for bubble size 2
+	- 1000 for bubble size 3
+	- 10000 for bubble size 4
+	- 100000 for bubble size 5
+	- Not that rewarding, potentially annoying to have to do that for a long chain
+	- Woohoo, I can login after 24hrs and get 20% more capacity on a single node out the 100 that I own... 0.2% more power overall...
+- Upgrade radius
+	- Potentially annoying, the symmetry of edges is something that makes the game intuitive
+- Global multiplier variations on any of above
+	- Rewarding for player but hard to compete with
+- Higher level economy??
+- Item system (nodes have inventories, put items in the slots)
+	- This is a better idea for the NodeScape successor, factorio MMO
+- Temporary buffs for any of above
+- Upgrade types [local, global] x [permanent, temporary]
+- Some sort of higher level economy driven by supply and demand?
+	- Potentially nonintuitive, but also non-intrusive (gameplay entirely separate from traditional nodescaping)
+	- Nodes have assigned resources, like SoT islands
+	- Nodes can spend value to buy these resources, and ??? sell them to other players in a GE-like interface?
+
+BETA TODO
+- How to capture (and defend) source nodes
+- Persistent login (DB integration, basic security)
+- Payment (paypal/amazon pay?)
+- Stats & graphs (+incentivize offline/premium mode)
+- Larger worldmap support (?)
+- Unknown metagame
+- Profile view (incl. view stats & graphs)
+- Profanity filter?
+- DDoS/exploit safeguards (more security)
+- Server leaderboard
+
+Territory control
+- Maybe instead of upgrades or metagame, the core rules should be changed just enough to make combat varied and interesting
+- Territory control in itself is the real metagame (macro play vs micro play)
+- The NodeScape successor should tackle the issue of true higher-level metagame (resource economy)
+- NodeScape rests as POC for territory control with atomic/mathematic rules of engagement
+	- (as well as test of marketing, tech stack, dev time, testing, etc).
+	- In other words, a practice run at future games
