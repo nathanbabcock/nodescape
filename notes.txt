@@ -990,3 +990,41 @@ Territory control
 - NodeScape rests as POC for territory control with atomic/mathematic rules of engagement
 	- (as well as test of marketing, tech stack, dev time, testing, etc).
 	- In other words, a practice run at future games
+
+6/19
+
+ABILITY:
+- Instantaneously capture an adjacent node
+- Costs 600 (5 minutes of production)
+- Adjacent node must contain *less* bubbles than this one to capture
+
+Abilities pop up in a wheel around a node on mouseover
+Remain for a few seconds before hiding (or until another node mouseovers)
+The *ability* mouseover shows a tooltip with description + cost
+Greyed out when cannot afford but always shown
+
+Ideally: 60s ability, 1 hr ability, 24 hr ability
+
+additional node types
+MULTIPLIER NODE
+- holds no capacity
+- all incoming bubbles are duplicated and sent out again on any available edges
+- optimal usage: bidirectional edge on all inputs
+- as good as a source node but requires more setup (optimally generates n/sec for n neighbors)
+INVERTER NODE
+- only sends bubbles out when it is not receiving bubbles
+- theoretically, the basis for any logic circuit
+ADDER NODE
+- generates 1 bubble when receiving a bubble
+
+bubble types
+SPREADER BUBBLE
+- when it hits a node, tries to create a new edge to a random (neutral?) neighbor
+- lives until it hits a dead end or enemy node?
+NUKE BUBBLE
+- destroys a node when it comes to rest (all capacity, ownership, edges killed)
+- could be held in a loop until needed (pair with inverter for automated deployment?)
+REVERSE BUBBLE
+- Reverses all edges on an enemy node (?)
+
+evolve a node into a generator of a special type
