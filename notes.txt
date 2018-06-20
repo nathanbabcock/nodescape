@@ -940,7 +940,7 @@ Alpha 0.1.1 TODO
 		- ease it?
 			- probably not
 	X hitarea approach
-- multiple edges cycle
+X multiple edges cycle
 - warning prompt before exit
 - tutorial gif preload
 
@@ -1036,3 +1036,4 @@ evolve a node into a generator of a special type
 6/20:
 
 0.25hr implement alternating bubble edges (untested)
+0.25hr @home test and fix alternating bubble edges

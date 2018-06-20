@@ -197,6 +197,9 @@ class Game {
                     return Math.atan((aTo.x - aFrom.x) / (aTo.y - aFrom.y)) - Math.atan((bTo.x - bFrom.x) / (bTo.y - bFrom.y));
                 });
 
+            // if(edges.length> 0)
+            //     console.log(edges);
+
             if(node.next_spawn_edge == undefined)
                 node.next_spawn_edge = 0;
 
@@ -204,9 +207,9 @@ class Game {
             for(var i = 0; i < edges.length; i++){
                 if(node.isSource || node.bubbles > 0){
                     this.spawnBubble(node, edges[node.next_spawn_edge]);
-                    if(node.isSource) node.bubbles--;
+                    if(!node.isSource) node.bubbles--;
                     node.next_spawn_edge++;
-                    if(node.next_spawn_edge > edges.length)
+                    if(node.next_spawn_edge >= edges.length)
                         node.next_spawn_edge = 0;
                 } else
                     break;
