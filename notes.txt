@@ -939,7 +939,7 @@ Alpha 0.1.1 TODO
 	/ mouseover approach
 		- ease it?
 			- probably not
-	- hitarea approach
+	X hitarea approach
 - multiple edges cycle
 - warning prompt before exit
 - tutorial gif preload
@@ -1032,3 +1032,7 @@ evolve a node into a generator of a special type
 6/19:
 
 15min @ home: arrowhead hitbox
+
+6/20:
+
+0.25hr implement alternating bubble edges (untested)

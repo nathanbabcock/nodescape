@@ -186,14 +186,41 @@ class Game {
             // 2. Try n times (n = num edges)
             //      - Spawn a bubble on "next" edge, increment "next" edge counter for node
             //      - If failed, break loop
-            node.edges.forEach(edge => {
-                if((node.isSource || node.bubbles > 0) && !edge.dead){
-                    this.spawnBubble(node, edge);
-                    //edge.bubbles.push(new Bubble(node.owner, node.radius));
-                    // console.log("Bubble spawned");
-                    if(!node.isSource) node.bubbles--;
-                }
-            });
+
+            // Step 1: sort edges by angle
+            let edges = node.edges.filter(edge => !edge.dead)
+                .sort((a, b) => {
+                    let aFrom = this.nodes[a.from],
+                        aTo = this.nodes[a.to],
+                        bFrom = this.nodes[b.from],
+                        bTo = this.nodes[b.to];
+                    return Math.atan((aTo.x - aFrom.x) / (aTo.y - aFrom.y)) - Math.atan((bTo.x - bFrom.x) / (bTo.y - bFrom.y));
+                });
+
+            if(node.next_spawn_edge == undefined)
+                node.next_spawn_edge = 0;
+
+            // Step 2: Try to spawn n times (n = num edges)
+            for(var i = 0; i < edges.length; i++){
+                if(node.isSource || node.bubbles > 0){
+                    this.spawnBubble(node, edges[node.next_spawn_edge]);
+                    if(node.isSource) node.bubbles--;
+                    node.next_spawn_edge++;
+                    if(node.next_spawn_edge > edges.length)
+                        node.next_spawn_edge = 0;
+                } else
+                    break;
+            }
+            //console.log(edges);
+
+            // node.edges.forEach(edge => {
+            //     if((node.isSource || node.bubbles > 0) && !edge.dead){
+            //         this.spawnBubble(node, edge);
+            //         //edge.bubbles.push(new Bubble(node.owner, node.radius));
+            //         // console.log("Bubble spawned");
+            //         if(!node.isSource) node.bubbles--;
+            //     }
+            // });
         }
 
         node.radius = this.getNodeRadius(node); // TODO move this?
