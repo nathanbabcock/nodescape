@@ -1,7 +1,8 @@
 // Render Config
 const renderConfig = {
     scale:25,
-    arrowhead_size:20,
+    arrowhead_size:25,
+    big_arrowhead_scale: 1,
     line_thickness: 3,
     scrollbar_padding: 5
 };
@@ -131,12 +132,13 @@ class Render {
         let tex = node.isSource ? this.texture_cache.circle_stroke : this.texture_cache.circle,
             sprite = new PIXI.Sprite(tex);
         sprite.interactive = true;
+        sprite.hitArea = new PIXI.Circle(0, 0, 50);
         sprite.anchor.x = sprite.anchor.y = 0.5;
         sprite.on('mousedown', () => this.startDrag(node));
         sprite.on('mouseup', this.stopDrag.bind(this));
         sprite.on('mouseupoutside', this.stopDrag.bind(this));
-        sprite.on('mouseover', () => { this.dragTo = node===this.dragFrom ? null : node; this.selectedNode = node; this.scaleArrowheads(node, 1.5); });
-        sprite.on('mouseout', () => { this.dragTo = null; this.selectedNode = null;  this.scaleArrowheads(node, 1); });
+        sprite.on('mouseover', () => { this.dragTo = node===this.dragFrom ? null : node; this.selectedNode = node; /*this.scaleArrowheads(node, renderConfig.big_arrowhead_scale);*/ });
+        sprite.on('mouseout', () => { this.dragTo = null; this.selectedNode = null;  /*this.scaleArrowheads(node, 1);*/ });
         this.node_layer.addChild(sprite);
         return sprite;
     }
@@ -244,7 +246,7 @@ class Render {
         sprite.on('mousedown', () => this.startDrag(this.game.nodes[edge.from], this.game.nodes[edge.to]));
         sprite.on('mouseup', this.stopDrag.bind(this));
         sprite.on('mouseupoutside', this.stopDrag.bind(this));
-        sprite.on('mouseover', () => { sprite.scale.x = sprite.scale.y = 1.5;});
+        sprite.on('mouseover', () => { sprite.scale.x = sprite.scale.y = renderConfig.big_arrowhead_scale;});
         sprite.on('mouseout', () => { sprite.scale.x = sprite.scale.y = 1;});
         sprite.anchor.x = sprite.anchor.y = 0.5;
         this.edge_layer.addChild(sprite);

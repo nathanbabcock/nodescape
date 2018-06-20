@@ -1028,3 +1028,7 @@ REVERSE BUBBLE
 - Reverses all edges on an enemy node (?)
 
 evolve a node into a generator of a special type
+
+6/19:
+
+15min @ home: arrowhead hitbox
