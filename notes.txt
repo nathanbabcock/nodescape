@@ -1037,3 +1037,6 @@ evolve a node into a generator of a special type
 
 0.25hr implement alternating bubble edges (untested)
 0.25hr @home test and fix alternating bubble edges
+
+6/25:
+0.25hr basic leave confirmation

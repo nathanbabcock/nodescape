@@ -12,6 +12,16 @@ class UI {
         this.dom.color.value = color;
         this.dom.name.style.color = `#${color}`;
 
+        // OnBeforeUnload
+        window.addEventListener("beforeunload", (e) => {
+            // if(this.dom.watermark.style.display !== "block")
+            //     return undefined;
+            // TODO Modal message here?
+            let msg = "All progress is lost when you close your tab. Continue?"
+            e.returnValue = msg;
+            return msg;
+        });
+
         this.initCarousel();
     }
 
