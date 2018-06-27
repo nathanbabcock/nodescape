@@ -982,6 +982,7 @@ BETA TODO
 - Profanity filter?
 - DDoS/exploit safeguards (more security)
 - Server leaderboard
+- Browser compat checks
 
 Territory control
 - Maybe instead of upgrades or metagame, the core rules should be changed just enough to make combat varied and interesting
@@ -1040,3 +1041,33 @@ evolve a node into a generator of a special type
 
 6/25:
 0.25hr basic leave confirmation
+
+6/27:
+Auth & payment flow:
+- Click "BUY PREMIUM" button, either from top status bar or the modal popup before leaving
+- Form with fields:
+	- Username
+		- Must be unique
+		- Ideally checked in realtime
+		- Populated from pre-existing username
+	- Color
+		- Populated from pre-existing color
+		- Color picker
+	- Email
+	- Password
+	- Confirm password
+	- Captcha?
+- Offline report screen (?)
+- "Pay with paypal" button -> click
+- Popup window w/ papyal (but launched from server REST service)
+	- Log in to pay pal
+	- Authorize payment
+- Success or Failure screen
+
+Questions
+- What if a user creates a user account but does not confirm payment?
+	- OPTION 1: Reminder emails until time is up
+		- Need special handling for the in-between state
+	- OPTION 2: Server nukes their account on window close 
+- Can the system be abused/DDoSed? (probably yes)
+	- Mass account creation
