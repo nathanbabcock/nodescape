@@ -209,24 +209,42 @@ class Server{
             // TODO validate
             
             // Check DB
-            // TODO check DB
-            
-            // Store in DB
-            // https://djamware.com/post/58eba06380aca72673af8500/node-express-mongoose-and-passportjs-rest-api-authentication
-            new User({
-                email: msg.email,
-                password: msg.password
-            }).save(err => {
-                if(err){
+            User.findOne({email:msg.email}).exec()
+                .then(doc => {
+                    if(doc) 
+                        return Promise.reject({msg: "Email address already registered. Try using the 'forgot password' link."});
+                    // Save to DB
+                    return new User({
+                        email:msg.email,
+                        password:msg.password
+                    }).save();
+                }).then(() => {
+                    console.log("Register success");
+                    this.send(ws, {msgtype: "register_success"});
+                }).catch((err) => {
                     this.send(ws, {
                         msgtype:"register_failed",
                         error:err.message
                     });
                     return console.error(err);
-                }
-                console.log("Register success");
-                this.send(ws, {msgtype: "register_success"});
-            });
+                });
+
+            // Store in DB
+            // https://djamware.com/post/58eba06380aca72673af8500/node-express-mongoose-and-passportjs-rest-api-authentication
+            // new User({
+            //     email: msg.email,
+            //     password: msg.password
+            // }).save(err => {
+            //     if(err){
+            //         this.send(ws, {
+            //             msgtype:"register_failed",
+            //             error:err.message
+            //         });
+            //         return console.error(err);
+            //     }
+            //     console.log("Register success");
+            //     this.send(ws, {msgtype: "register_success"});
+            // });
         };
 
         handlers.colorchange = msg => this.game.players[ws.username].color = msg.color;
