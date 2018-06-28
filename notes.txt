@@ -1107,3 +1107,14 @@ WebSocket Middleware
 
 0.5hr middlware boilerplate
 0.5hr mongodb on windows
+1.0hr mongoose, register
+
+TODO:
+- validation
+- pass errors through to client
+- handle success
+- log in
+- sessions?
+- mongodb auth
+- change email, username, color, password
+- PayPal
