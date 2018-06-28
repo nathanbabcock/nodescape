@@ -152,6 +152,11 @@ class Client {
         return JSON.stringify(data);
     }
 
+    /////// MIDDLEWARE
+    register(email, password, confirmPassword){
+        console.log(`Registering ${email}, ${password}, ${confirmPassword}`);
+    }
+
 }
 
 // let client = new Client("excalo");

@@ -1071,3 +1071,36 @@ Questions
 	- OPTION 2: Server nukes their account on window close 
 - Can the system be abused/DDoSed? (probably yes)
 	- Mass account creation
+
+6/28/18
+- Should the login & register logic be handled custom inside the server?
+	- Messages over websockets instead of xhr
+- Why about multiple server support?
+	- There can still be a single database instance, which the server connects to.
+	- Only the MIDDLEWARE goes onto the server instance
+
+WebSocket Middleware
+- Login
+	- Client sends message containing:
+		- Username OR email
+		- Encrypted password
+	- Server checks mongodb and compares password
+		- Success -> gives ownership of player in game instance to this client
+- Register
+	- Client sends message containing:
+		- Player name
+		- Color
+		- Email
+		- Password
+		- Password again
+	- Server validates
+		- Success -> add to DB
+	- Client clicks paypal button
+		- Server triggers paypal portal
+	- Client completes paypal payment
+		- Server updates DB again with new state
+- Change username
+- Change password
+- Change email
+- Change color
+- Remember logged in users with session table??

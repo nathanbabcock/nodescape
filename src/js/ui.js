@@ -5,7 +5,7 @@ class UI {
 
         // Grab and cache dom instances
         this.dom = {};
-        ["spawn", "name", "color", "error", "submit", "watermark"].forEach(id => this.dom[id] = document.getElementById(id));
+        ["spawn", "name", "color", "error", "submit", "watermark", "register_submit", "email", "password", "confirmpassword"].forEach(id => this.dom[id] = document.getElementById(id));
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
         let color = chance.integer({min: 0x00000, max:0xf0f0f0}).toString(16);
@@ -44,6 +44,11 @@ class UI {
 
     submitSpawn(){
         this.client.spawn(this.dom.name.value, parseInt(this.dom.color.value, 16));
+        return false;
+    }
+
+    submitRegister(){
+        this.client.register(this.dom.email.value, this.dom.password.value, this.dom.confirmpassword.value);
         return false;
     }
 

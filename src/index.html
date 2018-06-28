@@ -25,27 +25,44 @@
 <body>
     <h1 id="watermark" class="noselect">NodeScape <span>Alpha</span></h1>
     <div id="spawn" class="noselect">
-            <h1>NodeScape <span>Alpha</span></h1>
-            <div class="main-carousel">
-                <img src="img/tutorial_1.gif" class="carousel-cell">
-                <img src="img/tutorial_2.gif" class="carousel-cell">
-                <img src="img/tutorial_3.gif" class="carousel-cell">
-                <img src="img/tutorial_4.gif" class="carousel-cell">
-                <img src="img/tutorial_5.gif" class="carousel-cell">
-            </div>
-            <div id="error"></div>
-            <form name="spawn" onsubmit="event.preventDefault(); return ui.submitSpawn()">
-                <div class="row">
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" value="player1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                </div>
-                <div class="row">
-                    <label for="color">Color:</label>
-                    <input type="text" class="jscolor {onFineChange:'ui.changeColor(this)'}" name="color" id="color" value="0000ff" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                </div>
-                <button type="submit" id="submit" disabled class="btn btn-success btn-lg">Join Game</button>
-            </form>
+        <h1>NodeScape <span>Alpha</span></h1>
+        <div class="main-carousel">
+            <img src="img/tutorial_1.gif" class="carousel-cell">
+            <img src="img/tutorial_2.gif" class="carousel-cell">
+            <img src="img/tutorial_3.gif" class="carousel-cell">
+            <img src="img/tutorial_4.gif" class="carousel-cell">
+            <img src="img/tutorial_5.gif" class="carousel-cell">
         </div>
+        <div id="error"></div>
+        <form name="spawn" onsubmit="event.preventDefault(); return ui.submitSpawn()">
+            <div class="row">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" value="player1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </div>
+            <div class="row">
+                <label for="color">Color:</label>
+                <input type="text" class="jscolor {onFineChange:'ui.changeColor(this)'}" name="color" id="color" value="0000ff" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </div>
+            <button type="submit" id="submit" disabled class="btn btn-success btn-lg">Join Game</button>
+        </form>
+    </div>
+    <div id="register">
+        <form name="register" onsubmit="event.preventDefault(); return ui.submitRegister()">
+            <div class="row">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email">
+            </div>
+            <div class="row">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password">
+            </div>
+            <div class="row">
+                <label for="confirmpassword">Confirm Password:</label>
+                <input type="password" name="confirmpassword" id="confirmpassword">
+            </div>
+            <button type="submit" id="register_submit" class="btn btn-success btn-lg">Register</button>
+        </form>
+    </div>
 
     <script>
         let render = new Render(),
