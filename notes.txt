@@ -1104,3 +1104,6 @@ WebSocket Middleware
 - Change email
 - Change color
 - Remember logged in users with session table??
+
+0.5hr middlware boilerplate
+0.5hr mongodb on windows

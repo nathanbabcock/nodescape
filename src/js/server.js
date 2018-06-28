@@ -2,6 +2,8 @@ const WS = require('ws'),
     https = require('https'),
     fs = require('fs'),
     _game = require('./game'),
+    mongoose = require('mongoose'),
+    User = require("./schema/user"),
     Game = _game.Game,
     Node = _game.Node,
     Edge = _game.Edge,
@@ -11,16 +13,23 @@ class Server{
     constructor(port=8081){
         this.port = port;
         console.log("Starting server");
-        //this.initGame();
+        this.initGame();
         this.initWebsockets();
 
+        console.log("Connecting to mongodb");
+        mongoose.connect('mongodb://localhost/nodescape');
+        let db = mongoose.connection;
+        db.on('error', console.error.bind(console, 'mongodb connection error:'));
+        db.once('open', () => { console.log("Succesfully connected to MongoDB")});
     };
 
     initGame(){
         console.log("Initializing server game instance");
 
         let game = this.game = new Game();
+        console.log("Procedurally generating map...");
         this.game.procgen();
+        console.log("Procedural generation complete.");
 
         // let src = new Node(5, 5, true);
         //     src.id = game.nodes.length;
@@ -194,6 +203,32 @@ class Server{
             //console.log("Nodes in viewport this frame:", this.game.nodes.filter(node => node.x >= ws.viewport.left && node.x <= ws.viewport.right && node.y <= ws.viewport.bottom && node.y >= ws.viewport.top).length);
         };
 
+        handlers.register = msg => {
+            console.log("Registering new user with email", msg.email);
+            // Validate
+            // TODO validate
+            
+            // Check DB
+            // TODO check DB
+            
+            // Store in DB
+            // https://djamware.com/post/58eba06380aca72673af8500/node-express-mongoose-and-passportjs-rest-api-authentication
+            new User({
+                email: msg.email,
+                password: msg.password
+            }).save(err => {
+                if(err){
+                    this.send(ws, {
+                        msgtype:"register_failed",
+                        error:err.message
+                    });
+                    return console.error(err);
+                }
+                console.log("Register success");
+                this.send(ws, {msgtype: "register_success"});
+            });
+        };
+
         handlers.colorchange = msg => this.game.players[ws.username].color = msg.color;
         handlers.createEdge = msg => this.game.createEdge(ws.username, msg.from, msg.to);
         handlers.removeEdge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);
@@ -264,5 +299,5 @@ class Server{
 }
 
 let server = new Server();
-server.initGame();
+//server.initGame();
 //server.loadTest();
