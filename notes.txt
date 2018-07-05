@@ -1118,3 +1118,10 @@ TODO:
 - mongodb auth
 - change email, username, color, password
 - PayPal
+
+7/5
+- Auth0 widget in single page app
+- Updating color/displayName in auth0 metadata
+- Custom email (SES & custom template)
+
+0.5hr implement Auth0
