@@ -115,14 +115,6 @@ class Client {
             if(this.ui) this.ui.onSpawnFailed(msg.error);
         }
 
-        handlers.register_success = () => {
-            console.log("Register success!");
-        }
-
-        handlers.register_failed = () => {
-            console.error("Register failed", msg.error);
-        }
-
         if(msg.msgtype && handlers[msg.msgtype] === undefined){
             console.error(`Unrecognized server msgtype ${msg.msgtype}`);
             return;
@@ -158,17 +150,6 @@ class Client {
     serialize(data){
         // TODO: msgpack
         return JSON.stringify(data);
-    }
-
-    /////// MIDDLEWARE
-    register(email, password, confirmPassword){
-        console.log(`Registering ${email}, ${password}, ${confirmPassword}`);
-        this.send({
-            msgtype: "register",
-            email: email,
-            password: password,
-            confirmPassword: confirmPassword
-        });
     }
 
 }

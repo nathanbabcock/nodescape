@@ -1,11 +1,3 @@
-body > * {
-    display:none;
-}
-
-#register {
-    display:block;
-}
-
 body{
     padding:0;
     margin:0;
@@ -65,28 +57,24 @@ h1 span {
     color: gray;
 }
 
-form .row {
+#spawn .row {
     width:fit-content;
     margin:0 auto 20px;
 }
 
-form label {
+#spawn label {
     width: 50px;
     display:inline-block;
     padding-right:15px;
     text-align:right;
 }
 
-#register label {
-    width:100px;
-}
-
-form input{
+#spawn input{
     font-size:20px;
     padding: 10px;
 }
 
-form button {
+#spawn button {
     /* background-color:green; */
     font-size:24px;
     padding:20px;
@@ -98,11 +86,11 @@ form button {
     color:white;
 }
 
-form button:disabled {
+#spawn button:disabled {
     opacity:0.5;
 }
 
-form button:disabled:hover {
+#spawn button:disabled:hover {
     background-color:#2ecc71;
 }
 
