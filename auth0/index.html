@@ -1,8 +1,29 @@
 <button id="login">LOG IN</button>
+<button id="register">GO PERMANENT</button>
+<div id="login_inline"></div>
+<script>
+  var
+    playername = "playername1",
+    color = 0x110001;
+</script>
 <script src="https://cdn.auth0.com/js/auth0/9.5.1/auth0.min.js"></script>
 <script src="https://cdn.auth0.com/js/lock/11.7.2/lock.min.js"></script>
 <script>
-var lock = new Auth0Lock(
+var login_inline = new Auth0Lock(
+  'O6nD56ZYl6E9Njp5gXlYoTReaObvc240',
+  'nodescape.auth0.com',
+  {
+    container: 'login_inline',
+    allowSignUp: false,
+    //signUpLink: "javascript:console.log('sign up');",
+    auth: {
+      redirect: false
+    }
+  }
+);
+login_inline.show(); // render
+
+var login_modal = new Auth0Lock(
   'O6nD56ZYl6E9Njp5gXlYoTReaObvc240',
   'nodescape.auth0.com',
   {
@@ -12,9 +33,27 @@ var lock = new Auth0Lock(
   }
 );
 
-document.getElementById("login").onclick=(event) => {
+var register_modal = new Auth0Lock(
+  'O6nD56ZYl6E9Njp5gXlYoTReaObvc240',
+  'nodescape.auth0.com',
+  {
+    initialScreen: 'signUp',
+    auth: {
+      redirect: false
+    }
+  }
+);
+
+document.getElementById("login").onclick= (event) => {
     event.preventDefault();
-    lock.show({
+    login_modal.show({
+        rememberLastLogin: true
+    });
+}
+
+document.getElementById("register").onclick= (event) => {
+    event.preventDefault();
+    register_modal.show({
         rememberLastLogin: true
     });
 }

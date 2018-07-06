@@ -1120,10 +1120,23 @@ TODO:
 - PayPal
 
 7/5
-- Auth0 widget in single page app
-- Updating color/displayName in auth0 metadata
+- Auth0 widget in single page app (basic business logic)
+	- Logging in from page load
+	- Registering from top right OR onbeforeunload
+- Updating color/displayName in auth0 metadata (auth0 -> nodescape server connection)
+- PayPal screen
 - Custom email (SES & custom template)
+- Google, Facebook, Twitter logins (?)
 
 0.5hr implement Auth0
 
 7/6
+
+
+Button in top right: "Go Permanent" -> popup
+- Auth0 register screen
+- PayPal payment screen
+-OR-
+Already logged in: 
+
+On login, in Spawn modal: if any kind of auth0 cookie present, show a login *tab* instead of spawn form
