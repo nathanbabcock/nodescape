@@ -1,0 +1,21 @@
+<button id="login">LOG IN</button>
+<script src="https://cdn.auth0.com/js/auth0/9.5.1/auth0.min.js"></script>
+<script src="https://cdn.auth0.com/js/lock/11.7.2/lock.min.js"></script>
+<script>
+var lock = new Auth0Lock(
+  'O6nD56ZYl6E9Njp5gXlYoTReaObvc240',
+  'nodescape.auth0.com',
+  {
+    auth: {
+      redirect: false
+    }
+  }
+);
+
+document.getElementById("login").onclick=(event) => {
+    event.preventDefault();
+    lock.show({
+        rememberLastLogin: true
+    });
+}
+</script>

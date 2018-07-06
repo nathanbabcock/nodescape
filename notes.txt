@@ -1125,3 +1125,5 @@ TODO:
 - Custom email (SES & custom template)
 
 0.5hr implement Auth0
+
+7/6
