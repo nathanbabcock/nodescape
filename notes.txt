@@ -1140,3 +1140,24 @@ Button in top right: "Go Permanent" -> popup
 Already logged in: 
 
 On login, in Spawn modal: if any kind of auth0 cookie present, show a login *tab* instead of spawn form
+
+7/9
+
+1hr auth0 + nodescape backend integration
+
+initiate login, incl. request for ID token
+> login successful
+send ws msg to nodescape server, containing id token
+server verifies id token using jwt.verify
+> verify succesfull
+hit auth0 api to retrieve user_metadata.player_name (using id token)
+server assigns player instance to ws connection, notifies client
+if player has no nodes, spawn them a new one
+client updates UI and pan/zooms to owned node
+
+TODO:
+- create nodejs app which does the following:
+- request an api token from auth0
+- cache that token and check the expiration before subsequent calls
+- verify a user's issued id token using jwt.verify
+- retrieve or update a user's user_metadata by user_id

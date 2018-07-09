@@ -17,11 +17,32 @@ var login_inline = new Auth0Lock(
     allowSignUp: false,
     //signUpLink: "javascript:console.log('sign up');",
     auth: {
+      responseType: 'id_token token',
       redirect: false
     }
   }
 );
 login_inline.show(); // render
+
+// Listening for the authenticated event
+login_inline.on("authenticated", function(authResult) {
+  // Use the token in authResult to getUserInfo() and save it to localStorage
+  login_inline.getUserInfo(authResult.accessToken, function(error, profile) {
+    if (error) {
+      // Handle error
+      return;
+    }
+    console.log(profile);
+    console.log(authResult);
+
+    let user_id = authResult.idTokenPayload.sub.split("|")[1];
+    console.log("user id", user_id);
+    // console.log("nickname", profile.nickname);
+
+    //localStorage.setItem('accessToken', authResult.accessToken);
+    //localStorage.setItem('profile', JSON.stringify(profile));
+  });
+});
 
 var login_modal = new Auth0Lock(
   'O6nD56ZYl6E9Njp5gXlYoTReaObvc240',
