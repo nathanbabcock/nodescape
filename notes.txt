@@ -1158,7 +1158,7 @@ client updates UI and pan/zooms to owned node
 TODO:
 - create nodejs app which does the following:
 	- check for cached token (existence + expiration)
-	- if necessary, request an api token from auth0 and cache
+	- if necessary, request an api token from auth0 and cache it
 	- verify a user's issued id token using jwt.verify
 	- retrieve or update a user's user_metadata by user_id
 - THEN
@@ -1167,3 +1167,7 @@ TODO:
 0.5hr auth0-backend integration
 
 TODO REMOVE TEST APPLICATION CLIENT SECRET!!!!!!!!!
+
+7/10
+
+1hr finish auth0-backend integration
