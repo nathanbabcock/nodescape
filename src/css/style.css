@@ -175,20 +175,32 @@ h1 span {
     margin:0 5px 0 5px;
 }
 
-#register-button {
+.goPermanent {
     background-color: #FFCC00;
     border-radius:4px;
     padding:5px;
     color:black;
     text-decoration: none;
+    border:none;
 }
 
-#register-button:hover{
+.goPermanent:hover {
     background-color:#ffd638;
 }
 
 #register-button span {
     font-weight: bold;
+}
+
+#continue_register{
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin-left:-60px;
+    font-size:16px;
+    padding:10px;
+    border-radius:6px;
+    font-weight:bold;
 }
 
 /*********/

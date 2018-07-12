@@ -49,11 +49,12 @@
 
     <div id="register_modal" class="modal">
         <button class="close" onclick="ui.closeModal('#register_modal')">✕</button>
+        <button id="continue_register" class="goPermanent">Continue</button>
     </div>
 
     <div id="topbar">
         <a href="javascript:alert('login')" id="login-button">Login</a> <span id="login-register-separator">/</span>
-        <a href="javascript:ui.openModal('#register_modal')" id="register-button">GO <span>PERMANENT</span></a>
+        <a href="javascript:ui.openModal('#register_modal')" id="register-button" class="goPermanent">GO <span>PERMANENT</span></a>
     </div>
 
     <script>
