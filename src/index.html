@@ -16,7 +16,7 @@
     <script src="js/pixi.js"></script>
     <script src="js/viewport-browser.js"></script>
     <script src="js/jscolor.js"></script>
-    <script src="js/tutorial.js"></script> <!-- TODO REMOVE-->
+    <!-- <script src="js/tutorial.js"></script> TODO REMOVE -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900">
     <link rel="stylesheet" href="css/button.css"> 
     <link rel="stylesheet" href="css/style.css"> 
@@ -24,7 +24,7 @@
 </head>
 <body>
     <h1 id="watermark" class="noselect">NodeScape <span>Alpha</span></h1>
-    <div id="spawn" class="noselect">
+    <div id="spawn" class="noselect modal">
             <h1>NodeScape <span>Alpha</span></h1>
             <div class="main-carousel">
                 <img src="img/tutorial_1.gif" class="carousel-cell">
@@ -46,6 +46,15 @@
                 <button type="submit" id="submit" disabled class="btn btn-success btn-lg">Join Game</button>
             </form>
         </div>
+
+    <div id="register_modal" class="modal">
+        <button class="close" onclick="ui.closeModal('#register_modal')">✕</button>
+    </div>
+
+    <div id="topbar">
+        <a href="javascript:alert('login')" id="login-button">Login</a> <span id="login-register-separator">/</span>
+        <a href="javascript:ui.openModal('#register_modal')" id="register-button">GO <span>PERMANENT</span></a>
+    </div>
 
     <script>
         let render = new Render(),

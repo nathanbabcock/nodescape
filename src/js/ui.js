@@ -5,7 +5,7 @@ class UI {
 
         // Grab and cache dom instances
         this.dom = {};
-        ["spawn", "name", "color", "error", "submit", "watermark"].forEach(id => this.dom[id] = document.getElementById(id));
+        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal"].forEach(id => this.dom[id] = document.getElementById(id));
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
         let color = chance.integer({min: 0x00000, max:0xf0f0f0}).toString(16);
@@ -54,5 +54,30 @@ class UI {
 
     changeColor(jscolor){
         this.dom.name.style.color = `#${jscolor}`;
+    }
+
+    showRegisterModal(){
+        if(this.dom.spawn.offsetTop > 0)
+            this.dom.spawn.style.top = "-725px";
+        if(this.dom.register_modal.offsetTop < 0)
+            this.dom.register_modal.style.top = "50%";
+    }
+
+    closeModal(modal){
+        var elem;
+        if (typeof modal === 'string' || modal instanceof String)
+            elem = document.querySelector(modal);
+        else
+            elem = modal;
+        elem.style.top = `-${elem.clientHeight+25}px`;
+    }
+
+    openModal(modal){
+        var elem;
+        if (typeof modal === 'string' || modal instanceof String)
+            elem = document.querySelector(modal);
+        else
+            elem = modal;
+        elem.style.top = "50%";
     }
 }

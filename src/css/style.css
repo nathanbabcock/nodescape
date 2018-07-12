@@ -31,7 +31,7 @@ body, input, button {
                                     supported by Chrome and Opera */
 }
 
-#spawn {
+.modal {
     position:absolute;
     width: 600px;
     margin-left: -300px;
@@ -43,9 +43,42 @@ body, input, button {
     top: 50%;
     font-size:20px;
     border-radius: 8px;
+    z-index:2;
 
-    -webkit-transition: top 600ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    -webkit-transition: top 900ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
     transition:         top 600ms cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+
+.modal .close {
+    background:none;
+    position:absolute;
+    top:0;
+    right:0;
+    font-size:16px;
+    cursor: pointer;
+    border:none;
+    margin:5px;
+    color: #383838;
+}
+
+.modal .close:hover {
+    color:black;
+}
+
+#register_modal {
+    width:300px;
+    margin-left:-300px;
+    height:400px;
+    margin-left:-200px;
+    top: -425px;
+    left:50%;
+
+    -webkit-transition: top 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition:         top 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#spawn {  
+    /* ??? */    
 }
 
 h1{
@@ -119,4 +152,46 @@ h1 span {
     margin:0;
     width:fit-content;
     display:none;
+}
+
+#topbar {
+    background-color:#ECECEC;
+    position:absolute;
+    width:fit-content;
+    top: 0;
+    right: 0;
+    padding:10px;
+    font-size:14px;
+    z-index:1;
+    font-family:Helvetica, Arial, sans-serif;
+}
+
+#login-button {
+    color:black;
+}
+
+#login-register-separator{
+    font-size:14px;
+    margin:0 5px 0 5px;
+}
+
+#register-button {
+    background-color: #FFCC00;
+    border-radius:4px;
+    padding:5px;
+    color:black;
+    text-decoration: none;
+}
+
+#register-button:hover{
+    background-color:#ffd638;
+}
+
+#register-button span {
+    font-weight: bold;
+}
+
+/*********/
+#spawn, canvas {
+    opacity: 0;
 }

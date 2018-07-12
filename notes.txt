@@ -1171,3 +1171,33 @@ TODO REMOVE TEST APPLICATION CLIENT SECRET!!!!!!!!!
 7/10
 
 1hr finish auth0-backend integration
+
+7/12
+0.5hr start auth+paypal merge into nodescape client
+
+'GO PERMANENT' Flow
+- top bar -OR- onbeforeunload
+- Description screen
+	- "$5 once"
+	- "Your network lives on forever"
+	- Continue accumulating value while you're offline
+	- Paypal logo
+	- Continue button
+- Auth0 register screen
+- Paypal payment screen
+- Congratulations!
+	- Your network is now PERMANENT
+	- You can close the window at any time, when you login your nodes will still be there
+	- Tips: defend your network
+	- Optional: Send me notifications about my network [checkbox]
+	- Close button ([X] top right or button bottom middle)
+
+TODO
+- 'permanent' / 'perm' / 'p' emblem (or clantag) on user names
+- player name & color display in topbar
+	- change name/color
+
+IDEAS
+- Every player unique color?
+
+1hr modals
