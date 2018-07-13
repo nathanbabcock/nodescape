@@ -195,6 +195,19 @@ class Server{
             //console.log("Nodes in viewport this frame:", this.game.nodes.filter(node => node.x >= ws.viewport.left && node.x <= ws.viewport.right && node.y <= ws.viewport.bottom && node.y >= ws.viewport.top).length);
         };
 
+        handlers.registerPermanent = msg => {
+            console.log("Registering a player as permanent");
+            this.APIConnector.auth0RegisterPlayer(msg.id_token, ws.username)
+                .then(() => this.APIConnector.paypalExecutePayment(msg.paymentID, msg.payerID))
+                .then(() => {
+                    this.send(ws, {msgtype: 'register_success'});
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.send(ws, {msgtype: 'register_failed'});
+                });
+        }
+
         handlers.colorchange = msg => this.game.players[ws.username].color = msg.color;
         handlers.createEdge = msg => this.game.createEdge(ws.username, msg.from, msg.to);
         handlers.removeEdge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);

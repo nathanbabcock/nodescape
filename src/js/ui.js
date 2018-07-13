@@ -42,6 +42,7 @@ class UI {
             {
               initialScreen: 'signUp',
               auth: {
+                responseType: 'id_token token',
                 redirect: false
               }
             }
@@ -96,7 +97,7 @@ class UI {
                     payment: {
                         transactions: [
                             {
-                                amount: { total: '0.01', currency: 'USD' }
+                                amount: { total: '5.00', currency: 'USD' }
                             }
                         ]
                     }
@@ -106,8 +107,15 @@ class UI {
             },
       
             // onAuthorize() is called when the buyer approves the payment
-            onAuthorize: function(data, actions) {
+            onAuthorize: (data, actions) => {
                 console.log(data);
+
+                this.client.send({
+                    msgtype: "registerPermanent",
+                    paymentID: data.paymentID,
+                    payerID: data.payerID,
+                    id_token: this.authResult.idToken
+                });
       
                 // Make a call to the REST api to execute the payment
                 // return actions.payment.execute().then(function() {

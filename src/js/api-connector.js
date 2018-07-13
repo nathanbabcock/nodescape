@@ -47,7 +47,8 @@ class APIConnector {
     // }
     
     auth0RegisterPlayer(id_token, playername){
-        return getAuth0Token().then(() => {
+        console.log("Connecting Auth0 user account to nodescape game player instance");
+        return this.getAuth0Token().then(() => {
             var client = jwks({jwksUri: `${AUTH0_API}/.well-known/jwks.json`});
             function getKey(header, callback){
                 client.getSigningKey(header.kid, function(err, key) {
@@ -70,7 +71,7 @@ class APIConnector {
                 method: 'PATCH',
                 url: `${AUTH0_API}/api/v2/users/${user_id}`,
                 headers: {
-                    authorization: `Bearer ${api_token.access_token}`,
+                    authorization: `Bearer ${this.api_token.access_token}`,
                     'content-type': 'application/json'
                 },
                 body: { "user_metadata": { "player_name": playername } },
@@ -82,6 +83,7 @@ class APIConnector {
     }
 
     paypalExecutePayment(paymentID, payerID){
+        console.log("Executing paypal payment");
         return request.post(PAYPAL_API + '/v1/payments/payment/' + paymentID + '/execute', {
             auth: {
               user: PAYPAL_CLIENT,
