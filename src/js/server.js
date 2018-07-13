@@ -1,6 +1,7 @@
 const WS = require('ws'),
     https = require('https'),
     fs = require('fs'),
+    APIConnector = require('./api-connector'),
     _game = require('./game'),
     Game = _game.Game,
     Node = _game.Node,
@@ -13,7 +14,7 @@ class Server{
         console.log("Starting server");
         //this.initGame();
         this.initWebsockets();
-
+        this.APIConnector = new APIConnector();
     };
 
     initGame(){

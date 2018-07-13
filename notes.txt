@@ -1201,3 +1201,8 @@ IDEAS
 - Every player unique color?
 
 1hr modals
+
+7/13
+
+0.66hr paypal-auth0 register flow
+0.5hr api-connector
