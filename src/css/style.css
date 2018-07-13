@@ -67,9 +67,9 @@ body, input, button {
 
 #register_modal {
     width:300px;
-    margin-left:-300px;
+    margin-left:-150px;
     height:400px;
-    margin-left:-200px;
+    margin-top:-200px;
     top: -425px;
     left:50%;
 

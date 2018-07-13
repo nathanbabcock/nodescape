@@ -5,7 +5,8 @@ class UI {
 
         // Grab and cache dom instances
         this.dom = {};
-        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal"].forEach(id => this.dom[id] = document.getElementById(id));
+        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal","info_step", "paypal_step", "pending_step", "finish_step"]
+            .forEach(id => this.dom[id] = document.getElementById(id));
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
         let color = chance.integer({min: 0x00000, max:0xf0f0f0}).toString(16);
@@ -23,6 +24,8 @@ class UI {
         });
 
         this.initCarousel();
+        this.initAuth0();
+        this.initPaypal();
     }
 
     initCarousel(){
@@ -30,6 +33,89 @@ class UI {
             //autoPlay: 10000
         // options
         });
+    }
+
+    initAuth0(){
+        this.register_modal = new Auth0Lock(
+            'O6nD56ZYl6E9Njp5gXlYoTReaObvc240',
+            'nodescape.auth0.com',
+            {
+              initialScreen: 'signUp',
+              auth: {
+                redirect: false
+              }
+            }
+        );
+        this.register_modal.on('authenticated', (authResult) => {
+            this.authResult = authResult;
+            console.log(authResult);
+            // login_inline.getUserInfo(authResult.accessToken, function(error, profile) {
+            //     if (error) {
+            //       // Handle error
+            //       return;
+            //     }
+            //     console.log(profile);
+            //     console.log(authResult);
+            
+            //     let user_id = authResult.idTokenPayload.sub.split("|")[1];
+            //     console.log("user id", user_id);
+            //     // console.log("nickname", profile.nickname);
+            
+            //     //localStorage.setItem('accessToken', authResult.accessToken);
+            //     //localStorage.setItem('profile', JSON.stringify(profile));
+            // });
+            this.dom.info_step.style.display="none";
+            this.dom.paypal_step.style.display="block";
+            setTimeout(()=>this.register_modal.hide(), 2000);
+        });
+    }
+
+    initPaypal(){
+        paypal.Button.render({
+            env: 'sandbox', // sandbox | production
+      
+            // PayPal Client IDs - replace with your own
+            // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+            client: {
+                sandbox:    'AUwaHya1Bdl37I9AlWCoXI20FrwTKipn3dx8zwc7LHM_XNS4qGdEB7hKFanc3y5H5fItNqL_QU677sl9',
+                production: '<insert production client id>'
+            },
+      
+            // Show the buyer a 'Pay Now' button in the checkout flow
+            commit: true,
+      
+            // payment() is called when the button is clicked
+            payment: (data, actions) => {
+                setTimeout(()=>{
+                    this.dom.paypal_step.style.display="none";
+                    this.dom.pending_step.style.display="block";
+                }, 1000);                
+
+                // Make a call to the REST api to create the payment
+                return actions.payment.create({
+                    payment: {
+                        transactions: [
+                            {
+                                amount: { total: '0.01', currency: 'USD' }
+                            }
+                        ]
+                    }
+                });
+
+                
+            },
+      
+            // onAuthorize() is called when the buyer approves the payment
+            onAuthorize: function(data, actions) {
+                console.log(data);
+      
+                // Make a call to the REST api to execute the payment
+                // return actions.payment.execute().then(function() {
+                //     window.alert('Payment Complete!');
+                // });
+            }
+      
+        }, '#paypal_step');
     }
 
     onConnect(){
@@ -79,5 +165,10 @@ class UI {
         else
             elem = modal;
         elem.style.top = "50%";
+    }
+
+    showAuth0Register(){
+        //this.closeModal(this.dom.register_modal);
+        this.register_modal.show();
     }
 }
