@@ -224,11 +224,31 @@ class Server{
                 .then(player_name => {
                     ws.username = player_name;
 
-                    // TODO check for existence of player instance in game list of players
-                    // TODO find and return coordinates of a node owned by the player
-                    // TODO if no such node exists, spawn new one
 
-                    this.send(ws, {msgtype: 'login_success', player_name: player_name});
+                    let origin = null,
+                        respawned = false;
+                    // TODO check for existence of player instance in game list of players
+                    if(!this.game.players[player_name]){
+                        this.game.players[player_name] = {color:0x0}; // TODO get random color
+                        origin = this.game.getSpawn();
+                        origin.owner = player_name;
+                        // TODO alert user that they have been respawned?
+                    }
+
+                    // TODO find and return id of a node owned by the player (or maybe their largest node)
+                    if(origin === null){
+                        let network = this.game.nodes.filter(node => node.owner === player_name);
+                        if(network.length > 0)
+                            origin = network.sort((x, y) => x.value - y.value)[0];
+                    }
+
+                    // TODO if no such node exists, spawn new one
+                    if(origin === null){
+                        origin = this.game.getSpawn();
+                        origin.owner = player_name;
+                    }
+
+                    this.send(ws, {msgtype: 'login_success', username:player_name, origin:origin.id, respawned, color:this.game.players[player_name].color});
                 })
                 .catch(err => {
                     console.error(err);

@@ -100,8 +100,7 @@ class Client {
 
         handlers.spawn_success = () => {
             let spawn = this.game.nodes[msg.spawn];
-            if(this.render)
-                this.render.player = msg.username;
+            if(this.render) this.render.player = msg.username;
             this.render.viewport.snap(spawn.x * renderConfig.scale, spawn.y * renderConfig.scale, {removeOnComplete:true, time:1500});
             this.render.viewport.snapZoom({width:1895, removeOnComplete:true, time:1500});
             //this.render.viewport.moveCenter(spawn.x * renderConfig.scale, spawn.y * renderConfig.scale);
@@ -109,6 +108,16 @@ class Client {
             console.log(`Succesfully spawned at ${msg.spawn}`);
             if(this.ui) this.ui.onSpawn();
         }
+
+        handlers.login_success = () => {
+            let origin = this.game.nodes[msg.origin];
+            if(this.render) this.render.player = msg.username;
+            this.render.viewport.snap(origin.x * renderConfig.scale, origin.y * renderConfig.scale, {removeOnComplete:true, time:1500});
+            this.render.viewport.snapZoom({width:1895, removeOnComplete:true, time:1500});
+            console.log(`Succesfully logged in user ${msg.username}`);
+            if(this.ui) this.ui.onSpawn();
+            if(msg.respawned) alert("Oh no! Every node in your network was captured by another player while you were offline. Here's a new spawnpoint from which to begin plotting your revenge."); // TODO refactor this to a modal/toast
+        };
 
         handlers.spawn_failed = () => {
             console.error(msg.error);

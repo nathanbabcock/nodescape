@@ -1215,8 +1215,8 @@ TODO TODAY
 X config file for API keys
 X easy deployment for dev vs. prod
 X test entering user metadata
-- login flow
-- modals
+/ login flow
+- modals(?)
 
 TODO before 1.0 RELEASE
 - Register flow UI
@@ -1233,3 +1233,8 @@ Edge cases
 - what if a user registers with auth0 but doesn't pay stripe?
 	- what happens next time they login?
 - what if a user tries to login after spawning?
+
+TODO MINOR
+- player_name vs username (refactor to username)
+
+0.67hr login flow
