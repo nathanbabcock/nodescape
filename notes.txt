@@ -1210,3 +1210,16 @@ IDEAS
 
 7/16
 1.5hr stripe
+
+TODO TODAY
+- config file for API keys
+- easy deployment for dev vs. prod
+- test entering user metadata
+- login flow
+- modals
+
+TODO before 1.0 RELEASE
+- Register flow UI
+- Login flow + UI
+- Edge case handling
+- Rotating backups on server

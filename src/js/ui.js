@@ -5,7 +5,7 @@ class UI {
 
         // Grab and cache dom instances
         this.dom = {};
-        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal","info_step", "paypal_step", "pending_step", "finish_step"]
+        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal","info_step", "pending_step", "finish_step"]
             .forEach(id => this.dom[id] = document.getElementById(id));
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
@@ -67,7 +67,7 @@ class UI {
             //     //localStorage.setItem('profile', JSON.stringify(profile));
             // });
             this.dom.info_step.style.display="none";
-            this.dom.paypal_step.style.display="block";
+            this.dom.pending_step.style.display="block";
             setTimeout(() => this.register_modal.hide(), 2000);
             setTimeout(this.openStripe.bind(this), 2500);
         });
@@ -98,61 +98,6 @@ class UI {
             zipCode: true,
             amount: 500
         });
-    }
-
-    initPaypal(){
-        paypal.Button.render({
-            env: 'sandbox', // sandbox | production
-      
-            // PayPal Client IDs - replace with your own
-            // Create a PayPal app: https://developer.paypal.com/developer/applications/create
-            client: {
-                sandbox:    'AUwaHya1Bdl37I9AlWCoXI20FrwTKipn3dx8zwc7LHM_XNS4qGdEB7hKFanc3y5H5fItNqL_QU677sl9',
-                production: '<insert production client id>'
-            },
-      
-            // Show the buyer a 'Pay Now' button in the checkout flow
-            commit: true,
-      
-            // payment() is called when the button is clicked
-            payment: (data, actions) => {
-                setTimeout(()=>{
-                    this.dom.paypal_step.style.display="none";
-                    this.dom.pending_step.style.display="block";
-                }, 1000);                
-
-                // Make a call to the REST api to create the payment
-                return actions.payment.create({
-                    payment: {
-                        transactions: [
-                            {
-                                amount: { total: '5.00', currency: 'USD' }
-                            }
-                        ]
-                    }
-                });
-
-                
-            },
-      
-            // onAuthorize() is called when the buyer approves the payment
-            onAuthorize: (data, actions) => {
-                console.log(data);
-
-                this.client.send({
-                    msgtype: "registerPermanent",
-                    paymentID: data.paymentID,
-                    payerID: data.payerID,
-                    id_token: this.authResult.idToken
-                });
-      
-                // Make a call to the REST api to execute the payment
-                // return actions.payment.execute().then(function() {
-                //     window.alert('Payment Complete!');
-                // });
-            }
-      
-        }, '#paypal_step');
     }
 
     onConnect(){

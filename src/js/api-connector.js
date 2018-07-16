@@ -2,13 +2,10 @@ const // Require
     request = require("request-promise-native"),
     jwt = require("jsonwebtoken"),
     jwks = require('jwks-rsa'),
-    stripe = require('stripe')("sk_test_8WYNUBe0eH9ui5Qic7qPdIpI");
+    stripe = require('stripe')("sk_test_8WYNUBe0eH9ui5Qic7qPdIpI"); // TODO REMOVE
 
 const // Config
-    AUTH0_API = 'https://nodescape.auth0.com',
-    PAYPAL_CLIENT = 'AUJoKVGO3q1WA1tGgAKRdY6qx0qQNIQ6vl6D3k7y64T4qh5WozIQ7V3dl3iusw5BwXYg_T5FzLCRguP8',
-    PAYPAL_SECRET = 'EOw8LNwDhM7esrQ3nHfzKc7xiWnJc83Eawln4YLfUgivfx1LGzu9Mj0F5wlarilXDqdK9Q5aHVo-VGjJ',
-    PAYPAL_API = 'https://api.sandbox.paypal.com';
+    AUTH0_API = 'https://nodescape.auth0.com';
 
 class APIConnector {
     constructor(){
@@ -92,27 +89,6 @@ class APIConnector {
         });
     }
 
-    paypalExecutePayment(paymentID, payerID){
-        console.log("Executing paypal payment");
-        return request.post(PAYPAL_API + '/v1/payments/payment/' + paymentID + '/execute', {
-            auth: {
-              user: PAYPAL_CLIENT,
-              pass: PAYPAL_SECRET
-            },
-            body: {
-              payer_id: payerID,
-              transactions: [{
-                amount: {
-                  total: '5.00',
-                  currency: 'USD'
-                }
-              }]
-            },
-            json: true
-        }).then((res) => {
-            console.log(res);
-        });
-    }
 }
 
 // Node
