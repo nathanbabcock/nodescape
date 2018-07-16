@@ -198,7 +198,7 @@ class Server{
         handlers.registerPermanent = msg => {
             console.log("Registering a player as permanent");
             this.APIConnector.auth0RegisterPlayer(msg.id_token, ws.username)
-                .then(() => this.APIConnector.paypalExecutePayment(msg.paymentID, msg.payerID))
+                .then(() => this.APIConnector.stripeExecutePayment(msg.stripe_token))
                 .then(() => {
                     this.send(ws, {msgtype: 'register_success'});
                 })

@@ -1,7 +1,8 @@
 const // Require
     request = require("request-promise-native"),
     jwt = require("jsonwebtoken"),
-    jwks = require('jwks-rsa');
+    jwks = require('jwks-rsa'),
+    stripe = require('stripe')("sk_test_8WYNUBe0eH9ui5Qic7qPdIpI");
 
 const // Config
     AUTH0_API = 'https://nodescape.auth0.com',
@@ -79,6 +80,15 @@ class APIConnector {
             });
         }).then(response => {
             console.log(response);
+        });
+    }
+
+    stripeExecutePayment(token){
+        return stripe.charges.create({
+            amount: 500,
+            currency: 'usd',
+            description: 'Permanent membership',
+            source: token,
         });
     }
 

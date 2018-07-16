@@ -115,6 +115,10 @@ class Client {
             if(this.ui) this.ui.onSpawnFailed(msg.error);
         }
 
+        handlers.register_success = () => {
+            if(this.ui) this.ui.onRegisterSuccess();
+        }
+        
         if(msg.msgtype && handlers[msg.msgtype] === undefined){
             console.error(`Unrecognized server msgtype ${msg.msgtype}`);
             return;

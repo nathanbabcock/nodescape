@@ -25,7 +25,8 @@ class UI {
 
         this.initCarousel();
         this.initAuth0();
-        this.initPaypal();
+        this.initStripe();
+        // this.initPaypal();
     }
 
     initCarousel(){
@@ -67,7 +68,35 @@ class UI {
             // });
             this.dom.info_step.style.display="none";
             this.dom.paypal_step.style.display="block";
-            setTimeout(()=>this.register_modal.hide(), 2000);
+            setTimeout(() => this.register_modal.hide(), 2000);
+            setTimeout(this.openStripe.bind(this), 2500);
+        });
+    }
+
+    initStripe(){
+        this.stripe_handler = StripeCheckout.configure({
+            key: 'pk_test_hZiLWCQbirV0dPG4vDnuhwQ2',
+            image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+            locale: 'auto',
+            token: (token) => {
+                console.log('token', token);
+                this.client.send({
+                    msgtype: "registerPermanent",
+                    stripe_token: token.id,
+                    id_token: this.authResult.idToken
+                });
+              // You can access the token ID with `token.id`.
+              // Get the token ID to your server-side code for use.
+            }
+        });
+    }
+
+    openStripe(){
+        this.stripe_handler.open({
+            name: 'NodeScape',
+            description: 'Permanent membership',
+            zipCode: true,
+            amount: 500
         });
     }
 
@@ -178,5 +207,10 @@ class UI {
     showAuth0Register(){
         //this.closeModal(this.dom.register_modal);
         this.register_modal.show();
+    }
+
+    onRegisterSuccess(){
+        this.dom.pending_step.style.display="none";
+        this.dom.finish_step.style.display="block";
     }
 }
