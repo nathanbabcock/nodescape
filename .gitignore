@@ -1,3 +1,6 @@
+# AppConfig
+secret.js
+
 # certbot
 cert/privkey.pem
 cert/fullchain.pem

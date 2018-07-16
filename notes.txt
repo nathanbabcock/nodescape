@@ -1221,5 +1221,8 @@ TODO TODAY
 TODO before 1.0 RELEASE
 - Register flow UI
 - Login flow + UI
-- Edge case handling
+- Email provider
+- Edge case scrub
 - Rotating backups on server
+
+1hr secret store, global environment config

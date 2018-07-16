@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
     <script src="https://cdn.auth0.com/js/lock/11.7.2/lock.min.js"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script src="js/environment.js"></script>
     <script src="js/game.js"></script>
     <script src="js/render.js"></script>
     <script src="js/client.js"></script>
@@ -76,7 +77,10 @@
         render.setGame(game);
         client.setGame(game);
         client.setRender(render);
-        client.connect("wss://localhost:8081");
+        if(nodescape_environment === 'production')
+            client.connect("wss://nodescape.io:8081")
+        else
+            client.connect("wss://localhost:8081");
         // client.connect("wss://54.174.27.158:8081");
         // client.connect("wss://nodescape.io:8081");
         // client.connect("ws://nbabcock-lb-1594337385.us-east-1.elb.amazonaws.com:8081");

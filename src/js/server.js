@@ -2,6 +2,7 @@ const WS = require('ws'),
     https = require('https'),
     fs = require('fs'),
     APIConnector = require('./api-connector'),
+    env = require('./environment.js'),
     _game = require('./game'),
     Game = _game.Game,
     Node = _game.Node,
@@ -11,7 +12,7 @@ const WS = require('ws'),
 class Server{
     constructor(port=8081){
         this.port = port;
-        console.log("Starting server");
+        console.log(`Starting server (${env})`);
         //this.initGame();
         this.initWebsockets();
         this.APIConnector = new APIConnector();
@@ -54,12 +55,21 @@ class Server{
     initWebsockets(){
         console.log("Initializing websockets");
 
-        let server = this.server = new https.createServer({
-            cert: fs.readFileSync('cert/cert-local.pem'),
-            key: fs.readFileSync('cert/key-local.pem')
-            // cert: fs.readFileSync('cert/fullchain.pem'),
-            // key: fs.readFileSync('cert/privkey.pem')
-          });
+        // Environment
+        let options;
+        if(env === 'production'){
+            options = {
+                cert: fs.readFileSync('cert/fullchain.pem'),
+                key: fs.readFileSync('cert/privkey.pem')
+            }
+        } else {
+            options = {
+                cert: fs.readFileSync('cert/cert-local.pem'),
+                key: fs.readFileSync('cert/key-local.pem')
+            }
+        }
+
+        let server = this.server = new https.createServer(options);
         let wss = this.wss = new WS.Server({ server });
         server.listen(this.port);
         
