@@ -80,6 +80,42 @@ class APIConnector {
         });
     }
 
+    auth0Login(id_token){
+        console.log("Retrieving user_metadata for auth0 user");
+        return this.getAuth0Token().then(() => {
+            var client = jwks({jwksUri: `${AUTH0_API}/.well-known/jwks.json`});
+            function getKey(header, callback){
+                client.getSigningKey(header.kid, function(err, key) {
+                    var signingKey = key.publicKey || key.rsaPublicKey;
+                    callback(null, signingKey);
+                });
+            }
+        
+            return new Promise((resolve, reject) => {
+                jwt.verify(id_token, getKey, {}, (err, decoded) => {
+                    if(err === null)
+                        return resolve(decoded.sub);
+                    return reject(err);
+                });
+            })
+        }).then(user_id => {
+            return request({
+                method: 'GET',
+                url: `${AUTH0_API}/api/v2/users/${user_id}?fields=user_metadata`,
+                headers: {
+                    authorization: `Bearer ${this.api_token.access_token}`,
+                    'content-type': 'application/json'
+                },
+                json: true
+            });
+        }).then((response) => {
+            console.log(response);
+            if(!response.user_metadata || !response.user_metadata.player_name)
+                return Promise.reject("User's auth0 account not linked to nodescape player instance! (Did they leave before paying?)");
+            return Promise.resolve(response.user_metadata.player_name);
+        });
+    }
+
     stripeExecutePayment(token){
         return stripe.charges.create({
             amount: 500,

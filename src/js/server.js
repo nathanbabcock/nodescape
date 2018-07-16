@@ -218,6 +218,24 @@ class Server{
                 });
         }
 
+        handlers.login = msg => {
+            console.log("Logging in player");
+            this.APIConnector.auth0Login(msg.id_token)
+                .then(player_name => {
+                    ws.username = player_name;
+
+                    // TODO check for existence of player instance in game list of players
+                    // TODO find and return coordinates of a node owned by the player
+                    // TODO if no such node exists, spawn new one
+
+                    this.send(ws, {msgtype: 'login_success', player_name: player_name});
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.send(ws, {msgtype: 'login_failed'});
+                })
+        }
+
         handlers.colorchange = msg => this.game.players[ws.username].color = msg.color;
         handlers.createEdge = msg => this.game.createEdge(ws.username, msg.from, msg.to);
         handlers.removeEdge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);

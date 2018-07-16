@@ -1212,9 +1212,9 @@ IDEAS
 1.5hr stripe
 
 TODO TODAY
-- config file for API keys
-- easy deployment for dev vs. prod
-- test entering user metadata
+X config file for API keys
+X easy deployment for dev vs. prod
+X test entering user metadata
 - login flow
 - modals
 
@@ -1224,5 +1224,12 @@ TODO before 1.0 RELEASE
 - Email provider
 - Edge case scrub
 - Rotating backups on server
+- Restart/respawn
 
 1hr secret store, global environment config
+
+Edge cases
+- what if a user tries to register before they spawn?
+- what if a user registers with auth0 but doesn't pay stripe?
+	- what happens next time they login?
+- what if a user tries to login after spawning?

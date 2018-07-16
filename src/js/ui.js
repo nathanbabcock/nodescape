@@ -37,6 +37,7 @@ class UI {
     }
 
     initAuth0(){
+        // REGISTER
         this.register_modal = new Auth0Lock(
             'O6nD56ZYl6E9Njp5gXlYoTReaObvc240',
             'nodescape.auth0.com',
@@ -51,25 +52,34 @@ class UI {
         this.register_modal.on('authenticated', (authResult) => {
             this.authResult = authResult;
             console.log(authResult);
-            // login_inline.getUserInfo(authResult.accessToken, function(error, profile) {
-            //     if (error) {
-            //       // Handle error
-            //       return;
-            //     }
-            //     console.log(profile);
-            //     console.log(authResult);
-            
-            //     let user_id = authResult.idTokenPayload.sub.split("|")[1];
-            //     console.log("user id", user_id);
-            //     // console.log("nickname", profile.nickname);
-            
-            //     //localStorage.setItem('accessToken', authResult.accessToken);
-            //     //localStorage.setItem('profile', JSON.stringify(profile));
-            // });
             this.dom.info_step.style.display="none";
             this.dom.pending_step.style.display="block";
             setTimeout(() => this.register_modal.hide(), 2000);
             setTimeout(this.openStripe.bind(this), 2500);
+        });
+
+        // LOGIN
+        this.login_modal = new Auth0Lock(
+            'O6nD56ZYl6E9Njp5gXlYoTReaObvc240',
+            'nodescape.auth0.com',
+            {
+              allowSignUp: false,
+              auth: {
+                responseType: 'id_token token',
+                redirect: false
+              }
+            }
+        );
+        this.login_modal.on('authenticated', (authResult) => {
+            // this.authResult = authResult;
+            console.log(authResult);
+            
+            this.client.send({
+                msgtype: 'login',
+                id_token: authResult.idToken
+            });
+            
+            setTimeout(() => this.login_modal.hide(), 2000);
         });
     }
 
@@ -157,5 +167,9 @@ class UI {
     onRegisterSuccess(){
         this.dom.pending_step.style.display="none";
         this.dom.finish_step.style.display="block";
+    }
+
+    showLogin(){
+        this.login_modal.show();
     }
 }
