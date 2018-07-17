@@ -1221,10 +1221,11 @@ X test entering user metadata
 TODO before 1.0 RELEASE
 - Register flow UI
 - Login UI
-- Email provider
+X Email provider
 - Edge case scrub
 - Rotating backups on server
 - Restart/respawn
+- Change username/color
 
 1hr secret store, global environment config
 

@@ -78,7 +78,7 @@ class UI {
                 msgtype: 'login',
                 id_token: authResult.idToken
             });
-            
+
             setTimeout(() => this.login_modal.hide(), 2000);
         });
     }
@@ -103,10 +103,13 @@ class UI {
 
     openStripe(){
         this.stripe_handler.open({
+            email: this.authResult.idTokenPayload.email,
             name: 'NodeScape',
             description: 'Permanent membership',
             zipCode: true,
-            amount: 500
+            amount: 500,
+            allowRememberMe: false,
+            //closed: (test) => console.log("closed", test),
         });
     }
 
