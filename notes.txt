@@ -1220,7 +1220,7 @@ X test entering user metadata
 
 TODO before 1.0 RELEASE
 - Register flow UI
-- Login flow + UI
+- Login UI
 - Email provider
 - Edge case scrub
 - Rotating backups on server
@@ -1238,3 +1238,7 @@ TODO MINOR
 - player_name vs username (refactor to username)
 
 0.67hr login flow
+
+7/17
+
+0.67hr SES
