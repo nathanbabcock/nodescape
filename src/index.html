@@ -65,8 +65,13 @@
     </div>
 
     <div id="topbar">
-        <a href="javascript:ui.showLogin()" id="login-button">Login</a> <span id="login-register-separator">/</span>
+        <button class="jscolor {valueElement: null}" id="topbar_color" title="Click to change color"></button>
+        <a href="javascript:ui.changeName()" id="topbar_username">excalo</a>
+        <!-- <input name="topbar_color" type="hidden" id="topbar_color_hidden" value="99cc00"> -->
+        <span class="topbar-separator">/</span>
         <a href="javascript:ui.openModal('#register_modal')" id="register-button" class="goPermanent">GO <span>PERMANENT</span></a>
+        <span class="topbar-separator">/</span>
+        <a href="javascript:ui.showLogin()" id="login-button">Login</a>
     </div>
 
     <script>

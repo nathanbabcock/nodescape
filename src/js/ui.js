@@ -175,4 +175,8 @@ class UI {
     showLogin(){
         this.login_modal.show();
     }
+
+    changeName(){
+        prompt("Change username:", this.client.player);
+    }
 }

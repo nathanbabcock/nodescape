@@ -170,7 +170,7 @@ h1 span {
     color:black;
 }
 
-#login-register-separator{
+.topbar-separator {
     font-size:14px;
     margin:0 5px 0 5px;
 }
@@ -203,7 +203,39 @@ h1 span {
     font-weight:bold;
 }
 
+#topbar {
+    vertical-align: middle;
+}
+
+#topbar_color {
+    width:20px;
+    height:20px;
+    margin:2px;
+    padding: 0;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    vertical-align: middle;
+    /* -webkit-transition: all 100ms;
+    transition:         all 100ms; */
+}
+
+#topbar_color:hover {
+    width:24px;
+    height:24px;
+    margin:0;
+}
+
+#topbar_username {
+    color:black;
+    text-decoration: none;
+}
+
+#topbar_username:hover {
+    opacity:0.75;
+}
+
 /*********/
-#spawn, canvas {
+#spawn, body > canvas {
     opacity: 0;
 }

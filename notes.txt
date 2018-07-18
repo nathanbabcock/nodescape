@@ -1221,8 +1221,8 @@ X test entering user metadata
 TODO before 1.0 RELEASE
 - Register flow UI
 - Login UI
-X Email provider
 - Edge case scrub
+X Email provider
 - Rotating backups on server
 - Restart/respawn
 - Change username/color
@@ -1243,3 +1243,7 @@ TODO MINOR
 7/17
 
 0.67hr SES
+
+7/18
+
+0.67hr username/color topbar UI

@@ -80,7 +80,8 @@ class Server{
             ws.on('message', data => this.handleClientMsg(data, ws));
             ws.on('close', () => {
                 console.log(`Client ${ws.username} disconnected`);
-                this.game.removePlayer(ws.username);
+                if(this.game.players[ws.username] && !this.game.players[ws.username].permanent)
+                    this.game.removePlayer(ws.username);
                 // TODO pongs with timeout to detect broken connections
             });
             this.sendFullGamestate(ws);
@@ -210,6 +211,7 @@ class Server{
             this.APIConnector.auth0RegisterPlayer(msg.id_token, ws.username)
                 .then(() => this.APIConnector.stripeExecutePayment(msg.stripe_token))
                 .then(() => {
+                    this.game.players[ws.username].permanent = true;
                     this.send(ws, {msgtype: 'register_success'});
                 })
                 .catch(err => {
