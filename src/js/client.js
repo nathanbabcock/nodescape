@@ -128,6 +128,10 @@ class Client {
             if(this.ui) this.ui.onRegisterSuccess();
         }
         
+        handlers.changeColor_success = handlers.changeColor_failed = () => {
+            if(this.ui) this.ui.dom.topbar_loading.style.display="none";
+        }
+
         if(msg.msgtype && handlers[msg.msgtype] === undefined){
             console.error(`Unrecognized server msgtype ${msg.msgtype}`);
             return;
@@ -164,7 +168,6 @@ class Client {
         // TODO: msgpack
         return JSON.stringify(data);
     }
-
 }
 
 // let client = new Client("excalo");

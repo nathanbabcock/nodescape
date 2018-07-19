@@ -258,7 +258,23 @@ class Server{
                 })
         }
 
-        handlers.colorchange = msg => this.game.players[ws.username].color = msg.color;
+        handlers.changeColor = msg => {
+            // Failed
+            if(!ws.username){
+                return this.send(ws, {
+                    msgtype:'changeColor_failed',
+                    msg: 'User has not spawned yet and has no username'
+                });
+            }
+
+            // Success
+            this.game.players[ws.username].color = msg.color;
+            this.send({
+                msgtype:'changeColor_success',
+                color:msg.color
+            });
+        };
+
         handlers.createEdge = msg => this.game.createEdge(ws.username, msg.from, msg.to);
         handlers.removeEdge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);
 

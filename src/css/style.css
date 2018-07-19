@@ -220,10 +220,19 @@ h1 span {
     transition:         all 100ms; */
 }
 
-#topbar_color:hover {
+#topbar_loading {
+    position:absolute;
+    height: 25px;
+    width: 25px;
+    left: -35px;
+    display: none;
+}
+
+#topbar_color:hover, #topbar_color:focus {
     width:24px;
     height:24px;
     margin:0;
+    outline: none;
 }
 
 #topbar_username {

@@ -5,7 +5,7 @@ class UI {
 
         // Grab and cache dom instances
         this.dom = {};
-        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal","info_step", "pending_step", "finish_step"]
+        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal","info_step", "pending_step", "finish_step", "topbar_username", "topbar_loading"]
             .forEach(id => this.dom[id] = document.getElementById(id));
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
@@ -137,6 +137,10 @@ class UI {
         this.dom.name.style.color = `#${jscolor}`;
     }
 
+    changeTopbarColor(jscolor){
+        this.dom.topbar_username.style.color = `#${jscolor}`;
+    }
+
     showRegisterModal(){
         if(this.dom.spawn.offsetTop > 0)
             this.dom.spawn.style.top = "-725px";
@@ -178,5 +182,15 @@ class UI {
 
     changeName(){
         prompt("Change username:", this.client.player);
+    }
+
+    sendChangeColor(string){
+        console.log(`Changing color to #${string}`);
+        client.send({
+            msgtype: 'changeColor',
+            color:parseInt(string, 16),
+        });
+        this.dom.topbar_loading.style.display = "block";
+        //`#${jscolor}`;
     }
 }

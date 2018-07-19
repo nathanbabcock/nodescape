@@ -65,8 +65,11 @@
     </div>
 
     <div id="topbar">
-        <button class="jscolor {valueElement: null}" id="topbar_color" title="Click to change color"></button>
-        <a href="javascript:ui.changeName()" id="topbar_username">excalo</a>
+        <img src="img/loading.svg" id="topbar_loading">
+        <input type="hidden" id="hidden_color" onchange="ui.sendChangeColor(this.value)">
+        <button class="jscolor {valueElement: 'hidden_color', onFineChange:'ui.changeTopbarColor(this)', onChange:'client.changeColor(this)'}" onchange="client.changeColor(this)" id="topbar_color" title="Click to change color"></button>
+        <a href="javascript:ui.changeName()" id="topbar_username" title="Click to change name">excalo</a>
+        <input type="text" value="excalo">
         <!-- <input name="topbar_color" type="hidden" id="topbar_color_hidden" value="99cc00"> -->
         <span class="topbar-separator">/</span>
         <a href="javascript:ui.openModal('#register_modal')" id="register-button" class="goPermanent">GO <span>PERMANENT</span></a>
