@@ -5,7 +5,7 @@ class UI {
 
         // Grab and cache dom instances
         this.dom = {};
-        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal","info_step", "pending_step", "finish_step", "topbar_username", "topbar_loading"]
+        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal","info_step", "pending_step", "finish_step", "topbar_username", "topbar_loading", "topbar_username_input"]
             .forEach(id => this.dom[id] = document.getElementById(id));
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
@@ -23,10 +23,30 @@ class UI {
             return msg;
         });
 
+        this.initTopBar();
         this.initCarousel();
         this.initAuth0();
         this.initStripe();
         // this.initPaypal();
+    }
+
+    initTopBar(){
+        // Topbar username
+        let input = this.dom.topbar_username_input;
+        let handler = ()=>{
+                this.client.send({
+                    msgtype:'changeName',
+                    name:input.value
+                });
+                this.dom.topbar_username.innerHTML = input.value;
+                input.style.display="none";
+                this.dom.topbar_username.style.display = 'inline';
+            };
+        input.addEventListener('focusout', handler);
+        input.addEventListener('keypress', (keypress) => {
+            if(keypress.key === 'Enter')
+                handler();
+        });
     }
 
     initCarousel(){
@@ -139,6 +159,7 @@ class UI {
 
     changeTopbarColor(jscolor){
         this.dom.topbar_username.style.color = `#${jscolor}`;
+        this.dom.topbar_username_input.style.color = `#${jscolor}`;
     }
 
     showRegisterModal(){
@@ -181,7 +202,10 @@ class UI {
     }
 
     changeName(){
-        prompt("Change username:", this.client.player);
+        //prompt("Change username:", this.client.player);
+        this.dom.topbar_username.style.display="none";
+        this.dom.topbar_username_input.style.display="inline-block";
+        this.dom.topbar_username_input.focus();
     }
 
     sendChangeColor(string){

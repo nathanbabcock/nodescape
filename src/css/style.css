@@ -240,6 +240,12 @@ h1 span {
     text-decoration: none;
 }
 
+#topbar_username_input {
+    display: none;
+    padding: 4px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
 #topbar_username:hover {
     opacity:0.75;
 }
