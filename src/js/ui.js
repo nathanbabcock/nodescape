@@ -5,7 +5,7 @@ class UI {
 
         // Grab and cache dom instances
         this.dom = {};
-        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal","info_step", "pending_step", "finish_step", "topbar_username", "topbar_loading", "topbar_username_input"]
+        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal","info_step", "pending_step", "finish_step", "topbar_username", "topbar_loading", "topbar_username_input", "topbar_error"]
             .forEach(id => this.dom[id] = document.getElementById(id));
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
@@ -36,7 +36,7 @@ class UI {
         let handler = ()=>{
                 this.client.send({
                     msgtype:'changeName',
-                    name:input.value
+                    username:input.value
                 });
                 this.dom.topbar_username.innerHTML = input.value;
                 input.style.display="none";
@@ -44,8 +44,12 @@ class UI {
             };
         input.addEventListener('focusout', handler);
         input.addEventListener('keypress', (keypress) => {
-            if(keypress.key === 'Enter')
-                handler();
+            if(keypress.key === 'Enter'){
+                this.dom.topbar_username.innerHTML = input.value;
+                input.style.display="none";
+                this.dom.topbar_username.style.display = 'inline';
+            }
+                //handler();
         });
     }
 
@@ -216,5 +220,12 @@ class UI {
         });
         this.dom.topbar_loading.style.display = "block";
         //`#${jscolor}`;
+    }
+
+    showTopBarError(error){
+        this.dom.topbar_error.innerHTML = error;
+        if(this.dom.topbar_error.clientTop > 0) clearTimeout(this.topbarTimeout);
+        this.dom.topbar_error.style.top = "50px";
+        this.topbarTimeout = setTimeout(()=>this.dom.topbar_error.style.top = "0", 6000);
     }
 }

@@ -64,12 +64,13 @@
         </div>
     </div>
 
+    <span id="topbar_error">Error</span>
     <div id="topbar">
         <img src="img/loading.svg" id="topbar_loading">
         <input type="hidden" id="hidden_color" onchange="ui.sendChangeColor(this.value)">
         <button class="jscolor {valueElement: 'hidden_color', onFineChange:'ui.changeTopbarColor(this)'}" id="topbar_color" title="Click to change color"></button>
-        <a href="javascript:ui.changeName()" id="topbar_username" title="Click to change name">excalo</a>
-        <input type="text" value="excalo" id="topbar_username_input">
+        <a href="javascript:ui.changeName()" id="topbar_username" title="Click to change name">null</a>
+        <input type="text" value="null" id="topbar_username_input">
         <!-- <span id="topbar_username">excalo</span> -->
         
         <span class="topbar-separator">/</span>
@@ -77,6 +78,7 @@
         <span class="topbar-separator">/</span>
         <a href="javascript:ui.showLogin()" id="login-button">Login</a>
     </div>
+    
 
     <script>
         let render = new Render(),

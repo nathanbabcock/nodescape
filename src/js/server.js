@@ -141,6 +141,22 @@ class Server{
         return chance.pickone(centerNodes);
     }
 
+    validateUsername(username){
+        // Username already taken
+        if(this.game.players[username])
+            return `Username taken`;
+
+        // Username too short
+        if(username.length < 1)
+            return `Username too short`;
+
+        // Username too long
+        if(username.length > 128)
+            return `Username too long`;
+
+        return true;
+    }
+
     handleClientMsg(data, ws){
         //console.log("Received", data);
         let msg = this.deserialize(data);
@@ -154,35 +170,13 @@ class Server{
         };
 
         handlers.spawnplayer = msg => {
-            // Username already taken
-            if(this.game.players[msg.username]){
-                let error = `Username ${msg.username} taken`;
-                console.error(error);
-                this.send(ws, {msgtype: 'spawn_failed', error});
+            let valid = this.validateUsername(msg.username);
+            if(valid !== true) {
+                console.error(valid);
+                this.send(ws, {msgtype: 'spawn_failed', valid});
                 return;
             }
-
-            // Username too short
-            if(msg.username.length < 1){
-                let error = `No username specified`;
-                this.send(ws, {msgtype: 'spawn_failed', error});
-                return;
-            }
-
-            // Username too long
-            if(msg.username.length > 128){
-                let error = `Username ${msg.username} too long`;
-                this.send(ws, {msgtype: 'spawn_failed', error});
-                return;
-            }
-
-            // // TODO validate color for brightness
-            // if(msg.color > 0xf0f0f0){
-            //     let error = `Color #${msg.color.toString(16)} too bright, pick a darker color`;
-            //     this.send(ws, {msgtype: 'spawn_failed', error});
-            //     return;
-            // }
-
+            
             // Validation passed; get spawnpoint
             let spawn = this.game.getSpawn();
             if(!spawn){
@@ -259,19 +253,56 @@ class Server{
         }
 
         handlers.changeColor = msg => {
+            console.log(`Changing color for user ${ws.userame}`);
+
             // Failed
             if(!ws.username){
+                let error='User not spawned yet';
+                console.error(error);
                 return this.send(ws, {
                     msgtype:'changeColor_failed',
-                    msg: 'User has not spawned yet and has no username'
+                    error
                 });
             }
 
             // Success
             this.game.players[ws.username].color = msg.color;
-            this.send({
+            this.send(ws, {
                 msgtype:'changeColor_success',
                 color:msg.color
+            });
+        };
+
+        handlers.changeName = msg => {
+            console.log(`Changing username for player ${ws.username} to ${msg.username}`);
+
+            // Not spawned yet
+            if(!ws.username){
+                let error='User not spawned yet';
+                console.error(error);
+                return this.send(ws, {
+                    msgtype:'changeName_failed',
+                    error,
+                    username:ws.username
+                });
+            }
+
+            // Validation
+            let valid = true;
+            if(msg.username !== ws.username)
+                valid = this.validateUsername(msg.username);
+            if(valid !== true){
+                console.error(valid);
+                return this.send(ws, {msgtype: 'changeName_failed', error: valid, username: ws.username});
+            }
+
+            this.game.players[msg.username] = this.game.players[ws.username];
+            delete this.game.players[ws.username];
+            ws.username = msg.username;
+
+            this.send(ws, {
+                msgtype:'changeName_success',
+                username:msg.username
             });
         };
 

@@ -115,7 +115,11 @@ class Client {
             this.render.viewport.snap(origin.x * renderConfig.scale, origin.y * renderConfig.scale, {removeOnComplete:true, time:1500});
             this.render.viewport.snapZoom({width:1895, removeOnComplete:true, time:1500});
             console.log(`Succesfully logged in user ${msg.username}`);
-            if(this.ui) this.ui.onSpawn();
+            if(this.ui){
+                this.ui.onSpawn();
+                this.ui.dom.topbar_username.innerHTML = this.ui.dom.topbar_username_input.value = msg.username;
+                // TODO set color
+            }
             if(msg.respawned) alert("Oh no! Every node in your network was captured by another player while you were offline. Here's a new spawnpoint from which to begin plotting your revenge."); // TODO refactor this to a modal/toast
         };
 
@@ -128,8 +132,33 @@ class Client {
             if(this.ui) this.ui.onRegisterSuccess();
         }
         
-        handlers.changeColor_success = handlers.changeColor_failed = () => {
+
+
+        handlers.changeColor_success = () => {
             if(this.ui) this.ui.dom.topbar_loading.style.display="none";
+            console.log('Server completed changeColor request');
+        }
+
+        handlers.changeColor_failed = () => {
+            if(this.ui){
+                this.ui.dom.topbar_loading.style.display="none";
+                this.ui.showTopBarError(msg.error); 
+            }
+            // TODO reset to old color (??)
+        }
+
+        handlers.changeName_success = handlers.changeName_failed = () => {
+            if(this.ui) this.ui.dom.topbar_loading.style.display="none";
+            console.log('Server completed changeName request');
+        }
+
+        handlers.changeName_failed = () => {
+            if(this.ui){
+                this.ui.dom.topbar_loading.style.display="none";
+                this.ui.showTopBarError(msg.error);
+                this.ui.dom.topbar_username.innerHTML = msg.username;
+                this.ui.dom.topbar_username_input.value = msg.username;
+            }
         }
 
         if(msg.msgtype && handlers[msg.msgtype] === undefined){

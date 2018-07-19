@@ -250,6 +250,20 @@ h1 span {
     opacity:0.75;
 }
 
+#topbar_error{
+    color:red;
+    text-align: right;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0px;
+    font-size: 12px;
+    font-weight: bold;
+    padding-right: 10px;
+    -webkit-transition: top 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition:         top 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
 /*********/
 #spawn, body > canvas {
     opacity: 0;
