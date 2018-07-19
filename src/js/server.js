@@ -80,8 +80,10 @@ class Server{
             ws.on('message', data => this.handleClientMsg(data, ws));
             ws.on('close', () => {
                 console.log(`Client ${ws.username} disconnected`);
-                if(this.game.players[ws.username] && !this.game.players[ws.username].permanent)
+                if(this.game.players[ws.username] && !this.game.players[ws.username].permanent){
+                    console.log(`Removing non-permanent player ${ws.username}`);
                     this.game.removePlayer(ws.username);
+                }
                 // TODO pongs with timeout to detect broken connections
             });
             this.sendFullGamestate(ws);
@@ -151,7 +153,7 @@ class Server{
             return `Username too short`;
 
         // Username too long
-        if(username.length > 128)
+        if(username.length > 32)
             return `Username too long`;
 
         return true;
@@ -191,7 +193,7 @@ class Server{
             this.game.players[msg.username] = { color: msg.color };
             spawn.owner = msg.username;
             ws.username = msg.username;
-            this.send(ws, {msgtype: 'spawn_success', username: msg.username, spawn:spawn.id});
+            this.send(ws, {msgtype: 'spawn_success', username: msg.username, spawn:spawn.id, color:msg.color});
         };
 
         handlers.viewport = msg => {
@@ -244,6 +246,7 @@ class Server{
                         origin.owner = player_name;
                     }
 
+                    ws.username = player_name;
                     this.send(ws, {msgtype: 'login_success', username:player_name, origin:origin.id, respawned, color:this.game.players[player_name].color});
                 })
                 .catch(err => {
@@ -253,7 +256,7 @@ class Server{
         }
 
         handlers.changeColor = msg => {
-            console.log(`Changing color for user ${ws.userame}`);
+            console.log(`Changing color for user ${ws.username} (color=${msg.color.toString(16)})`);
 
             // Failed
             if(!ws.username){

@@ -106,7 +106,12 @@ class Client {
             //this.render.viewport.moveCenter(spawn.x * renderConfig.scale, spawn.y * renderConfig.scale);
             //spawn.sprite.tint = this.game.players[msg.username].color;
             console.log(`Succesfully spawned at ${msg.spawn}`);
-            if(this.ui) this.ui.onSpawn();
+            if(this.ui) {
+                this.ui.dom.topbar_username.innerHTML = this.ui.dom.topbar_username_input.value = msg.username;
+                this.ui.dom.topbar_color.jscolor.fromString(msg.color.toString(16)); 
+                this.ui.dom.topbar_username.style.color = this.ui.dom.topbar_username_input.style.color = `#${msg.color.toString(16)}`;
+                this.ui.onSpawn();
+            }
         }
 
         handlers.login_success = () => {
@@ -118,7 +123,9 @@ class Client {
             if(this.ui){
                 this.ui.onSpawn();
                 this.ui.dom.topbar_username.innerHTML = this.ui.dom.topbar_username_input.value = msg.username;
-                // TODO set color
+                console.log(`I see color ${msg.color.toString(16)}`);
+                this.ui.dom.topbar_color.jscolor.fromString(msg.color.toString(16));
+                this.ui.dom.topbar_username.style.color = this.ui.dom.topbar_username_input.style.color = `#${msg.color.toString(16)}`;
             }
             if(msg.respawned) alert("Oh no! Every node in your network was captured by another player while you were offline. Here's a new spawnpoint from which to begin plotting your revenge."); // TODO refactor this to a modal/toast
         };
@@ -142,9 +149,10 @@ class Client {
         handlers.changeColor_failed = () => {
             if(this.ui){
                 this.ui.dom.topbar_loading.style.display="none";
-                this.ui.showTopBarError(msg.error); 
+                this.ui.showTopBarError(msg.error);
+                this.ui.dom.topbar_color.jscolor.fromString(msg.color.toString(16));
+                this.ui.dom.topbar_username.style.color = this.ui.dom.topbar_username_input.style.color = `#${msg.color.toString(16)}`;
             }
-            // TODO reset to old color (??)
         }
 
         handlers.changeName_success = handlers.changeName_failed = () => {
