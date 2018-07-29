@@ -1289,3 +1289,4 @@ TODO FUTURE/1.0
 0.75hr Register flow ux
 
 1hr onbeforeunload >:()
+1hr favicon + logo

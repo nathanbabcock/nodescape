@@ -68,11 +68,18 @@ class UI {
             'O6nD56ZYl6E9Njp5gXlYoTReaObvc240',
             'nodescape.auth0.com',
             {
-              initialScreen: 'signUp',
-              auth: {
-                responseType: 'id_token token',
-                redirect: false
-              }
+                initialScreen: 'signUp',
+                allowLogIn: false,
+                auth: {
+                    responseType: 'id_token token',
+                    redirect: false
+                },
+                languageDictionary: {
+                    title: 'NodeScape'
+                },
+                theme: {
+                    logo: 'img/logo.png'
+                }
             }
         );
         this.register_modal.on('authenticated', (authResult) => {
@@ -93,6 +100,12 @@ class UI {
               auth: {
                 responseType: 'id_token token',
                 redirect: false
+              },
+              languageDictionary: {
+                  title: 'NodeScape'
+              },
+              theme: {
+                logo: 'img/logo.png'
               }
             }
         );
@@ -130,6 +143,7 @@ class UI {
     openStripe(){
         this.stripe_handler.open({
             email: this.authResult.idTokenPayload.email,
+            image: 'img/logo.png',
             name: 'NodeScape',
             description: 'Permanent membership',
             zipCode: true,
