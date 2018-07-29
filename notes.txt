@@ -1266,3 +1266,6 @@ BUGS
 
 0.5hr @home login ui flow
 0.5hr @home more login flow & topbar ui logic
+
+7/29
+0.25hr @home fix name change bug

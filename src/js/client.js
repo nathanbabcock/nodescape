@@ -160,7 +160,10 @@ class Client {
         }
 
         handlers.changeName_success = handlers.changeName_failed = () => {
-            if(this.ui) this.ui.dom.topbar_loading.style.display="none";
+            if(this.ui){
+                this.ui.dom.topbar_loading.style.display="none";
+                this.render.player = msg.username;
+            }
             console.log('Server completed changeName request');
         }
 

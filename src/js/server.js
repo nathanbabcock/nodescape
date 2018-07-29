@@ -299,14 +299,15 @@ class Server{
                 return this.send(ws, {msgtype: 'changeName_failed', error: valid, username: ws.username});
             }
 
-            this.game.players[msg.username] = this.game.players[ws.username];
-            delete this.game.players[ws.username];
-            ws.username = msg.username;
-
-            this.send(ws, {
-                msgtype:'changeName_success',
-                username:msg.username
-            });
+            if(this.game.changeName(ws.username, msg.username)){
+                ws.username = msg.username;
+                this.send(ws, {
+                    msgtype:'changeName_success',
+                    username:msg.username
+                });
+            } else
+                return this.send(ws, {msgtype: 'changeName_failed', error: 'Unknown error', username: ws.username});
+            
         };
 
         handlers.createEdge = msg => this.game.createEdge(ws.username, msg.from, msg.to);

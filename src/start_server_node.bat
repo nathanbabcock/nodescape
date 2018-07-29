@@ -1,1 +1,1 @@
-cmd /k http-server
+cmd /k http-server -c-1

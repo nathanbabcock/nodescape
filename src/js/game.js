@@ -382,6 +382,23 @@ class Game {
             }
         });
     }
+
+    changeName(oldName, newName){
+        // Change player manifest
+        this.players[newName] = this.players[oldName];
+        delete this.players[oldName];
+
+        // Change node ownership
+        this.nodes.filter(node => node.owner === oldName).forEach(node => {
+            node.owner = newName;
+            node.bubbles = 0;
+            node.edges.forEach(edge => {
+                edge.bubbles.forEach(bubble =>bubble.owner = newName);
+            });
+        });
+
+        return true;
+    }
 }
 
 // Node
