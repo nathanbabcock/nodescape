@@ -14,14 +14,16 @@ class UI {
         this.dom.name.style.color = `#${color}`;
 
         // OnBeforeUnload
-        window.addEventListener("beforeunload", (e) => {
-            // if(this.dom.watermark.style.display !== "block")
-            //     return undefined;
-            // TODO Modal message here?
+        setTimeout(() => window.addEventListener("beforeunload", (e) => {
+            if(this.client.render.player === null || this.client.game.players[this.client.render.player].permanent)
+                return null;
+
             let msg = "All progress is lost when you close your tab. Continue?"
             e.returnValue = msg;
+            this.showRegisterModal();
             return msg;
-        });
+        }), 0);
+        
 
         this.initTopBar();
         this.initCarousel();

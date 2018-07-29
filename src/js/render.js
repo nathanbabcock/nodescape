@@ -220,7 +220,7 @@ class Render {
         // console.log(node.owner);
         // console.log(this.game.players);
         // console.log(this.game.players[node.owner]);
-        let color = this.game.players[node.owner].color,
+        let color = this.game.players[node.owner] ? this.game.players[node.owner].color : 0x0,
             size = radius * 2,
             value = node.isSource ? '∞' : this.abbreviateNumber(node.bubbles),
             textColor = node.isSource ? color : this.getTextColor(color),
@@ -486,7 +486,7 @@ class Render {
             metrics = PIXI.TextMetrics.measureText(value, text.style),
             x = node.x * renderConfig.scale - metrics.width / 4,
             y = (node.y - node.radius) * renderConfig.scale - metrics.height / 4 - 15,
-            color = "#"+this.game.players[this.selectedNode.owner].color.toString(16);
+            color = "#" + (this.game.players[this.selectedNode.owner] ? this.game.players[this.selectedNode.owner].color.toString(16) : "000000");
         text.visible = this.viewport.right - this.viewport.left < 5000;
         if(text.x !== x) text.x = x;
         if(text.y !== y) text.y = y;

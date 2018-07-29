@@ -1270,13 +1270,22 @@ X changing name does not change name rendered in game
 7/29
 0.25hr @home fix name change bug
 
-
-TODO
+TODO BETA
 - gamestate save to filesystem (persistence across server launches)
-- 
+- how to capture source nodes
+	- update tutorial?
+- favicon, auth0/stripe branding
+- some kind of support channel (direct email, contact form, or SaaS feedback service)
 
-TODO FUTURE
+TODO FUTURE/1.0
 - locate me
 - hard restart
+- profanity filter?
+- patch notes
+- offline report
+- feedback mechanism
+- analytics?
 
 0.75hr Register flow ux
+
+1hr onbeforeunload >:()
