@@ -1,6 +1,9 @@
 # AppConfig
 secret.js
 
+# Gamestate cache
+gamestate.json
+
 # certbot
 cert/privkey.pem
 cert/fullchain.pem

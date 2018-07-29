@@ -1,6 +1,9 @@
+const gamestate_cache = 'gamestate.json';
+
 const WS = require('ws'),
     https = require('https'),
     fs = require('fs'),
+    _ = require('lodash'),
     APIConnector = require('./api-connector'),
     env = require('./environment.js'),
     _game = require('./game'),
@@ -20,24 +23,10 @@ class Server{
 
     initGame(){
         console.log("Initializing server game instance");
+        this.game = new Game();
 
-        let game = this.game = new Game();
-        this.game.procgen();
-
-        // let src = new Node(5, 5, true);
-        //     src.id = game.nodes.length;
-        //     //src.owner = "excalo";
-        //     game.nodes.push(src);
-    
-        //     let dest = new Node(5, 15, false);
-        //     dest.id = game.nodes.length;
-        //     //dest.owner = "excalo";
-        //     game.nodes.push(dest);
-    
-        //     let dest2 = new Node(15, 15, false);
-        //     dest2.id = game.nodes.length;
-        //     //dest2.owner = "excalo";
-        //     game.nodes.push(dest2);
+        if(!this.load())
+            this.game.procgen();
 
         this.startGameLoop();
     }
@@ -48,6 +37,7 @@ class Server{
             if(this.game.spawn_cooldown <= 1){
                 //let serialized = this.serialize(this.game);
                 this.wss.clients.forEach(this.sendLightGamestate, this);
+                this.save();
             }
         }, this.game.config.tick_rate);
     }
@@ -336,6 +326,23 @@ class Server{
             return false;
         }
         ws.send(this.serialize(obj));
+    }
+
+    save(){
+        fs.writeFileSync(gamestate_cache, this.serialize(this.game));
+        return true;
+    }
+
+    load(){
+        console.log("Loading gamestate from disk...");
+        if(fs.existsSync(gamestate_cache)){
+            if(!this.game) this.game = new Game();
+            _.merge(this.game, this.deserialize(fs.readFileSync(gamestate_cache)));
+            console.log("Gamestate loaded.");
+            return true;
+        }
+        console.log("No saved gamestate found.");
+        return false;
     }
 
     loadTest(){

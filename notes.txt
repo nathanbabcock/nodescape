@@ -1274,7 +1274,7 @@ TODO BETA
 - gamestate save to filesystem (persistence across server launches)
 - how to capture source nodes
 	- update tutorial?
-- favicon, auth0/stripe branding
+X favicon, auth0/stripe branding
 - some kind of support channel (direct email, contact form, or SaaS feedback service)
 
 TODO FUTURE/1.0
@@ -1286,7 +1286,8 @@ TODO FUTURE/1.0
 - feedback mechanism
 - analytics?
 
-0.75hr Register flow ux
+0.75hr @home Register flow ux
 
-1hr onbeforeunload >:()
-1hr favicon + logo
+1hr @home onbeforeunload >:()
+1hr @home favicon + logo
+0.5hr @home server persistence
