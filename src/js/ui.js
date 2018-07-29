@@ -5,7 +5,7 @@ class UI {
 
         // Grab and cache dom instances
         this.dom = {};
-        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal","info_step", "pending_step", "finish_step", "topbar_username", "topbar_color", "topbar_loading", "topbar_username_input", "topbar_error"]
+        ["spawn", "name", "color", "error", "submit", "watermark", "register_modal","info_step", "pending_step", "finish_step", "topbar", "topbar_username", "topbar_permanent", "topbar_register", "topbar_color", "topbar_loading", "topbar_username_input", "topbar_error"]
             .forEach(id => this.dom[id] = document.getElementById(id));
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
@@ -145,6 +145,8 @@ class UI {
         //this.dom.spawn.style.display="none";
         this.dom.spawn.style.top = "-725px";
         this.dom.watermark.style.display = "block";
+        this.dom.topbar.style.display = "block";
+        this.dom.topbar_error.style.display = "block";
     }
 
     submitSpawn(){

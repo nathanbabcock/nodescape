@@ -1254,3 +1254,15 @@ TODO MINOR
 0.33hr topbar username ui
 1hr changename server flow
 1hr topbar integration finished?
+
+7/28
+
+0.5hr @home environment setup
+
+BUGS
+- changing name does not change name rendered in game
+	- or rather: changing name dissociates client?
+- logging in does not kill previous unregistered network
+
+0.5hr @home login ui flow
+0.5hr @home more login flow & topbar ui logic

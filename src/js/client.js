@@ -108,6 +108,8 @@ class Client {
             console.log(`Succesfully spawned at ${msg.spawn}`);
             if(this.ui) {
                 this.ui.dom.topbar_username.innerHTML = this.ui.dom.topbar_username_input.value = msg.username;
+                this.ui.dom.topbar_permanent.style.display = "none";
+                this.ui.dom.topbar_register.style.display = "inline-block";
                 this.ui.dom.topbar_color.jscolor.fromString(msg.color.toString(16)); 
                 this.ui.dom.topbar_username.style.color = this.ui.dom.topbar_username_input.style.color = `#${msg.color.toString(16)}`;
                 this.ui.onSpawn();
@@ -123,7 +125,9 @@ class Client {
             if(this.ui){
                 this.ui.onSpawn();
                 this.ui.dom.topbar_username.innerHTML = this.ui.dom.topbar_username_input.value = msg.username;
-                console.log(`I see color ${msg.color.toString(16)}`);
+                // console.log(`I see color ${msg.color.toString(16)}`);
+                this.ui.dom.topbar_permanent.style.display = "inline-block";
+                this.ui.dom.topbar_register.style.display = "none";
                 this.ui.dom.topbar_color.jscolor.fromString(msg.color.toString(16));
                 this.ui.dom.topbar_username.style.color = this.ui.dom.topbar_username_input.style.color = `#${msg.color.toString(16)}`;
             }

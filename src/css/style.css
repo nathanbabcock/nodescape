@@ -113,10 +113,19 @@ h1 span {
     padding:20px;
     /* border:none; */
     /* color:white; */
-    margin: 0 auto;
-    display:block;
+    /* margin: 0 auto; */
+    display:inline-block;
     font-weight:bold;
     color:white;
+}
+
+#spawn #submit {
+    margin-left:110px;
+}
+
+#spawn a {
+    color: black;
+    font-weight:bold;
 }
 
 #spawn button:disabled {
@@ -164,6 +173,7 @@ h1 span {
     font-size:14px;
     z-index:1;
     font-family:Helvetica, Arial, sans-serif;
+    display:none;
 }
 
 #login-button {
@@ -188,7 +198,7 @@ h1 span {
     background-color:#ffd638;
 }
 
-#register-button span {
+.goPermanent span {
     font-weight: bold;
 }
 
@@ -265,6 +275,6 @@ h1 span {
 }
 
 /*********/
-#spawn, body > canvas {
+/* #spawn, body > canvas {
     opacity: 0;
-}
+} */
