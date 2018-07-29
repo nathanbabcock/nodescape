@@ -201,6 +201,8 @@ class UI {
     onRegisterSuccess(){
         this.dom.pending_step.style.display="none";
         this.dom.finish_step.style.display="block";
+        this.dom.topbar_permanent.style.display="inline-block";
+        this.dom.topbar_register.style.display="none";
     }
 
     showLogin(){

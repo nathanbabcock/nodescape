@@ -1260,7 +1260,7 @@ TODO MINOR
 0.5hr @home environment setup
 
 BUGS
-- changing name does not change name rendered in game
+X changing name does not change name rendered in game
 	- or rather: changing name dissociates client?
 - logging in does not kill previous unregistered network
 
@@ -1269,3 +1269,14 @@ BUGS
 
 7/29
 0.25hr @home fix name change bug
+
+
+TODO
+- gamestate save to filesystem (persistence across server launches)
+- 
+
+TODO FUTURE
+- locate me
+- hard restart
+
+0.75hr Register flow ux

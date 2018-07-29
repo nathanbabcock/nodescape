@@ -54,15 +54,32 @@
 
     <div id="register_modal" class="modal">
         <div id="info_step">
-            <button class="close" onclick="ui.closeModal('#register_modal')">✕</button>
+            <div style="background-color:white" class="top">
+                <button class="close" onclick="ui.closeModal('#register_modal')">✕</button>
+                <div><strong>One-time</strong> payment of</div>
+                <div class="fivedolla">$5</div>
+                <div>And your nodes will live</div>
+                <div class="forever">forever</div>
+            </div>
+            <!-- <hr> -->
+            <ul>
+                <li>Close the tab, come back later</li>
+                <li>Gain value while offline</li>
+                <li>Help support NodeScape &#10084;</li>
+            </ul>
             <button id="continue_register" class="goPermanent" onClick="ui.showAuth0Register();">Continue</button>
         </div>
         <div id="pending_step" style="display:none;">
-                <p>Waiting for server...</p>
-            </div>
+            <img src="img/loading.svg" id="register_loading" alt="Loading..." class="loading">
+            <div>Processing payment...</div>
+        </div>
         <div id="finish_step" style="display:none;">
-            <h2>CONGRATULATIONS</h2>
-            <p>Payment successful.</p>
+            <button class="close" onclick="ui.closeModal('#register_modal')">✕</button>
+            <h2>SUCCESS</h2>
+            <div>Your network is now <strong>permanent</strong>! Close your browser window any time. Log in to pick up right where you left off.
+                <br><br>Thanks for supporting NodeScape!
+            </div>
+            <button class="goPermanent backtogame" onClick="ui.closeModal('#register_modal');">Back to Game</button>
         </div>
     </div>
 

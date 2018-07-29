@@ -391,7 +391,6 @@ class Game {
         // Change node ownership
         this.nodes.filter(node => node.owner === oldName).forEach(node => {
             node.owner = newName;
-            node.bubbles = 0;
             node.edges.forEach(edge => {
                 edge.bubbles.forEach(bubble =>bubble.owner = newName);
             });
