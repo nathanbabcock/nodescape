@@ -58,7 +58,8 @@ class Game {
         this.config = config;
         this.players = {
             "server": {
-                color: 0x707070
+                color: 0x707070,
+                permanent: true
             },
             "excalo": {
                 color: 0xff0000,

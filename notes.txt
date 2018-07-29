@@ -1291,3 +1291,4 @@ TODO FUTURE/1.0
 1hr @home onbeforeunload >:()
 1hr @home favicon + logo
 0.5hr @home server persistence
+0.25hr @home server persistence handle non-permanent players

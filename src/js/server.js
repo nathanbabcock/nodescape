@@ -337,7 +337,17 @@ class Server{
         console.log("Loading gamestate from disk...");
         if(fs.existsSync(gamestate_cache)){
             if(!this.game) this.game = new Game();
-            _.merge(this.game, this.deserialize(fs.readFileSync(gamestate_cache)));
+            let savedGame = this.deserialize(fs.readFileSync(gamestate_cache));
+            _.merge(this.game, savedGame);
+
+            // Remove non-permanent players
+            for (var player in this.game.players) {
+                if (this.game.players.hasOwnProperty(player) && !this.game.players[player].permanent) {
+                    this.game.removePlayer(player);
+                    console.log(`Removed non-permanent player ${player}`);
+                }
+            }
+
             console.log("Gamestate loaded.");
             return true;
         }
