@@ -1271,7 +1271,7 @@ X changing name does not change name rendered in game
 0.25hr @home fix name change bug
 
 TODO BETA
-- gamestate save to filesystem (persistence across server launches)
+X gamestate save to filesystem (persistence across server launches)
 - how to capture source nodes
 	- update tutorial?
 X favicon, auth0/stripe branding
@@ -1285,6 +1285,7 @@ TODO FUTURE/1.0
 - offline report
 - feedback mechanism
 - analytics?
+- reconnect ws
 
 0.75hr @home Register flow ux
 
