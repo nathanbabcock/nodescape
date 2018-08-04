@@ -165,7 +165,7 @@ class Server{
             let valid = this.validateUsername(msg.username);
             if(valid !== true) {
                 console.error(valid);
-                this.send(ws, {msgtype: 'spawn_failed', valid});
+                this.send(ws, {msgtype: 'spawn_failed', error: valid});
                 return;
             }
             

@@ -1293,3 +1293,15 @@ TODO FUTURE/1.0
 1hr @home favicon + logo
 0.5hr @home server persistence
 0.25hr @home server persistence handle non-permanent players
+
+8/4/18
+
+TODO FUTURE/1.0
+- locate me
+- hard restart
+- profanity filter?
+- patch notes
+- offline report & emails
+- feedback/support mechanism
+- analytics?
+- reconnect ws
