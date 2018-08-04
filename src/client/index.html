@@ -49,7 +49,7 @@
                     <input type="text" class="jscolor {onFineChange:'ui.changeColor(this)'}" name="color" id="color" value="0000ff" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
                 </div>
                 <div class="row">
-                    <button type="submit" id="submit" disabled class="btn btn-success btn-lg">Join Game</button> or <a href="javascript:ui.showLogin()">LOGIN</a>
+                    <button type="submit" id="submit" disabled class="btn btn-success btn-lg">Join Game</button><div id="login_area">or <a href="javascript:ui.showLogin()">LOGIN</a></div>
                 </div>
             </form>
         </div>
@@ -93,12 +93,13 @@
         <a href="javascript:ui.changeName()" id="topbar_username" title="Click to change name">null</a>
         <input type="text" value="null" id="topbar_username_input">
         <!-- <span id="topbar_username">excalo</span> -->
-        
-        <span class="topbar-separator">/</span>
-        <a href="javascript:ui.openModal('#register_modal')" id="topbar_register" class="goPermanent">GO <span>PERMANENT</span></a>
-        <a href="javascript:alert('Your nodes will never expire, even while your browser is closed! Thanks for supporting NodeScape.');" id="topbar_permanent" class="goPermanent" title="Thanks for supporting NodeScape!"><span>&#10004; PERMANENT</span></a>
-        <span class="topbar-separator">/</span>
-        <a href="mailto:nodescape.io@gmail.com" target="_blank" id="topbar_contact" title="nodescape.io@gmail.com">Help</a>
+        <div id="topbar_nonembed">
+            <span class="topbar-separator">/</span>
+            <a href="javascript:ui.openModal('#register_modal')" id="topbar_register" class="goPermanent">GO <span>PERMANENT</span></a>
+            <a href="javascript:alert('Your nodes will never expire, even while your browser is closed! Thanks for supporting NodeScape.');" id="topbar_permanent" class="goPermanent" title="Thanks for supporting NodeScape!"><span>&#10004; PERMANENT</span></a>
+            <span class="topbar-separator">/</span>
+            <a href="mailto:nodescape.io@gmail.com" target="_blank" id="topbar_contact" title="nodescape.io@gmail.com">Help</a>
+        </div>
         <!-- <span class="topbar-separator">/</span>
         <a href="javascript:ui.showLogin()" id="login-button">Login</a> -->
     </div>

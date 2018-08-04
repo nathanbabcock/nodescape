@@ -5,7 +5,7 @@ class UI {
 
         // Grab and cache dom instances
         this.dom = {};
-        ["spawn", "name", "color", "error", "submit", "watermark", "watermark_embed", "register_modal","info_step", "pending_step", "finish_step", "topbar", "topbar_username", "topbar_permanent", "topbar_register", "topbar_color", "topbar_loading", "topbar_username_input", "topbar_error"]
+        ["spawn", "name", "color", "error", "submit", "watermark", "watermark_embed", "register_modal","info_step", "pending_step", "finish_step", "topbar", "topbar_username", "topbar_permanent", "topbar_register", "topbar_color", "topbar_loading", "topbar_username_input", "topbar_error", "login_area", "topbar_nonembed"]
             .forEach(id => this.dom[id] = document.getElementById(id));
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
@@ -15,7 +15,12 @@ class UI {
 
         // OnBeforeUnload
         setTimeout(() => window.addEventListener("beforeunload", (e) => {
+            // Disable before spawn
             if(this.client.render.player === null || this.client.game.players[this.client.render.player].permanent)
+                return null;
+
+            // Disable for embed
+            if(window.top !== window.self)
                 return null;
 
             let msg = "All progress is lost when you close your tab. Continue?"
@@ -29,6 +34,7 @@ class UI {
         this.initCarousel();
         this.initAuth0();
         this.initStripe();
+        this.checkEmbed();
         // this.initPaypal();
     }
 
@@ -124,7 +130,8 @@ class UI {
 
     initStripe(){
         this.stripe_handler = StripeCheckout.configure({
-            key: 'pk_live_ZS6TVvxmyHkkgEEg42BCSfRg',
+            // key: 'pk_live_ZS6TVvxmyHkkgEEg42BCSfRg',
+            key: 'pk_test_hZiLWCQbirV0dPG4vDnuhwQ2',
             image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
             locale: 'auto',
             token: (token) => {
@@ -251,5 +258,12 @@ class UI {
         if(this.dom.topbar_error.clientTop > 0) clearTimeout(this.topbarTimeout);
         this.dom.topbar_error.style.top = "50px";
         this.topbarTimeout = setTimeout(()=>this.dom.topbar_error.style.top = "0", 6000);
+    }
+
+    checkEmbed(){
+        if(window.self === window.top)
+            return;
+        this.dom.login_area.style.display = 'none';
+        this.dom.topbar_nonembed.style.display = 'none';
     }
 }

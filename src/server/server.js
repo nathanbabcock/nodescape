@@ -71,7 +71,13 @@ class Server{
 
         wss.on('connection', ws => {
             console.log("Client connected.");
-            ws.on('message', data => this.handleClientMsg(data, ws));
+            ws.on('message', data => {
+                try {
+                    return this.handleClientMsg(data, ws);
+                } catch (e) {
+                    console.error(e.message);
+                }
+            });
             ws.on('close', () => {
                 console.log(`Client ${ws.username} disconnected`);
                 if(this.game.players[ws.username] && !this.game.players[ws.username].permanent){
