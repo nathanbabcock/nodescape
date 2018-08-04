@@ -19,6 +19,7 @@ class Server{
         //this.initGame();
         this.initWebsockets();
         this.APIConnector = new APIConnector();
+        this.disconnectedClients = [];
     };
 
     initGame(){
@@ -36,14 +37,30 @@ class Server{
             try {
                 this.game.update.bind(this.game)();
                 if(this.game.spawn_cooldown <= 1){
-                    //let serialized = this.serialize(this.game);
                     this.wss.clients.forEach(this.sendLightGamestate, this);
+                    this.checkDisconnectedClients();
                     this.save();
                 }
             } catch (e) {
                 console.error(e.message);
             }
         }, this.game.config.tick_rate);
+    }
+
+    checkDisconnectedClients(){
+        const RECONNECT_TIME = 1 * 60 * 1000;
+        for(var i = 0; i < this.disconnectedClients.length; i++){
+            if(new Date().getTime() > this.disconnectedClients[i].time + RECONNECT_TIME){
+                let mClient = this.disconnectedClients[i];
+                console.log(`Reconnection window closed for player ${mClient.username}`);
+                if(this.game.players[mClient.username] && !this.game.players[mClient.username].permanent){
+                    console.log(`Removing non-permanent player ${mClient.username}`);
+                    this.game.removePlayer(mClient.username);
+                }
+                this.disconnectedClients.splice(i, 1);
+                --i;
+            }
+        }
     }
 
     initWebsockets(){
@@ -79,11 +96,10 @@ class Server{
                 }
             });
             ws.on('close', () => {
-                console.log(`Client ${ws.username} disconnected`);
-                if(this.game.players[ws.username] && !this.game.players[ws.username].permanent){
-                    console.log(`Removing non-permanent player ${ws.username}`);
-                    this.game.removePlayer(ws.username);
-                }
+                if(!ws.username)
+                    return;
+                console.log(`Client ${ws.username} disconnected (start of reconnection window)`);
+                this.disconnectedClients.push({username:ws.username, time: new Date().getTime()});
                 // TODO pongs with timeout to detect broken connections
             });
             this.sendFullGamestate(ws);
@@ -314,12 +330,14 @@ class Server{
         handlers.removeEdge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);
 
         handlers.reconnect = msg => {
-            if(this.wss.clients.find(client => client.username === msg.username)){
-                console.error(`Refusing reconnection from client ${msg.username} because another socket is already assigned to this player instance`);
+            let index = this.disconnectedClients.findIndex(client => client.username === msg.username)
+            if(index === -1) {
+                console.error(`Refusing reconnection from client ${msg.username}; not found or outside reconnection window`);
                 ws.close();
                 return;
             }
             console.log(`Accepted reconnection from user ${msg.username}`);
+            this.disconnectedClients.splice(index, 1);
             ws.username = msg.username;
             // TODO send success msg?
         }

@@ -1310,7 +1310,7 @@ TODO FUTURE/1.0
 ============= BETA RELEASE 8/4/18 ============================
 
 1hr @home beta emergency bugfixes, kongregate/embed changes
-??hr @home client ws auto-reconnect\
+1.5hr @home client ws auto-reconnect
 
 BUG
 - in embed mode, topbar error messages will be visible after they slide back up

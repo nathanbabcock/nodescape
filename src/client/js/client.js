@@ -59,7 +59,7 @@ class Client {
             //this.startClientUpdateLoop();
             this.send({
                 msgtype: "reconnect",
-                username: this.username
+                username: this.render.player
             });
         }
 
