@@ -184,12 +184,6 @@ class Game {
         node.edges.forEach(this.updateEdge, this);
 
         if(this.spawn_cooldown <= 0){
-            // TODO change this to support surplus edges
-            // 1. Sort a list of edges by angle
-            // 2. Try n times (n = num edges)
-            //      - Spawn a bubble on "next" edge, increment "next" edge counter for node
-            //      - If failed, break loop
-
             // Step 1: sort edges by angle
             let edges = node.edges.filter(edge => !edge.dead)
                 .sort((a, b) => {
@@ -200,15 +194,14 @@ class Game {
                     return Math.atan((aTo.x - aFrom.x) / (aTo.y - aFrom.y)) - Math.atan((bTo.x - bFrom.x) / (bTo.y - bFrom.y));
                 });
 
-            // if(edges.length> 0)
-            //     console.log(edges);
-
             if(node.next_spawn_edge == undefined)
                 node.next_spawn_edge = 0;
 
             // Step 2: Try to spawn n times (n = num edges)
             for(var i = 0; i < edges.length; i++){
                 if(node.isSource || node.bubbles > 0){
+                    if(edges[node.next_spawn_edge] === undefined)
+                        node.next_spawn_edge = 0;
                     this.spawnBubble(node, edges[node.next_spawn_edge]);
                     if(!node.isSource) node.bubbles--;
                     node.next_spawn_edge++;
