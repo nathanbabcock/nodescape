@@ -5,8 +5,8 @@ const WS = require('ws'),
     fs = require('fs'),
     _ = require('lodash'),
     APIConnector = require('./api-connector'),
-    env = require('./environment.js'),
-    _game = require('./game'),
+    env = require('./../client/js/environment'),
+    _game = require('./../client/js/game'),
     Game = _game.Game,
     Node = _game.Node,
     Edge = _game.Edge,
@@ -33,11 +33,15 @@ class Server{
 
     startGameLoop(){
         this.gameloop = setInterval(() => {
-            this.game.update.bind(this.game)();
-            if(this.game.spawn_cooldown <= 1){
-                //let serialized = this.serialize(this.game);
-                this.wss.clients.forEach(this.sendLightGamestate, this);
-                this.save();
+            try {
+                this.game.update.bind(this.game)();
+                if(this.game.spawn_cooldown <= 1){
+                    //let serialized = this.serialize(this.game);
+                    this.wss.clients.forEach(this.sendLightGamestate, this);
+                    this.save();
+                }
+            } catch (e) {
+                console.error(e.message);
             }
         }, this.game.config.tick_rate);
     }

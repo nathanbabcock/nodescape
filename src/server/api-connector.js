@@ -2,7 +2,8 @@ const // Require
     request = require("request-promise-native"),
     jwt = require("jsonwebtoken"),
     jwks = require('jwks-rsa'),
-    stripe = require('stripe')("sk_test_8WYNUBe0eH9ui5Qic7qPdIpI"); // TODO REMOVE
+    secret = require('./secret'),
+    stripe = require('stripe')(secret.stripe_secret_key_test);
 
 const // Config
     AUTH0_API = 'https://nodescape.auth0.com';
@@ -26,7 +27,7 @@ class APIConnector {
             body: {
                 grant_type: 'client_credentials',
                 client_id: 'VaNSX65ch6zkA48jVlA6LLS3c6Aaizd6',
-                client_secret: 'Px9kznexL52MSOi7fXug4v_zl2ohksztxJGFI8ENil7sL8GrkT6oQrnq1jkFHoNW',
+                client_secret: secret.auth0_secret_test,
                 audience: `${AUTH0_API}/api/v2/`
             },
             json: true };

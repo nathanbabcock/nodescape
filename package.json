@@ -5,7 +5,7 @@
   "main": "src/js/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/js/server.js"
+    "start": "node src/server/server.js"
   },
   "dependencies": {
     "browserify": "^16.2.0",
