@@ -27,7 +27,7 @@ class APIConnector {
             body: {
                 grant_type: 'client_credentials',
                 client_id: 'VaNSX65ch6zkA48jVlA6LLS3c6Aaizd6',
-                client_secret: secret.auth0_secret_test,
+                client_secret: secret.auth0_secret,
                 audience: `${AUTH0_API}/api/v2/`
             },
             json: true };

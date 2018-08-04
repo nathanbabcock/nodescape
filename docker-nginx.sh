@@ -8,7 +8,7 @@ sudo docker run -d \
     -p 443:443 \
     -v ~/nodescape/cert/:/etc/ssl/cert/ \
     -v ~/nodescape/nginx-custom.conf:/etc/nginx/conf.d/nginx-custom.conf:ro \
-    -v ~/nodescape/src/:/etc/nginx/html/:ro \
+    -v ~/nodescape/src/client/:/etc/nginx/html/:ro \
     nginx
 sudo docker ps -a
 
