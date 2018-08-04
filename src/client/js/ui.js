@@ -124,7 +124,7 @@ class UI {
 
     initStripe(){
         this.stripe_handler = StripeCheckout.configure({
-            key: 'pk_test_hZiLWCQbirV0dPG4vDnuhwQ2',
+            key: 'pk_live_ZS6TVvxmyHkkgEEg42BCSfRg',
             image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
             locale: 'auto',
             token: (token) => {
@@ -159,6 +159,7 @@ class UI {
 
     onSpawn(){
         //this.dom.spawn.style.display="none";
+        // document.title = `NodeScape Beta (${this.client.render.player})`;
         this.dom.spawn.style.top = "-725px";
         if(window.self === window.top)
             this.dom.watermark.style.display = "block";

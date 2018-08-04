@@ -3,7 +3,7 @@ const // Require
     jwt = require("jsonwebtoken"),
     jwks = require('jwks-rsa'),
     secret = require('./secret'),
-    stripe = require('stripe')(secret.stripe_secret_key_test);
+    stripe = require('stripe')(secret.stripe_secret_key_live);
 
 const // Config
     AUTH0_API = 'https://nodescape.auth0.com';
