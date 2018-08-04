@@ -313,6 +313,17 @@ class Server{
         handlers.createEdge = msg => this.game.createEdge(ws.username, msg.from, msg.to);
         handlers.removeEdge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);
 
+        handlers.reconnect = msg => {
+            if(this.wss.clients.find(client => client.username === msg.username)){
+                console.error(`Refusing reconnection from client ${msg.username} because another socket is already assigned to this player instance`);
+                ws.close();
+                return;
+            }
+            console.log(`Accepted reconnection from user ${msg.username}`);
+            ws.username = msg.username;
+            // TODO send success msg?
+        }
+
         if(handlers[msg.msgtype] == undefined){
             console.error(`Unrecognized client msgtype ${msg.msgtype}`);
             return;

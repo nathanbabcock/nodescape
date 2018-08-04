@@ -33,6 +33,7 @@ class Client {
     }
 
     connect(url){
+        this.url = url;
         let ws = this.ws = new WebSocket(url);
         ws.onopen = () => {
             console.log("Succesfully connected to websocket server");
@@ -48,9 +49,29 @@ class Client {
         ws.onmessage = this.handleServerMessage.bind(this);
     }
 
+    reconnect(){
+        //TODO maybe this reconnect method is insecure (anyone could spoof a reconnect and steal someone's idle instance)
+        //Only applies to f2p plebs so no incentive to fix B)
+        let ws = this.ws = new WebSocket(this.url);
+        ws.onopen = () => {
+            console.log("Regained connection to websocket server");
+            //if(this.ui) this.ui.onReconnect();
+            //this.startClientUpdateLoop();
+            this.send({
+                msgtype: "reconnect",
+                username: this.username
+            });
+        }
+
+        ws.onmessage = this.handleServerMessage.bind(this);
+    }
+
     send(obj){
         if(!this.ws){
-            console.error("Could not send object; not connected to server", obj);
+            console.error("Could not send object; websocket not initialized", obj);
+            return false;
+        } else if(this.ws.readyState !== 1){
+            console.error("Could not send object; websocket lost connection", obj);
             return false;
         }
         this.ws.send(this.serialize(obj));
@@ -82,13 +103,23 @@ class Client {
     startClientUpdateLoop(){
         if(this.clientupdateloop) clearInterval(this.clientupdateloop);
         this.clientupdateloop = setInterval(() => {
-            this.send({
-                msgtype: "viewport",
-                top: this.render.viewport.top / renderConfig.scale,
-                right: this.render.viewport.right / renderConfig.scale,
-                bottom: this.render.viewport.bottom / renderConfig.scale,
-                left: this.render.viewport.left / renderConfig.scale,
-            });
+            if(this.ws.readyState === 1) {
+                return; // Connecting...
+            } else if(this.ws.readyState >= 2){
+                // Reconnect
+                console.error("Connection to websocket lost");
+                console.log("Attempting to reconnect...");
+                this.reconnect();
+                // TODO notify UI
+            } else {
+                this.send({
+                    msgtype: "viewport",
+                    top: this.render.viewport.top / renderConfig.scale,
+                    right: this.render.viewport.right / renderConfig.scale,
+                    bottom: this.render.viewport.bottom / renderConfig.scale,
+                    left: this.render.viewport.left / renderConfig.scale,
+                });
+            }
         }, 1000);
     }
 
