@@ -1305,3 +1305,6 @@ TODO FUTURE/1.0
 - feedback/support mechanism
 - analytics?
 - reconnect ws
+
+3hr @home prepare beta release
+============= BETA RELEASE 8/4/18 ============================
