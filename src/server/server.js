@@ -363,6 +363,10 @@ class Server{
         if(!ws){
             console.error("Could not send object; no socket specified", obj);
             return false;
+        } else if (ws.readyState >= 2){
+            console.error(`Socket for user ${ws.username} in readyState ${ws.readyState}; closing socket`);
+            ws.close();
+            return false;
         }
         ws.send(this.serialize(obj));
     }
