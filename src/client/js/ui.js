@@ -257,7 +257,11 @@ class UI {
         this.dom.topbar_error.innerHTML = error;
         if(this.dom.topbar_error.clientTop > 0) clearTimeout(this.topbarTimeout);
         this.dom.topbar_error.style.top = "50px";
-        this.topbarTimeout = setTimeout(()=>this.dom.topbar_error.style.top = "0", 6000);
+        this.topbarTimeout = setTimeout(()=>{
+            this.dom.topbar_error.style.top = "0";
+            setTimeout(()=>this.dom.topbar_error.innerHTML = "",600); // hide text after animation completes
+            // TODO cleaner way: make default position off top of screen instead of behind topbar
+        }, 6000);
     }
 
     checkEmbed(){
