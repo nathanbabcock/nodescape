@@ -215,7 +215,7 @@ h1 span {
     height:18px;
 }
 
-#watermark {
+#watermark, #watermark_embed {
     position:absolute;
     text-align:right;
     right:0;
@@ -227,6 +227,13 @@ h1 span {
     margin:0;
     width:fit-content;
     display:none;
+}
+
+#watermark_embed {
+    pointer-events:all;
+    color:black;
+    font-size:18px;
+    opacity:0.75;
 }
 
 #topbar {
