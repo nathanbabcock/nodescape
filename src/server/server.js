@@ -340,7 +340,7 @@ class Server{
             // Handle broken sockets that didn't disconnect
             let oldsocket = undefined;
             this.wss.clients.forEach(ws => {
-                if(ws.owner === msg.username){
+                if(ws.username === msg.username){
                     oldsocket = ws;
                 }
             })
