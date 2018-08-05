@@ -40,8 +40,10 @@ class Server{
                 if(this.game.spawn_cooldown <= 1){
                     this.wss.clients.forEach(this.sendLightGamestate, this);
                     this.wss.clients.forEach(client => {
-                        if(new Date().getTime() > client.lastupdate + CLIENT_TIMEOUT)
+                        if(new Date().getTime() > client.lastupdate + CLIENT_TIMEOUT){
+                            console.log(`Client ${client.username} lost connection to the server.`);
                             client.close();
+                        }
                     });
                     this.checkDisconnectedClients();
                     this.save();
@@ -335,10 +337,16 @@ class Server{
         handlers.removeEdge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);
 
         handlers.reconnect = msg => {
-            let oldsocket = this.wss.clients.find(ws => ws.username === msg.username);
-            if(oldsocket)
+            // Handle broken sockets that didn't disconnect
+            let oldsocket = undefined;
+            this.wss.clients.forEach(ws => {
+                if(ws.owner === msg.username)
+                    oldsocket = ws;
+            })
+            if(oldsocket !== undefined)
                 oldsocket.close();
 
+            // Check list of disconnected clients
             let index = this.disconnectedClients.findIndex(client => client.username === msg.username)
             if(index === -1) {
                 console.error(`Refusing reconnection from client ${msg.username}; not found or outside reconnection window`);
