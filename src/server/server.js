@@ -340,19 +340,23 @@ class Server{
             // Handle broken sockets that didn't disconnect
             let oldsocket = undefined;
             this.wss.clients.forEach(ws => {
-                if(ws.owner === msg.username)
+                if(ws.owner === msg.username){
                     oldsocket = ws;
+                }
             })
-            if(oldsocket !== undefined)
+            if(oldsocket !== undefined) {
+                console.log(`Found broken websocket for user ${oldsocket.username}`);
                 oldsocket.close();
-
-            // Check list of disconnected clients
-            let index = this.disconnectedClients.findIndex(client => client.username === msg.username)
-            if(index === -1) {
-                console.error(`Refusing reconnection from client ${msg.username}; not found or outside reconnection window`);
-                ws.close();
-                return;
+            } else {
+                // Check list of disconnected clients
+                let index = this.disconnectedClients.findIndex(client => client.username === msg.username)
+                if(index === -1) {
+                    console.error(`Refusing reconnection from client ${msg.username}; not found or outside reconnection window`);
+                    ws.close();
+                    return;
+                }
             }
+
             console.log(`Accepted reconnection from user ${msg.username}`);
             this.disconnectedClients.splice(index, 1);
             ws.username = msg.username;
