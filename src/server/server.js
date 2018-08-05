@@ -33,11 +33,16 @@ class Server{
     }
 
     startGameLoop(){
+        const CLIENT_TIMEOUT = 5 * 1000;        
         this.gameloop = setInterval(() => {
             try {
                 this.game.update.bind(this.game)();
                 if(this.game.spawn_cooldown <= 1){
                     this.wss.clients.forEach(this.sendLightGamestate, this);
+                    this.wss.clients.forEach(client => {
+                        if(new Date().getTime() > client.lastupdate + CLIENT_TIMEOUT)
+                            client.close();
+                    });
                     this.checkDisconnectedClients();
                     this.save();
                 }
@@ -214,7 +219,7 @@ class Server{
 
         handlers.viewport = msg => {
             ws.viewport = msg;
-            ws.lastupdate = new Date();
+            ws.lastupdate = new Date().getTime();
             //console.log("Nodes in viewport this frame:", this.game.nodes.filter(node => node.x >= ws.viewport.left && node.x <= ws.viewport.right && node.y <= ws.viewport.bottom && node.y >= ws.viewport.top).length);
         };
 
@@ -330,6 +335,10 @@ class Server{
         handlers.removeEdge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);
 
         handlers.reconnect = msg => {
+            let oldsocket = this.wss.clients.find(ws => ws.username === msg.username);
+            if(oldsocket)
+                oldsocket.close();
+
             let index = this.disconnectedClients.findIndex(client => client.username === msg.username)
             if(index === -1) {
                 console.error(`Refusing reconnection from client ${msg.username}; not found or outside reconnection window`);

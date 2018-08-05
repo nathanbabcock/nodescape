@@ -1327,5 +1327,8 @@ X in embed mode, topbar error messages will be visible after they slide back up
 	- solution(?): re-add topbar_register and help but make it link to full site
 - WS in closing state on server side not cleaned up
 - Sometimes clients try to reconnect before they have disconnected from server (????)
-- Nodes can remain with reference to disconnected players
+/ Nodes can remain with reference to disconnected players
 - don't re-send username
+- players can disconnect without triggering disconnect on server (???)
+- players can spawn without being assigned a node????
+- tutorial gifs don't load sometimes
