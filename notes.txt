@@ -1320,8 +1320,6 @@ X in embed mode, topbar error messages will be visible after they slide back up
 
 8/5/18
 
-
-
 BUG
 X in embed mode, topbar error messages will be visible after they slide back up
 	- solution(?): re-add topbar_register and help but make it link to full site
@@ -1332,3 +1330,7 @@ X in embed mode, topbar error messages will be visible after they slide back up
 - players can disconnect without triggering disconnect on server (???)
 - players can spawn without being assigned a node????
 - tutorial gifs don't load sometimes
+- impossible to get source nodes sometimes
+- MEMORY LEAK
+
+1hr @home bugfixing
