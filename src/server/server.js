@@ -386,7 +386,7 @@ class Server{
             return false;
         } else if (ws.readyState >= 2){
             console.error(`Socket for user ${ws.username} in readyState ${ws.readyState}; closing socket`);
-            ws.close();
+            ws.terminate();
             return false;
         }
         ws.send(this.serialize(obj));
