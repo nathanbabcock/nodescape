@@ -49,7 +49,7 @@ class Server{
                     this.save();
                 }
             } catch (e) {
-                console.error(e.message);
+                console.error(e);
             }
         }, this.game.config.tick_rate);
     }
@@ -99,7 +99,7 @@ class Server{
                 try {
                     return this.handleClientMsg(data, ws);
                 } catch (e) {
-                    console.error(e.message);
+                    console.error(e);
                 }
             });
             ws.on('close', () => {
@@ -349,16 +349,16 @@ class Server{
                 oldsocket.close();
             } else {
                 // Check list of disconnected clients
-                let index = this.disconnectedClients.findIndex(client => client.username === msg.username)
+                let index = this.disconnectedClients.findIndex(client => client.username === msg.username);
                 if(index === -1) {
                     console.error(`Refusing reconnection from client ${msg.username}; not found or outside reconnection window`);
                     ws.close();
                     return;
                 }
+                this.disconnectedClients.splice(index, 1);
             }
 
             console.log(`Accepted reconnection from user ${msg.username}`);
-            this.disconnectedClients.splice(index, 1);
             ws.username = msg.username;
             // TODO send success msg?
         }
