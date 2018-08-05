@@ -46,7 +46,7 @@ class Server{
                         }
                     });
                     console.log("Disconnected clients:", this.disconnectedClients.length);
-                    console.log("Players:", this.game.players.length);
+                    console.log("Players:", Object.keys(this.game.players).length);
                     this.checkDisconnectedClients();
                     this.save();
                 }
