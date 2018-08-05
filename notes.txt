@@ -1332,5 +1332,11 @@ X in embed mode, topbar error messages will be visible after they slide back up
 - tutorial gifs don't load sometimes
 - impossible to get source nodes sometimes
 - MEMORY LEAK
+- nodes rotating in strange order (tan function wrong)
 
 1hr @home bugfixing
+
+MEMORY LEAK
+- occurs after a certain number of clients have connected
+- not dependent on size of individual network
+- continues growing even after all networks removed
