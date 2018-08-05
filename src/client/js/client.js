@@ -108,8 +108,8 @@ class Client {
             } else if(this.ws.readyState >= 2){
                 // Reconnect
                 console.error("Connection to websocket lost");
-                console.log("Attempting to reconnect...");
-                this.reconnect();
+                // console.log("Attempting to reconnect...");
+                // this.reconnect();
                 // TODO notify UI
             } else {
                 this.send({

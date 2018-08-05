@@ -39,19 +39,20 @@ class Server{
                 this.game.update.bind(this.game)();
                 if(this.game.spawn_cooldown <= 1){
                     this.wss.clients.forEach(this.sendLightGamestate, this);
-                    this.wss.clients.forEach(client => {
-                        if(new Date().getTime() > client.lastupdate + CLIENT_TIMEOUT){
-                            console.log(`Client ${client.username} lost connection to the server.`);
-                            client.close();
-                        }
-                    });
-                    console.log("Disconnected clients:", this.disconnectedClients.length);
-                    console.log("Players:", Object.keys(this.game.players).length);
-                    this.checkDisconnectedClients();
+                    // this.wss.clients.forEach(client => {
+                    //     if(new Date().getTime() > client.lastupdate + CLIENT_TIMEOUT){
+                    //         console.log(`Client ${client.username} lost connection to the server.`);
+                    //         client.close();
+                    //     }
+                    // });
+                    // console.log("Disconnected clients:", this.disconnectedClients.length);
+                    // console.log("Players:", Object.keys(this.game.players).length);
+                    // this.checkDisconnectedClients();
                     this.save();
                 }
             } catch (e) {
                 console.error(e);
+
             }
         }, this.game.config.tick_rate);
     }
@@ -107,8 +108,13 @@ class Server{
             ws.on('close', () => {
                 if(!ws.username)
                     return;
-                console.log(`Client ${ws.username} disconnected (start of reconnection window)`);
-                this.disconnectedClients.push({username:ws.username, time: new Date().getTime()});
+                console.log(`Client ${ws.username} disconnected`);
+                if(this.game.players[ws.username] && !this.game.players[ws.username].permanent){
+                    console.log(`Removing non-permanent player ${ws.username}`);
+                    this.game.removePlayer(ws.username);
+                }
+                // console.log(`Client ${ws.username} disconnected (start of reconnection window)`);
+                // this.disconnectedClients.push({username:ws.username, time: new Date().getTime()});
                 // TODO pongs with timeout to detect broken connections
             });
             this.sendFullGamestate(ws);
