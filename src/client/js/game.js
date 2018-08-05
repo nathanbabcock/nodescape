@@ -181,6 +181,9 @@ class Game {
     }
 
     updateNode(node){
+        if(this.players[node.owner] === undefined)
+            node.owner = "server";
+
         node.edges.forEach(this.updateEdge, this);
 
         if(this.spawn_cooldown <= 0){

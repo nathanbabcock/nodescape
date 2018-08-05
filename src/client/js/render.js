@@ -268,6 +268,12 @@ class Render {
             sprite.visible = false;
         else if(!sprite.visible) sprite.visible = true;
 
+        // Handler owner missing
+        let owner = this.game.players[from.owner];
+        if(!owner){
+            owner = this.game.players["server"];
+        }
+
         // Calculate position, angle, color
         let gfx = this.edgeGfx,
             color = (from.owner === to.owner) ? this.game.players[from.owner].color : 0x010101,
@@ -348,7 +354,7 @@ class Render {
             x = (from.x + delta_x * pos_ratio) * renderConfig.scale,
             y = (from.y + delta_y * pos_ratio) * renderConfig.scale,
             radius = this.game.config.bubble_radius * renderConfig.scale,
-            color = this.game.players[bubble.owner].color,
+            color = this.game.players[bubble.owner] ? this.game.players[bubble.owner].color : 0x0,
             size = radius * 2;
         
         // Viewport clipping
@@ -496,7 +502,7 @@ class Render {
 
     // Draw
     draw(){
-        // try{
+        try{
             this.edgeGfx.clear();
             this.game.nodes.forEach(node => {
                 this.drawNode(node);
@@ -509,9 +515,9 @@ class Render {
             this.drawSelectedNode();
 
             this.app.renderer.render(this.app.stage);
-        // } catch(e) {
-        //     console.error(e);
-        // }
+        } catch(e) {
+            console.error(e);
+        }
     }
 
     // Edge dragging

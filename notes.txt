@@ -1313,5 +1313,19 @@ TODO FUTURE/1.0
 1.5hr @home client ws auto-reconnect
 
 BUG
-- in embed mode, topbar error messages will be visible after they slide back up
+X in embed mode, topbar error messages will be visible after they slide back up
 	- solution(?): re-add topbar_register and help but make it link to full site
+- WS in closing state on server side not cleaned up
+- Sometimes clients try to reconnect before they have disconnected from server (????)
+
+8/5/18
+
+
+
+BUG
+X in embed mode, topbar error messages will be visible after they slide back up
+	- solution(?): re-add topbar_register and help but make it link to full site
+- WS in closing state on server side not cleaned up
+- Sometimes clients try to reconnect before they have disconnected from server (????)
+- Nodes can remain with reference to disconnected players
+- don't re-send username
