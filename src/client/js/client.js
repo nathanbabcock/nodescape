@@ -2,6 +2,8 @@ class Client {
     constructor(username){
         this.username = username;
         this.uuid = null;
+        this.lastUpdate = -1;
+        this.ws = null;
     }
 
     setGame(game){
@@ -35,8 +37,8 @@ class Client {
 
     connect(url){
         this.url = url;
-        let ws = this.ws = new WebSocket(url);
-        ws.onopen = () => {
+        this.ws = new WebSocket(url);
+        this.ws.onopen = () => {
             console.log("Succesfully connected to websocket server");
             if(this.ui) this.ui.onConnect();
             this.startClientUpdateLoop();
@@ -47,34 +49,39 @@ class Client {
             // }));
         }
 
-        ws.onmessage = this.handleServerMessage.bind(this);
+        this.ws.onmessage = this.handleServerMessage.bind(this);
     }
 
     reconnect(){
         //TODO maybe this reconnect method is insecure (anyone could spoof a reconnect and steal someone's idle instance)
         //Only applies to f2p plebs so no incentive to fix B)
-        let ws = this.ws = new WebSocket(this.url);
-        ws.onopen = () => {
+        console.log("Reconnecting...");
+        this.lastUpdate = new Date().getTime();
+        if(this.ws) this.ws.close();
+        this.ws = new WebSocket(this.url);
+        console.log(this.ws);
+        this.ws.onopen = () => {
             console.log("Regained connection to websocket server");
             //if(this.ui) this.ui.onReconnect();
             //this.startClientUpdateLoop();
-            this.send({
-                msgtype: "reconnect",
-                username: this.render.player
-            });
+            // this.send({
+            //     msgtype: "reconnect",
+            //     username: this.render.player
+            // });
         }
 
-        ws.onmessage = this.handleServerMessage.bind(this);
+        this.ws.onmessage = this.handleServerMessage.bind(this);
     }
 
     send(obj){
         if(!this.ws){
             console.error("Could not send object; websocket not initialized", obj);
             return false;
-        } else if(this.ws.readyState !== 1){
-            console.error("Could not send object; websocket lost connection", obj);
+        } else if(this.ws.readyState !== WebSocket.OPEN){
+            console.error(`Could not send object; websocket readyState=${this.ws.readyState}`);
             return false;
         }
+        console.log('send');
         this.ws.send(this.serialize(obj));
     }
 
@@ -90,42 +97,34 @@ class Client {
         if(this.gameloop) clearInterval(this.gameloop);
         this.gameloop = setInterval(() => {
             this.game.update();
-            // if(this.game.spawn_cooldown <= 1)
-            //     this.send({
-            //         msgtype: "viewport",
-            //         top: this.render.viewport.top / renderConfig.scale,
-            //         right: this.render.viewport.right / renderConfig.scale,
-            //         bottom: this.render.viewport.bottom / renderConfig.scale,
-            //         left: this.render.viewport.left / renderConfig.scale,
-            //     });
         }, this.game.config.tick_rate);
     }
 
     startClientUpdateLoop(){
+        const CONNECTION_TIMEOUT = 5 * 1000;
         if(this.clientupdateloop) clearInterval(this.clientupdateloop);
         this.clientupdateloop = setInterval(() => {
-            if(this.ws.readyState === 1) {
-                return; // Connecting...
-            } else if(this.ws.readyState >= 2){
-                // Reconnect
-                console.error("Connection to websocket lost");
-                // console.log("Attempting to reconnect...");
-                // this.reconnect();
-                // TODO notify UI
+            if(new Date().getTime() > this.lastUpdate + CONNECTION_TIMEOUT){
+                console.log("Server connection timed out.");
+                this.reconnect();
             } else {
-                this.send({
-                    msgtype: "viewport",
-                    top: this.render.viewport.top / renderConfig.scale,
-                    right: this.render.viewport.right / renderConfig.scale,
-                    bottom: this.render.viewport.bottom / renderConfig.scale,
-                    left: this.render.viewport.left / renderConfig.scale,
-                });
+                if(this.render === undefined)
+                    this.send({msgtype:'ping'});
+                else
+                    this.send({
+                        msgtype: "viewport",
+                        top: this.render.viewport.top / renderConfig.scale,
+                        right: this.render.viewport.right / renderConfig.scale,
+                        bottom: this.render.viewport.bottom / renderConfig.scale,
+                        left: this.render.viewport.left / renderConfig.scale,
+                    });
             }
         }, 1000);
     }
 
     handleServerMessage(event){
         let msg = this.deserialize(event.data);
+        this.lastUpdate = new Date().getTime();
         // console.log(msg);
 
         let handlers = {};
@@ -134,7 +133,13 @@ class Client {
             if(this.uuid !== null && this.uuid !== undefined)
                 return this.send({msgtype: 'reconnect', uuid: this.uuid});
             this.uuid = msg.uuid;
+            console.log(`Client id: ${msg.uuid}`);
         };
+
+        handlers.reconnect_failed = () => {
+            console.log("Reconnect request rejected by server. New client ID is ", msg.uuid);
+            this.uuid = msg.uuid;
+        }
 
         handlers.spawn_success = () => {
             let spawn = this.game.nodes[msg.spawn];

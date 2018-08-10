@@ -48,6 +48,7 @@ class Server{
             try {
                 this.game.update.bind(this.game)();
                 if(this.game.spawn_cooldown <= 1){
+                    this.checkClients();
                     this.wss.clients.forEach(this.sendLightGamestate, this);
                     // this.wss.clients.forEach(client => {
                     //     if(new Date().getTime() > client.lastupdate + CLIENT_TIMEOUT){
@@ -79,6 +80,30 @@ class Server{
                 }
                 this.disconnectedClients.splice(i, 1);
                 --i;
+            }
+        }
+    }
+
+    checkClients(){
+        const
+            CONNECTION_TIMEOUT = 5 * 1000,
+            RECONNECT_TIMEOUT = 1 * 60 * 1000;
+        for(var uuid in this.clients){
+            let client = this.clients[uuid];
+            // console.log(`Time is ${new Date().getTime()} vs timeout of ${client.lastUpdate + CONNECTION_TIMEOUT}`);
+            if(client.ws && client.ws.readyState !== WS.CLOSED && new Date().getTime() > client.lastUpdate + CONNECTION_TIMEOUT){
+                client.lastUpdate = new Date().getTime();
+                client.ws.terminate();
+                console.log(`Client connection timed out (${uuid}); reconnection window starting`);
+            } else if ((!client.ws || client.ws.readyState !== WS.OPEN) && new Date().getTime() > client.lastUpdate + RECONNECT_TIMEOUT) {
+                console.log(`Reconnection window closed for client (${uuid})`);
+                if(client.username && this.game.players[client.username] && !this.game.players[client.username].permanent){
+                    console.log(`Removing non-permanent player ${client.username}`);
+                    this.game.removePlayer(client.username);
+                }
+                if(client.ws)
+                    client.ws.terminate();
+                delete this.clients[uuid];
             }
         }
     }
@@ -126,7 +151,7 @@ class Server{
             ws.on('close', () => {
                 // if(!ws.username)
                 //     return;
-                // console.log(`Client ${ws.username} disconnected`);
+                console.log(`Client ${ws.uuid} disconnected`);
                 // if(this.game.players[ws.username] && !this.game.players[ws.username].permanent){
                 //     console.log(`Removing non-permanent player ${ws.username}`);
                 //     this.game.removePlayer(ws.username);
@@ -375,7 +400,8 @@ class Server{
                 }
             }
             if(client === null){
-                this.send(ws, {msgtype:'reconnect_failed', error: 'Client instance expired or does not exist.'});
+                console.error(`Refusing reconnection request from unrecognized client ${msg.uuid}`);
+                this.send(ws, {msgtype:'reconnect_failed', error: 'Client instance expired or does not exist.', uuid: ws.uuid});
                 return;
             }
             if(client.ws && client.ws.readyState !== WS.CLOSED){
@@ -386,6 +412,7 @@ class Server{
             client.ws = ws;
             delete this.clients[ws.uuid];
             ws.uuid = client.uuid;
+            client.lastUpdate = new Date().getTime();
 
             /*
             // Handle broken sockets that didn't disconnect
@@ -415,6 +442,8 @@ class Server{
             */
         }
 
+        handlers.ping = () => {};
+
         if(handlers[msg.msgtype] == undefined){
             console.error(`Unrecognized client msgtype ${msg.msgtype}`);
             return;
@@ -439,9 +468,7 @@ class Server{
         } else if (!obj) {
             console.error("Server.send called with only one argument (did you forget to pass the websocket instance as the first parameter?)");
             return false;
-        } else if (ws.readyState >= 2){
-            console.error(`Socket for user ${this.clients[ws.uuid].username} in readyState ${ws.readyState}; closing socket`);
-            ws.terminate();
+        } else if (ws.readyState !== WS.OPEN){
             return false;
         }
         ws.send(this.serialize(obj));
