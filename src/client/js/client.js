@@ -1,6 +1,7 @@
 class Client {
     constructor(username){
         this.username = username;
+        this.uuid = null;
     }
 
     setGame(game){
@@ -129,6 +130,12 @@ class Client {
 
         let handlers = {};
 
+        handlers.connect = () => {
+            if(this.uuid !== null && this.uuid !== undefined)
+                return this.send({msgtype: 'reconnect', uuid: this.uuid});
+            this.uuid = msg.uuid;
+        };
+
         handlers.spawn_success = () => {
             let spawn = this.game.nodes[msg.spawn];
             if(this.render) this.render.player = msg.username;
@@ -145,7 +152,7 @@ class Client {
                 this.ui.dom.topbar_username.style.color = this.ui.dom.topbar_username_input.style.color = `#${msg.color.toString(16)}`;
                 this.ui.onSpawn();
             }
-        }
+        };
 
         handlers.login_success = () => {
             let origin = this.game.nodes[msg.origin];
@@ -168,18 +175,16 @@ class Client {
         handlers.spawn_failed = () => {
             console.error(msg.error);
             if(this.ui) this.ui.onSpawnFailed(msg.error);
-        }
+        };
 
         handlers.register_success = () => {
             if(this.ui) this.ui.onRegisterSuccess();
-        }
-        
-
-
+        };
+    
         handlers.changeColor_success = () => {
             if(this.ui) this.ui.dom.topbar_loading.style.display="none";
             console.log('Server completed changeColor request');
-        }
+        };
 
         handlers.changeColor_failed = () => {
             if(this.ui){
@@ -188,7 +193,7 @@ class Client {
                 this.ui.dom.topbar_color.jscolor.fromString(msg.color.toString(16));
                 this.ui.dom.topbar_username.style.color = this.ui.dom.topbar_username_input.style.color = `#${msg.color.toString(16)}`;
             }
-        }
+        };
 
         handlers.changeName_success = handlers.changeName_failed = () => {
             if(this.ui){
@@ -196,7 +201,7 @@ class Client {
                 this.render.player = msg.username;
             }
             console.log('Server completed changeName request');
-        }
+        };
 
         handlers.changeName_failed = () => {
             if(this.ui){
@@ -205,7 +210,7 @@ class Client {
                 this.ui.dom.topbar_username.innerHTML = msg.username;
                 this.ui.dom.topbar_username_input.value = msg.username;
             }
-        }
+        };
 
         if(msg.msgtype && handlers[msg.msgtype] === undefined){
             console.error(`Unrecognized server msgtype ${msg.msgtype}`);

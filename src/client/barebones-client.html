@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../../node_modules/chance/chance.js"></script>
+    <!-- <script src="node_modules/deep-extend/lib/deep-extend.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script src="js/environment.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/client.js"></script>
+</head>
+<body>
+    <script>
+            let game = new Game(),
+                client = new Client("excalo");
+            client.setGame(game);
+            client.uuid = 'ae051b95-b8a8-431f-9fec-bd5e093aa70e';
+            if(nodescape_environment === 'production')
+                client.connect("wss://nodescape.io:8081")
+            else
+            client.connect("wss://localhost:8081");
+        </script>
+</body>
+</html>

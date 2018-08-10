@@ -3,6 +3,7 @@ secret.js
 
 # Gamestate cache
 gamestate.json
+client_cache.json
 
 # certbot
 cert/privkey.pem

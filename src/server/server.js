@@ -1,4 +1,6 @@
-const gamestate_cache = 'gamestate.json';
+const
+    gamestate_cache = 'gamestate.json',
+    client_cache = 'client_cache.json';
 
 const WS = require('ws'),
     https = require('https'),
@@ -20,7 +22,15 @@ class Server{
         this.initWebsockets();
         this.APIConnector = new APIConnector();
         this.disconnectedClients = [];
-    };
+        this.clients = {};
+    }
+
+    generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
 
     initGame(){
         console.log("Initializing server game instance");
@@ -96,9 +106,17 @@ class Server{
         
         wss.on('open', ()=>console.log(`Websocket server running on port ${this.port}`));
 
+    
         wss.on('connection', ws => {
-            console.log("Client connected.");
+            ws.uuid = this.generateUUID();
+            this.clients[ws.uuid] = {
+                uuid: ws.uuid,
+                ws,
+                lastUpdate: new Date().getTime()
+            };
+            console.log(`Client connected (${ws.uuid})`);
             ws.on('message', data => {
+                this.clients[ws.uuid].lastUpdate = new Date().getTime();
                 try {
                     return this.handleClientMsg(data, ws);
                 } catch (e) {
@@ -106,17 +124,19 @@ class Server{
                 }
             });
             ws.on('close', () => {
-                if(!ws.username)
-                    return;
-                console.log(`Client ${ws.username} disconnected`);
-                if(this.game.players[ws.username] && !this.game.players[ws.username].permanent){
-                    console.log(`Removing non-permanent player ${ws.username}`);
-                    this.game.removePlayer(ws.username);
-                }
+                // if(!ws.username)
+                //     return;
+                // console.log(`Client ${ws.username} disconnected`);
+                // if(this.game.players[ws.username] && !this.game.players[ws.username].permanent){
+                //     console.log(`Removing non-permanent player ${ws.username}`);
+                //     this.game.removePlayer(ws.username);
+                // }
+
                 // console.log(`Client ${ws.username} disconnected (start of reconnection window)`);
                 // this.disconnectedClients.push({username:ws.username, time: new Date().getTime()});
                 // TODO pongs with timeout to detect broken connections
             });
+            this.send(ws, {msgtype: 'connect', uuid: ws.uuid});
             this.sendFullGamestate(ws);
         });
     }
@@ -127,7 +147,8 @@ class Server{
     }
 
     sendLightGamestate(ws){
-        if(!ws.viewport)
+        let viewport = this.clients[ws.uuid].viewport;
+        if(!viewport)
             return this.sendFullGamestate(ws);
 
         let gamestate = {
@@ -139,7 +160,7 @@ class Server{
         let padding = this.game.config.max_edge;
         for(var i = 0; i < this.game.nodes.length; i++){
             let node = this.game.nodes[i];
-            if(node.x < ws.viewport.left - padding || node.x > ws.viewport.right + padding || node.y < ws.viewport.top - padding || node.y > ws.viewport.bottom + padding)
+            if(node.x < viewport.left - padding || node.x > viewport.right + padding || node.y < viewport.top - padding || node.y > viewport.bottom + padding)
                 continue;
             gamestate.nodes[i] = node;
         }
@@ -199,7 +220,7 @@ class Server{
 
         handlers.playerconnect = msg => {
             this.game.players[msg.username] = { color: msg.color };
-            ws.username = msg.username;
+            this.clients[ws.uuid].username = msg.username;
         };
 
         handlers.spawnplayer = msg => {
@@ -223,22 +244,23 @@ class Server{
             console.log(`Player spawned with username ${msg.username}`);
             this.game.players[msg.username] = { color: msg.color };
             spawn.owner = msg.username;
-            ws.username = msg.username;
+            this.clients[ws.uuid].username = msg.username;
             this.send(ws, {msgtype: 'spawn_success', username: msg.username, spawn:spawn.id, color:msg.color});
         };
 
         handlers.viewport = msg => {
-            ws.viewport = msg;
-            ws.lastupdate = new Date().getTime();
+            this.clients[ws.uuid].viewport = msg;
+            //ws.viewport = msg;
+            this.clients[ws.uuid].lastupdate = new Date().getTime();
             //console.log("Nodes in viewport this frame:", this.game.nodes.filter(node => node.x >= ws.viewport.left && node.x <= ws.viewport.right && node.y <= ws.viewport.bottom && node.y >= ws.viewport.top).length);
         };
 
         handlers.registerPermanent = msg => {
             console.log("Registering a player as permanent");
-            this.APIConnector.auth0RegisterPlayer(msg.id_token, ws.username)
+            this.APIConnector.auth0RegisterPlayer(msg.id_token, this.clients[ws.uuid].username)
                 .then(() => this.APIConnector.stripeExecutePayment(msg.stripe_token))
                 .then(() => {
-                    this.game.players[ws.username].permanent = true;
+                    this.game.players[this.clients[ws.uuid].username].permanent = true;
                     this.send(ws, {msgtype: 'register_success'});
                 })
                 .catch(err => {
@@ -251,7 +273,7 @@ class Server{
             console.log("Logging in player");
             this.APIConnector.auth0Login(msg.id_token)
                 .then(player_name => {
-                    ws.username = player_name;
+                    this.clients[ws.uuid].username = player_name;
 
 
                     let origin = null,
@@ -277,7 +299,7 @@ class Server{
                         origin.owner = player_name;
                     }
 
-                    ws.username = player_name;
+                    this.clients[ws.uuid].username = player_name;
                     this.send(ws, {msgtype: 'login_success', username:player_name, origin:origin.id, respawned, color:this.game.players[player_name].color});
                 })
                 .catch(err => {
@@ -287,10 +309,10 @@ class Server{
         }
 
         handlers.changeColor = msg => {
-            console.log(`Changing color for user ${ws.username} (color=${msg.color.toString(16)})`);
+            console.log(`Changing color for user ${this.clients[ws.uuid].username} (color=${msg.color.toString(16)})`);
 
             // Failed
-            if(!ws.username){
+            if(!this.clients[ws.uuid].username){
                 let error='User not spawned yet';
                 console.error(error);
                 return this.send(ws, {
@@ -300,7 +322,7 @@ class Server{
             }
 
             // Success
-            this.game.players[ws.username].color = msg.color;
+            this.game.players[this.clients[ws.uuid].username].color = msg.color;
             this.send(ws, {
                 msgtype:'changeColor_success',
                 color:msg.color
@@ -308,47 +330,68 @@ class Server{
         };
 
         handlers.changeName = msg => {
-            console.log(`Changing username for player ${ws.username} to ${msg.username}`);
+            console.log(`Changing username for player ${this.clients[ws.uuid].username} to ${msg.username}`);
 
             // Not spawned yet
-            if(!ws.username){
+            if(!this.clients[ws.uuid].username){
                 let error='User not spawned yet';
                 console.error(error);
                 return this.send(ws, {
                     msgtype:'changeName_failed',
                     error,
-                    username:ws.username
+                    username:this.clients[ws.uuid].username
                 });
             }
 
             // Validation
             let valid = true;
-            if(msg.username !== ws.username)
+            if(msg.username !== this.clients[ws.uuid].username)
                 valid = this.validateUsername(msg.username);
             if(valid !== true){
                 console.error(valid);
-                return this.send(ws, {msgtype: 'changeName_failed', error: valid, username: ws.username});
+                return this.send(ws, {msgtype: 'changeName_failed', error: valid, username: this.clients[ws.uuid].username});
             }
 
-            if(this.game.changeName(ws.username, msg.username)){
-                ws.username = msg.username;
+            if(this.game.changeName(this.clients[ws.uuid].username, msg.username)){
+                this.clients[ws.uuid].username = msg.username;
                 this.send(ws, {
                     msgtype:'changeName_success',
                     username:msg.username
                 });
             } else
-                return this.send(ws, {msgtype: 'changeName_failed', error: 'Unknown error', username: ws.username});
+                return this.send(ws, {msgtype: 'changeName_failed', error: 'Unknown error', username: this.clients[ws.uuid].username});
             
         };
 
-        handlers.createEdge = msg => this.game.createEdge(ws.username, msg.from, msg.to);
-        handlers.removeEdge = msg => this.game.removeEdge(ws.username, msg.from, msg.to);
+        handlers.createEdge = msg => this.game.createEdge(this.clients[ws.uuid].username, msg.from, msg.to);
+        handlers.removeEdge = msg => this.game.removeEdge(this.clients[ws.uuid].username, msg.from, msg.to);
 
         handlers.reconnect = msg => {
+            let client = null;
+            for(var uuid in this.clients){
+                if(uuid === msg.uuid){
+                    client = this.clients[uuid];
+                    break;
+                }
+            }
+            if(client === null){
+                this.send(ws, {msgtype:'reconnect_failed', error: 'Client instance expired or does not exist.'});
+                return;
+            }
+            if(client.ws && client.ws.readyState !== WS.CLOSED){
+                console.log(`Closing old websocket for client ${client.uuid}`);
+                client.ws.terminate();
+            }
+            console.log(`Accepted reconnection for client ${client.uuid}`);
+            client.ws = ws;
+            delete this.clients[ws.uuid];
+            ws.uuid = client.uuid;
+
+            /*
             // Handle broken sockets that didn't disconnect
             let oldsocket = undefined;
             this.wss.clients.forEach(ws => {
-                if(ws.username === msg.username){
+                if(this.clients[ws.uuid].username === msg.username){
                     oldsocket = ws;
                 }
             })
@@ -367,8 +410,9 @@ class Server{
             }
 
             console.log(`Accepted reconnection from user ${msg.username}`);
-            ws.username = msg.username;
+            this.clients[ws.uuid].username = msg.username;
             // TODO send success msg?
+            */
         }
 
         if(handlers[msg.msgtype] == undefined){
@@ -383,17 +427,20 @@ class Server{
         return JSON.parse(data);
     }
 
-    serialize(data){
+    serialize(data, replacer){
         // TODO: msgpack
-        return JSON.stringify(data);
+        return JSON.stringify(data, replacer);
     }
 
     send(ws, obj){
         if(!ws){
             console.error("Could not send object; no socket specified", obj);
             return false;
+        } else if (!obj) {
+            console.error("Server.send called with only one argument (did you forget to pass the websocket instance as the first parameter?)");
+            return false;
         } else if (ws.readyState >= 2){
-            console.error(`Socket for user ${ws.username} in readyState ${ws.readyState}; closing socket`);
+            console.error(`Socket for user ${this.clients[ws.uuid].username} in readyState ${ws.readyState}; closing socket`);
             ws.terminate();
             return false;
         }
@@ -401,12 +448,19 @@ class Server{
     }
 
     save(){
+        fs.writeFileSync(client_cache, this.serialize(this.clients, (key, val) => key === 'ws' ? undefined : val));
         fs.writeFileSync(gamestate_cache, this.serialize(this.game));
         return true;
     }
 
     load(){
-        console.log("Loading gamestate from disk...");
+        console.log("Loading server state from disk...");
+        if(fs.existsSync(client_cache)){
+            this.clients = this.deserialize(fs.readFileSync(client_cache));
+            console.log(`- Client cache loaded (${Object.keys(this.clients).length} clients)`);
+        } else 
+            console.log("- No client cache found.");
+
         if(fs.existsSync(gamestate_cache)){
             if(!this.game) this.game = new Game();
             let savedGame = this.deserialize(fs.readFileSync(gamestate_cache));
@@ -416,14 +470,14 @@ class Server{
             for (var player in this.game.players) {
                 if (this.game.players.hasOwnProperty(player) && !this.game.players[player].permanent) {
                     this.game.removePlayer(player);
-                    console.log(`Removed non-permanent player ${player}`);
+                    console.log(`- Removed non-permanent player ${player}`);
                 }
             }
 
-            console.log("Gamestate loaded.");
+            console.log("- Gamestate loaded.");
             return true;
         }
-        console.log("No saved gamestate found.");
+        console.log("- No saved gamestate found.");
         return false;
     }
 
