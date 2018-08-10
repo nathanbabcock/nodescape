@@ -59,7 +59,7 @@ class Client {
         this.lastUpdate = new Date().getTime();
         if(this.ws) this.ws.close();
         this.ws = new WebSocket(this.url);
-        console.log(this.ws);
+        // console.log(this.ws);
         this.ws.onopen = () => {
             console.log("Regained connection to websocket server");
             //if(this.ui) this.ui.onReconnect();

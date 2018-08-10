@@ -140,6 +140,7 @@ class Server{
                 lastUpdate: new Date().getTime()
             };
             console.log(`Client connected (${ws.uuid})`);
+            console.log(`- total clients: ${Object.keys(this.clients).length}`);
             ws.on('message', data => {
                 this.clients[ws.uuid].lastUpdate = new Date().getTime();
                 try {
