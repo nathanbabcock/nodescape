@@ -1,4 +1,5 @@
-const nodescape_environment = 'development';
+const nodescape_environment = 'production';
+// const nodescape_environment = 'development';
 
 // Node
 if(typeof module !== "undefined")
