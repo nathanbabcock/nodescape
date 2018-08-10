@@ -81,7 +81,6 @@ class Client {
             console.error(`Could not send object; websocket readyState=${this.ws.readyState}`);
             return false;
         }
-        console.log('send');
         this.ws.send(this.serialize(obj));
     }
 
