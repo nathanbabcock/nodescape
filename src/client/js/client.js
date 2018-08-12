@@ -248,22 +248,22 @@ class Client {
             }
         };
 
-        handlers.changeName_success = handlers.changeName_failed = () => {
-            if(this.ui){
-                this.ui.dom.topbar_loading.style.display="none";
-                this.render.player = msg.username;
-            }
-            console.log('Server completed changeName request');
-        };
+        // handlers.changeName_success = handlers.changeName_failed = () => {
+        //     if(this.ui){
+        //         this.ui.dom.topbar_loading.style.display="none";
+        //         this.render.player = msg.username;
+        //     }
+        //     console.log('Server completed changeName request');
+        // };
 
-        handlers.changeName_failed = () => {
-            if(this.ui){
-                this.ui.dom.topbar_loading.style.display="none";
-                this.ui.showTopBarError(msg.error);
-                this.ui.dom.topbar_username.innerHTML = msg.username;
-                this.ui.dom.topbar_username_input.value = msg.username;
-            }
-        };
+        // handlers.changeName_failed = () => {
+        //     if(this.ui){
+        //         this.ui.dom.topbar_loading.style.display="none";
+        //         this.ui.showTopBarError(msg.error);
+        //         this.ui.dom.topbar_username.innerHTML = msg.username;
+        //         this.ui.dom.topbar_username_input.value = msg.username;
+        //     }
+        // };
 
         if(msg.msgtype && handlers[msg.msgtype] === undefined){
             console.error(`Unrecognized server msgtype ${msg.msgtype}`);

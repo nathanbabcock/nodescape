@@ -355,6 +355,7 @@ class Server{
             });
         };
 
+        /*
         handlers.changeName = msg => {
             console.log(`Changing username for player ${this.clients[ws.uuid].username} to ${msg.username}`);
 
@@ -388,6 +389,7 @@ class Server{
                 return this.send(ws, {msgtype: 'changeName_failed', error: 'Unknown error', username: this.clients[ws.uuid].username});
             
         };
+        */
 
         handlers.createEdge = msg => this.game.createEdge(this.clients[ws.uuid].username, msg.from, msg.to);
         handlers.removeEdge = msg => this.game.removeEdge(this.clients[ws.uuid].username, msg.from, msg.to);

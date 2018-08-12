@@ -1366,3 +1366,8 @@ Should the server instance cache the connected clients?
 2hr @home tactical restart
 
 BUG: changing name on permanent player was never implemented correctly
+
+TODO: REMOVE client and server capability of NAME Change
+TODO: Add try-catch to every callback...
+TODO: Confirm that you cannot double connect with tactical restart
+TODO: Try to detect/prevent restart loops

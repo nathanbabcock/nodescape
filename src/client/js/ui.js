@@ -52,25 +52,25 @@ class UI {
 
     initTopBar(){
         // Topbar username
-        let input = this.dom.topbar_username_input;
-        let handler = ()=>{
-                this.client.send({
-                    msgtype:'changeName',
-                    username:input.value
-                });
-                this.dom.topbar_username.innerHTML = input.value;
-                input.style.display="none";
-                this.dom.topbar_username.style.display = 'inline';
-            };
-        input.addEventListener('focusout', handler);
-        input.addEventListener('keypress', (keypress) => {
-            if(keypress.key === 'Enter'){
-                this.dom.topbar_username.innerHTML = input.value;
-                input.style.display="none";
-                this.dom.topbar_username.style.display = 'inline';
-            }
-                //handler();
-        });
+        // let input = this.dom.topbar_username_input;
+        // let handler = ()=>{
+        //         this.client.send({
+        //             msgtype:'changeName',
+        //             username:input.value
+        //         });
+        //         this.dom.topbar_username.innerHTML = input.value;
+        //         input.style.display="none";
+        //         this.dom.topbar_username.style.display = 'inline';
+        //     };
+        // input.addEventListener('focusout', handler);
+        // input.addEventListener('keypress', (keypress) => {
+        //     if(keypress.key === 'Enter'){
+        //         this.dom.topbar_username.innerHTML = input.value;
+        //         input.style.display="none";
+        //         this.dom.topbar_username.style.display = 'inline';
+        //     }
+        //         //handler();
+        // });
     }
 
     initCarousel(){
@@ -248,12 +248,12 @@ class UI {
         this.login_modal.show();
     }
 
-    changeName(){
-        //prompt("Change username:", this.client.player);
-        this.dom.topbar_username.style.display="none";
-        this.dom.topbar_username_input.style.display="inline-block";
-        this.dom.topbar_username_input.focus();
-    }
+    // changeName(){
+    //     //prompt("Change username:", this.client.player);
+    //     this.dom.topbar_username.style.display="none";
+    //     this.dom.topbar_username_input.style.display="inline-block";
+    //     this.dom.topbar_username_input.focus();
+    // }
 
     sendChangeColor(string){
         console.log(`Changing color to #${string}`);
