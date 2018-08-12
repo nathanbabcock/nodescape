@@ -332,7 +332,7 @@ class Game {
         let from = this.nodes[fromId],
             to = this.nodes[toId];
         if(from.owner !== player){
-            console.error(`Possible hack attempt identified: user ${player} trying to remove an edge on someone else's node`);
+            console.error(`User ${player} trying to remove an edge on someone else's node`);
             return false;
         }
         // let index = from.edges.findIndex(edge => edge.from === fromId && edge.to === toId);

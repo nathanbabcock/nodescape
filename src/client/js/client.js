@@ -1,9 +1,29 @@
 class Client {
-    constructor(username){
+    constructor(username, render){
         this.username = username;
         this.uuid = null;
         this.lastUpdate = -1;
         this.ws = null;
+        this.render = render;
+
+        let url = new URL(window.location.href);
+        this.uuid = url.searchParams.get('uuid');
+
+        // Tactical restart
+        // window.addEventListener('load', () => {
+        //     console.log("onload");
+        //     let url = new URL(window.location.href),
+        //         uuid = url.searchParams.get('uuid');
+        //     if(uuid !== null){
+        //         this.ui.dom.spawn.style.display = "none";
+        //         this.ui.onSpawn();
+        //         this.render.viewport.snap(url.searchParams.get('x'), url.searchParams.get('y'), {removeOnComplete:true, time:1500});
+        //         this.render.viewport.snapZoom({width:url.searchParams.get('zoom'), removeOnComplete:true, time:1500});
+        //         // this.client.uuid = uuid;
+        //         this.send({msgtype: 'reconnect', uuid});
+        //         // this.client.reconnect();
+        //     }
+        // });
     }
 
     setGame(game){
@@ -41,6 +61,10 @@ class Client {
         this.ws.onopen = () => {
             console.log("Succesfully connected to websocket server");
             if(this.ui) this.ui.onConnect();
+            // let url = new URL(window.location.href),
+            // uuid = url.searchParams.get('uuid');
+            // if(uuid !== null)
+            //     this.send({msgtype: 'reconnect', uuid});
             this.startClientUpdateLoop();
             // ws.send(this.serialize({
             //     msgtype: "playerconnect",
@@ -53,8 +77,6 @@ class Client {
     }
 
     reconnect(){
-        //TODO maybe this reconnect method is insecure (anyone could spoof a reconnect and steal someone's idle instance)
-        //Only applies to f2p plebs so no incentive to fix B)
         console.log("Reconnecting...");
         this.lastUpdate = new Date().getTime();
         if(this.ws) this.ws.close();
@@ -62,15 +84,26 @@ class Client {
         // console.log(this.ws);
         this.ws.onopen = () => {
             console.log("Regained connection to websocket server");
-            //if(this.ui) this.ui.onReconnect();
-            //this.startClientUpdateLoop();
-            // this.send({
-            //     msgtype: "reconnect",
-            //     username: this.render.player
-            // });
         }
 
         this.ws.onmessage = this.handleServerMessage.bind(this);
+    }
+
+    tacticalRestart(){
+        this.forceRestart = true;
+        let newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('uuid', client.uuid);
+        newUrl.searchParams.set('x', Math.round(this.render.viewport.center.x));
+        newUrl.searchParams.set('y', Math.round(this.render.viewport.center.y));
+        newUrl.searchParams.set('zoom', Math.round(this.render.viewport.right - this.render.viewport.left));
+        window.location.href = newUrl.href;
+        // window.location.href = `${window.location.href.substring(0, window.location.href.indexOf('?'))}/?uuid=${client.uuid}`;
+        // window.location.href = `https://nodescape.io/?uuid=${client.uuid}`;
+    }
+
+    hardRestart(){
+        this.forceRestart = true;
+        window.location.href = window.location.href.substring(0, window.location.href.indexOf('?'));
     }
 
     send(obj){
@@ -79,6 +112,7 @@ class Client {
             return false;
         } else if(this.ws.readyState !== WebSocket.OPEN){
             console.error(`Could not send object; websocket readyState=${this.ws.readyState}`);
+            this.ui.dom.reconnect.style.display="block";
             return false;
         }
         this.ws.send(this.serialize(obj));
@@ -135,9 +169,24 @@ class Client {
             console.log(`Client id: ${msg.uuid}`);
         };
 
-        handlers.reconnect_failed = () => {
-            console.log("Reconnect request rejected by server. New client ID is ", msg.uuid);
+        handlers.reconnect_success = () => {
+            this.render.player = msg.username;
             this.uuid = msg.uuid;
+            console.log("Server accepted reconnection");
+            this.ui.dom.reconnect.style.display="none";
+            this.ui.dom.topbar_username.innerHTML = this.ui.dom.topbar_username_input.value = msg.username;
+            this.ui.dom.topbar_permanent.style.display = msg.permanent ? "inline-block" : "none";
+            this.ui.dom.topbar_register.style.display = msg.permanent ? "none" : "inline-block";
+            this.ui.dom.topbar_color.jscolor.fromString(msg.color.toString(16));
+            this.ui.dom.topbar_username.style.color = this.ui.dom.topbar_username_input.style.color = `#${msg.color.toString(16)}`;
+            this.ui.onSpawn();
+        }
+
+        handlers.reconnect_failed = () => {
+            console.error("Reconnect request rejected by server.");
+            this.ui.dom.reconnect_failed.style.display="block";
+            this.ui.dom.reconnect.style.display="none";
+            // this.uuid = msg.uuid;
         }
 
         handlers.spawn_success = () => {

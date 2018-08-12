@@ -5,13 +5,21 @@ class UI {
 
         // Grab and cache dom instances
         this.dom = {};
-        ["spawn", "name", "color", "error", "submit", "watermark", "watermark_embed", "register_modal","info_step", "pending_step", "finish_step", "topbar", "topbar_username", "topbar_permanent", "topbar_register", "topbar_color", "topbar_loading", "topbar_username_input", "topbar_error", "login_area", "topbar_nonembed"]
+        ["spawn", "name", "color", "error", "submit", "watermark", "watermark_embed", "register_modal","info_step", "pending_step", "finish_step", "topbar", "topbar_username", "topbar_permanent", "topbar_register", "topbar_color", "topbar_loading", "topbar_username_input", "topbar_error", "login_area", "topbar_nonembed", "reconnect"]
             .forEach(id => this.dom[id] = document.getElementById(id));
 
         this.dom.name.value = "Player"+chance.integer({min:0, max:999});
         let color = chance.integer({min: 0x00000, max:0xf0f0f0}).toString(16);
         this.dom.color.value = color;
         this.dom.name.style.color = `#${color}`;
+
+        let url = new URL(window.location.href),
+            uuid = url.searchParams.get('uuid');
+        if(uuid !== null){
+            this.dom.reconnect.style.display = "block";
+            this.dom.spawn.style.display = "none";
+        } else
+            this.dom.spawn.style.display = "block";
 
         // OnBeforeUnload
         setTimeout(() => window.addEventListener("beforeunload", (e) => {
@@ -23,11 +31,15 @@ class UI {
             if(window.top !== window.self)
                 return null;
 
+            // Disable by global flag
+            if(this.client.forceRestart)
+                return null;
+
             let msg = "All progress is lost when you close your tab. Continue?"
             e.returnValue = msg;
             this.showRegisterModal();
             return msg;
-        }), 0);
+        }));
         
 
         this.initTopBar();

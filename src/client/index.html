@@ -29,30 +29,41 @@
 <body>
     <h1 id="watermark" class="noselect">NodeScape <span>Beta</span></h1>
     <a href="https://nodescape.io" target="_blank" id="watermark_embed" class="noselect">Visit full site >>></a>
+    
+    <div id="reconnect">
+        <img src="img/loading.svg" id="reconnect_loading">
+        <br>Reconnecting...
+    </div>
+
+    <div id="reconnect_failed">
+        <b>Reconnection failed</b>
+        <br>Sorry for the inconvenience. You can <a href="mailto:nodescape.io@gmail.com" target="_blank" title="nodescape.io@gmail.com">report this crash</a> and <a href="javascript:client.hardRestart()">start over</a>.
+    </div>
+    
     <div id="spawn" class="noselect modal">
-            <h1>NodeScape <span>Beta</span></h1>
-            <div class="main-carousel">
-                <img src="img/tutorial_1.gif" class="carousel-cell">
-                <img src="img/tutorial_2.gif" class="carousel-cell">
-                <img src="img/tutorial_3.gif" class="carousel-cell">
-                <img src="img/tutorial_4.gif" class="carousel-cell">
-                <img src="img/tutorial_5.gif" class="carousel-cell">
-            </div>
-            <div id="error"></div>
-            <form name="spawn" onsubmit="event.preventDefault(); return ui.submitSpawn()">
-                <div class="row">
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" value="player1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                </div>
-                <div class="row">
-                    <label for="color">Color:</label>
-                    <input type="text" class="jscolor {onFineChange:'ui.changeColor(this)'}" name="color" id="color" value="0000ff" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-                </div>
-                <div class="row">
-                    <button type="submit" id="submit" disabled class="btn btn-success btn-lg">Join Game</button><div id="login_area">or <a href="javascript:ui.showLogin()">LOGIN</a></div>
-                </div>
-            </form>
+        <h1>NodeScape <span>Beta</span></h1>
+        <div class="main-carousel">
+            <img src="img/tutorial_1.gif" class="carousel-cell">
+            <img src="img/tutorial_2.gif" class="carousel-cell">
+            <img src="img/tutorial_3.gif" class="carousel-cell">
+            <img src="img/tutorial_4.gif" class="carousel-cell">
+            <img src="img/tutorial_5.gif" class="carousel-cell">
         </div>
+        <div id="error"></div>
+        <form name="spawn" onsubmit="event.preventDefault(); return ui.submitSpawn()">
+            <div class="row">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" value="player1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </div>
+            <div class="row">
+                <label for="color">Color:</label>
+                <input type="text" class="jscolor {onFineChange:'ui.changeColor(this)'}" name="color" id="color" value="0000ff" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </div>
+            <div class="row">
+                <button type="submit" id="submit" disabled class="btn btn-success btn-lg">Join Game</button><div id="login_area">or <a href="javascript:ui.showLogin()">LOGIN</a></div>
+            </div>
+        </form>
+    </div>
 
     <div id="register_modal" class="modal">
         <div id="info_step">
@@ -108,7 +119,7 @@
     <script>
         let render = new Render(),
             game = new Game(),
-            client = new Client("excalo"),
+            client = new Client("excalo", render),
             ui = new UI(client);
         render.setGame(game);
         client.setGame(game);

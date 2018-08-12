@@ -413,34 +413,15 @@ class Server{
             client.ws = ws;
             delete this.clients[ws.uuid];
             ws.uuid = client.uuid;
+            let player = this.game.players[client.username];
+            this.send(ws, {
+                msgtype: 'reconnect_success',
+                uuid: ws.uuid,
+                username: client.username,
+                color: player ? this.game.players[client.username].color : null,
+                permanent: player ? this.game.players[client.username].permanent : null
+            });
             client.lastUpdate = new Date().getTime();
-
-            /*
-            // Handle broken sockets that didn't disconnect
-            let oldsocket = undefined;
-            this.wss.clients.forEach(ws => {
-                if(this.clients[ws.uuid].username === msg.username){
-                    oldsocket = ws;
-                }
-            })
-            if(oldsocket !== undefined) {
-                console.log(`Found broken websocket for user ${oldsocket.username}`);
-                oldsocket.close();
-            } else {
-                // Check list of disconnected clients
-                let index = this.disconnectedClients.findIndex(client => client.username === msg.username);
-                if(index === -1) {
-                    console.error(`Refusing reconnection from client ${msg.username}; not found or outside reconnection window`);
-                    ws.close();
-                    return;
-                }
-                this.disconnectedClients.splice(index, 1);
-            }
-
-            console.log(`Accepted reconnection from user ${msg.username}`);
-            this.clients[ws.uuid].username = msg.username;
-            // TODO send success msg?
-            */
         }
 
         handlers.ping = () => {};
@@ -494,13 +475,13 @@ class Server{
             let savedGame = this.deserialize(fs.readFileSync(gamestate_cache));
             _.merge(this.game, savedGame);
 
-            // Remove non-permanent players
-            for (var player in this.game.players) {
-                if (this.game.players.hasOwnProperty(player) && !this.game.players[player].permanent) {
-                    this.game.removePlayer(player);
-                    console.log(`- Removed non-permanent player ${player}`);
-                }
-            }
+            // // Remove non-permanent players
+            // for (var player in this.game.players) {
+            //     if (this.game.players.hasOwnProperty(player) && !this.game.players[player].permanent) {
+            //         this.game.removePlayer(player);
+            //         console.log(`- Removed non-permanent player ${player}`);
+            //     }
+            // }
 
             console.log("- Gamestate loaded.");
             return true;

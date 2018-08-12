@@ -96,6 +96,14 @@ class Render {
         this.texture_cache.arrowhead = gfx.generateCanvasTexture();
 
         // Viewport
+        let url = new URL(window.location.href),
+            x = url.searchParams.get('x'),
+            y = url.searchParams.get('y'),
+            zoom = url.searchParams.get('zoom');
+        if(x === null) x = config.width * renderConfig.scale / 2;
+        if(y === null) y = config.height * renderConfig.scale / 2;
+        if(zoom === null) zoom = config.width*10;
+
         this.viewport = new Viewport({
             screenWidth: window.innerWidth - renderConfig.scrollbar_padding,
             screenHeight: window.innerHeight - renderConfig.scrollbar_padding,
@@ -112,8 +120,8 @@ class Render {
                 minWidth:config.width/3,
                 minHeight:config.height/3
             })
-            .moveCenter(config.width * renderConfig.scale / 2, config.height * renderConfig.scale / 2)
-            .snapZoom({width: config.width*10, removeOnComplete:true});
+            .moveCenter(x, y)
+            .snapZoom({width: zoom, removeOnComplete:true});
         this.app.stage.addChild(this.viewport);
 
         // Layers

@@ -143,8 +143,9 @@ body, input, button {
     font-weight:normal;
 }
 
-#spawn {  
-    /* ??? */    
+#spawn {
+    display:none;
+    /* ??? */
 }
 
 h1{
@@ -347,6 +348,35 @@ h1 span {
 
 #topbar_nonembed {
     display:inline-block;
+}
+
+#reconnect, #reconnect_failed {
+    position:absolute;
+    width: 300px;
+    height: 100px;
+    left: 50%;
+    top: 50%;
+    margin-left:-150px;
+    margin-top: -50px;
+    padding-top:25px;
+    background-color:#ECECEC;
+    box-shadow: 0px 0px 5px black;
+    font-size:20px;
+    border-radius: 8px;
+    text-align:center;
+    vertical-align: middle;
+    display:none;
+    font-family:Helvetica, Arial, sans-serif;
+}
+
+#reconnect_failed{
+    /* display:block; */
+    width:400px;
+    margin-left:-200px;
+}
+
+#reconnect_loading {
+    width:30px;
 }
 
 /*********/
