@@ -44,13 +44,13 @@ class Render {
             width: window.innerWidth - renderConfig.scrollbar_padding,
             height:window.innerHeight - renderConfig.scrollbar_padding,
         });
-        window.addEventListener('resize', () => {
+        window.addEventListener('resize', this.client.wrapCallback(() => {
             this.app.renderer.resize(window.innerWidth - renderConfig.scrollbar_padding, window.innerHeight - renderConfig.scrollbar_padding);
             this.viewport.screenWidth = window.innerWidth - renderConfig.scrollbar_padding,
             this.viewport.screenHeight = window.innerHeight - renderConfig.scrollbar_padding;
-        });
+        }));
         document.body.appendChild(this.app.view);
-        this.app.stage.on("mouseup", this.stopDrag);
+        this.app.stage.on("mouseup", this.client.wrapCallback(this.stopDrag));
         // this.app.view.style.opacity = 0;
 
         // TEXTURES
@@ -133,7 +133,7 @@ class Render {
         this.edge_layer.addChild(this.edgeGfx = new PIXI.Graphics());
 
         // Render Loop
-        this.app.ticker.add(this.draw.bind(this));
+        this.app.ticker.add(this.client.wrapCallback(this.draw.bind(this)));
     }
 
     createNodeSprite(node){
@@ -142,11 +142,11 @@ class Render {
         sprite.interactive = true;
         sprite.hitArea = new PIXI.Circle(0, 0, 50);
         sprite.anchor.x = sprite.anchor.y = 0.5;
-        sprite.on('mousedown', () => this.startDrag(node));
-        sprite.on('mouseup', this.stopDrag.bind(this));
-        sprite.on('mouseupoutside', this.stopDrag.bind(this));
-        sprite.on('mouseover', () => { this.dragTo = node===this.dragFrom ? null : node; this.selectedNode = node; /*this.scaleArrowheads(node, renderConfig.big_arrowhead_scale);*/ });
-        sprite.on('mouseout', () => { this.dragTo = null; this.selectedNode = null;  /*this.scaleArrowheads(node, 1);*/ });
+        sprite.on('mousedown', this.client.wrapCallback(() => this.startDrag(node)));
+        sprite.on('mouseup', this.client.wrapCallback(this.stopDrag.bind(this)));
+        sprite.on('mouseupoutside', this.client.wrapCallback(this.stopDrag.bind(this)));
+        sprite.on('mouseover', this.client.wrapCallback(() => { this.dragTo = node===this.dragFrom ? null : node; this.selectedNode = node; /*this.scaleArrowheads(node, renderConfig.big_arrowhead_scale);*/ }));
+        sprite.on('mouseout', this.client.wrapCallback(() => { this.dragTo = null; this.selectedNode = null;  /*this.scaleArrowheads(node, 1);*/ }));
         this.node_layer.addChild(sprite);
         return sprite;
     }
@@ -251,11 +251,11 @@ class Render {
     createEdgeSprite(edge){
         let sprite = new PIXI.Sprite(this.texture_cache.arrowhead);
         sprite.interactive = sprite.buttonmode = true;
-        sprite.on('mousedown', () => this.startDrag(this.game.nodes[edge.from], this.game.nodes[edge.to]));
-        sprite.on('mouseup', this.stopDrag.bind(this));
-        sprite.on('mouseupoutside', this.stopDrag.bind(this));
-        sprite.on('mouseover', () => { sprite.scale.x = sprite.scale.y = renderConfig.big_arrowhead_scale;});
-        sprite.on('mouseout', () => { sprite.scale.x = sprite.scale.y = 1;});
+        sprite.on('mousedown', this.client.wrapCallback(() => this.startDrag(this.game.nodes[edge.from], this.game.nodes[edge.to])));
+        sprite.on('mouseup', this.client.wrapCallback(this.stopDrag.bind(this)));
+        sprite.on('mouseupoutside', this.client.wrapCallback(this.stopDrag.bind(this)));
+        sprite.on('mouseover', this.client.wrapCallback(() => { sprite.scale.x = sprite.scale.y = renderConfig.big_arrowhead_scale;}));
+        sprite.on('mouseout', this.client.wrapCallback(() => { sprite.scale.x = sprite.scale.y = 1;}));
         sprite.anchor.x = sprite.anchor.y = 0.5;
         this.edge_layer.addChild(sprite);
         return sprite;
@@ -510,22 +510,18 @@ class Render {
 
     // Draw
     draw(){
-        try{
-            this.edgeGfx.clear();
-            this.game.nodes.forEach(node => {
-                this.drawNode(node);
-                node.edges.forEach(edge => {
-                    this.drawEdge(edge);
-                    edge.bubbles.forEach(bubble => this.drawBubble(bubble, edge));
-                })
-            });
-            this.drawDrag();
-            this.drawSelectedNode();
+        this.edgeGfx.clear();
+        this.game.nodes.forEach(node => {
+            this.drawNode(node);
+            node.edges.forEach(edge => {
+                this.drawEdge(edge);
+                edge.bubbles.forEach(bubble => this.drawBubble(bubble, edge));
+            })
+        });
+        this.drawDrag();
+        this.drawSelectedNode();
 
-            this.app.renderer.render(this.app.stage);
-        } catch(e) {
-            console.error(e);
-        }
+        this.app.renderer.render(this.app.stage);
     }
 
     // Edge dragging

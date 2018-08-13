@@ -1373,3 +1373,6 @@ X TODO: Confirm that you cannot double connect with tactical restart
 TODO: Try to detect/prevent restart loops
 
 1hr test and stuff idk
+
+8/13
+

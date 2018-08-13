@@ -5,6 +5,7 @@ class Client {
         this.lastUpdate = -1;
         this.ws = null;
         this.render = render;
+        render.client = this;
 
         let url = new URL(window.location.href);
         this.uuid = url.searchParams.get('uuid');
@@ -26,6 +27,18 @@ class Client {
         // });
     }
 
+    // Wraps a function in a try catch, and restarts the page if an error occurs
+    wrapCallback(callback){
+        return () => {
+            try {
+                callback();
+            } catch (e) {
+                console.error(e);
+                this.tacticalRestart();
+            }
+        };
+    }
+
     setGame(game){
         if(this.gameloop) clearInterval(this.gameloop);
         this.game = game;
@@ -33,16 +46,16 @@ class Client {
         //this.gameloop = setInterval(this.game.update.bind(this.game), this.game.config.tick_rate);
 
         // Game listeners
-        this.game.on("createEdge", (player, from, to) => { this.send({
+        this.game.on("createEdge", this.wrapCallback((player, from, to) => { this.send({
             msgtype: "createEdge",
             from: from,
             to: to
-        })});
-        this.game.on("removeEdge", (player, from, to) => { this.send({
+        })}));
+        this.game.on("removeEdge", this.wrapCallback((player, from, to) => { this.send({
             msgtype: "removeEdge",
             from: from,
             to: to
-        })});
+        })}));
 
         return game;
     }
@@ -58,7 +71,7 @@ class Client {
     connect(url){
         this.url = url;
         this.ws = new WebSocket(url);
-        this.ws.onopen = () => {
+        this.ws.onopen = this.wrapCallback(() => {
             console.log("Succesfully connected to websocket server");
             if(this.ui) this.ui.onConnect();
             // let url = new URL(window.location.href),
@@ -71,7 +84,7 @@ class Client {
             //     username: this.username,
             //     color: this.game.players[this.username].color//0x01F45D,
             // }));
-        }
+        });
 
         this.ws.onmessage = this.handleServerMessage.bind(this);
     }
@@ -81,11 +94,11 @@ class Client {
         this.lastUpdate = new Date().getTime();
         if(this.ws) this.ws.close();
         this.ws = new WebSocket(this.url);
-        this.ws.onopen = () => {
+        this.ws.onopen = this.wrapCallback(() => {
             console.log("Regained connection to websocket server");
-        }
+        });
 
-        this.ws.onmessage = this.handleServerMessage.bind(this);
+        this.ws.onmessage = this.wrapCallback(this.handleServerMessage.bind(this));
     }
 
     tacticalRestart(){
@@ -127,15 +140,15 @@ class Client {
 
     startGameLoop(){
         if(this.gameloop) clearInterval(this.gameloop);
-        this.gameloop = setInterval(() => {
+        this.gameloop = setInterval(this.wrapCallback(() => {
             this.game.update();
-        }, this.game.config.tick_rate);
+        }), this.game.config.tick_rate);
     }
 
     startClientUpdateLoop(){
         const CONNECTION_TIMEOUT = 5 * 1000;
         if(this.clientupdateloop) clearInterval(this.clientupdateloop);
-        this.clientupdateloop = setInterval(() => {
+        this.clientupdateloop = setInterval(this.wrapCallback(() => {
             if(new Date().getTime() > this.lastUpdate + CONNECTION_TIMEOUT){
                 console.log("Server connection timed out.");
                 this.reconnect();
@@ -151,7 +164,7 @@ class Client {
                         left: this.render.viewport.left / renderConfig.scale,
                     });
             }
-        }, 1000);
+        }), 1000);
     }
 
     handleServerMessage(event){
@@ -270,7 +283,7 @@ class Client {
         }
 
         if(msg.msgtype){
-            handlers[msg.msgtype]();
+            this.wrapCallback(handlers[msg.msgtype])();
             return;
         }
 
