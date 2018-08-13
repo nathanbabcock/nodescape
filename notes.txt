@@ -1367,7 +1367,9 @@ Should the server instance cache the connected clients?
 
 BUG: changing name on permanent player was never implemented correctly
 
-TODO: REMOVE client and server capability of NAME Change
+X TODO: REMOVE client and server capability of NAME Change
 TODO: Add try-catch to every callback...
-TODO: Confirm that you cannot double connect with tactical restart
+X TODO: Confirm that you cannot double connect with tactical restart
 TODO: Try to detect/prevent restart loops
+
+1hr test and stuff idk

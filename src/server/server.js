@@ -408,8 +408,11 @@ class Server{
                 return;
             }
             if(client.ws && client.ws.readyState !== WS.CLOSED){
-                console.log(`Closing old websocket for client ${client.uuid}`);
-                client.ws.terminate();
+                console.error(`Refusing reconnection request from client who is already connected`);
+                this.send(ws, {msgtype:'reconnect_failed', error: 'Refusing reconnection request from client who is already connected.', uuid: ws.uuid});
+                return;
+                // console.log(`Closing old websocket for client ${client.uuid}`);
+                // client.ws.terminate();
             }
             console.log(`Accepted reconnection for client ${client.uuid}`);
             client.ws = ws;
