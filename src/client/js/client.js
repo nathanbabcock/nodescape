@@ -28,10 +28,10 @@ class Client {
     }
 
     // Wraps a function in a try catch, and restarts the page if an error occurs
-    wrapCallback(callback){
-        return () => {
+    wrapCallback(thisArg, callback){
+        return (...args) => {
             try {
-                callback();
+                callback.bind(thisArg)(...args);
             } catch (e) {
                 console.error(e);
                 this.tacticalRestart();
@@ -46,12 +46,14 @@ class Client {
         //this.gameloop = setInterval(this.game.update.bind(this.game), this.game.config.tick_rate);
 
         // Game listeners
-        this.game.on("createEdge", this.wrapCallback((player, from, to) => { this.send({
-            msgtype: "createEdge",
-            from: from,
-            to: to
+        this.game.on("createEdge", this.wrapCallback(this, (player, from, to) => {
+            // console.log(player, from, to);
+            this.send({
+                msgtype: "createEdge",
+                from: from,
+                to: to
         })}));
-        this.game.on("removeEdge", this.wrapCallback((player, from, to) => { this.send({
+        this.game.on("removeEdge", this.wrapCallback(this, (player, from, to) => { this.send({
             msgtype: "removeEdge",
             from: from,
             to: to
@@ -71,7 +73,7 @@ class Client {
     connect(url){
         this.url = url;
         this.ws = new WebSocket(url);
-        this.ws.onopen = this.wrapCallback(() => {
+        this.ws.onopen = this.wrapCallback(this, () => {
             console.log("Succesfully connected to websocket server");
             if(this.ui) this.ui.onConnect();
             // let url = new URL(window.location.href),
@@ -94,11 +96,11 @@ class Client {
         this.lastUpdate = new Date().getTime();
         if(this.ws) this.ws.close();
         this.ws = new WebSocket(this.url);
-        this.ws.onopen = this.wrapCallback(() => {
+        this.ws.onopen = this.wrapCallback(this, () => {
             console.log("Regained connection to websocket server");
         });
 
-        this.ws.onmessage = this.wrapCallback(this.handleServerMessage.bind(this));
+        this.ws.onmessage = this.wrapCallback(this, this.handleServerMessage);
     }
 
     tacticalRestart(){
@@ -140,7 +142,7 @@ class Client {
 
     startGameLoop(){
         if(this.gameloop) clearInterval(this.gameloop);
-        this.gameloop = setInterval(this.wrapCallback(() => {
+        this.gameloop = setInterval(this.wrapCallback(this, () => {
             this.game.update();
         }), this.game.config.tick_rate);
     }
@@ -148,7 +150,7 @@ class Client {
     startClientUpdateLoop(){
         const CONNECTION_TIMEOUT = 5 * 1000;
         if(this.clientupdateloop) clearInterval(this.clientupdateloop);
-        this.clientupdateloop = setInterval(this.wrapCallback(() => {
+        this.clientupdateloop = setInterval(this.wrapCallback(this, () => {
             if(new Date().getTime() > this.lastUpdate + CONNECTION_TIMEOUT){
                 console.log("Server connection timed out.");
                 this.reconnect();
@@ -283,7 +285,7 @@ class Client {
         }
 
         if(msg.msgtype){
-            this.wrapCallback(handlers[msg.msgtype])();
+            this.wrapCallback(this, handlers[msg.msgtype])();
             return;
         }
 

@@ -1376,3 +1376,10 @@ TODO: Try to detect/prevent restart loops
 
 8/13
 
+8/18
+
+TODO
+- server mount cache files
+- server autorestart on error
+- test server autorestart
+X test client tactical restart try/catch

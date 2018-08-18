@@ -101,7 +101,7 @@
         <img src="img/loading.svg" id="topbar_loading">
         <input type="hidden" id="hidden_color" onchange="ui.sendChangeColor(this.value)">
         <button class="jscolor {valueElement: 'hidden_color', onFineChange:'ui.changeTopbarColor(this)'}" id="topbar_color" title="Click to change color"></button>
-        <span id="topbar_username">null</a>
+        <span id="topbar_username">null</span>
         <input type="text" value="null" id="topbar_username_input">
         <!-- <span id="topbar_username">excalo</span> -->
         <div id="topbar_nonembed">
@@ -122,6 +122,7 @@
             client = new Client("excalo", render),
             ui = new UI(client);
         render.setGame(game);
+        render.initPixi();
         client.setGame(game);
         client.setRender(render);
         if(nodescape_environment === 'production')
