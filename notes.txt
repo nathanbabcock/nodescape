@@ -1379,7 +1379,9 @@ TODO: Try to detect/prevent restart loops
 8/18
 
 TODO
-- server mount cache files
-- server autorestart on error
+X server mount cache files
+X server autorestart on error
 - test server autorestart
 X test client tactical restart try/catch
+
+1hr @home finish tactical restart
